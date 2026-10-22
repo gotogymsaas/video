@@ -25,6 +25,7 @@ def captions_from_boundaries(boundaries, max_chars=68):
 
 
 def write_captions(base,cues):
+    base=Path(base);base.parent.mkdir(parents=True,exist_ok=True)
     """Export measured/imported timings to SRT and WebVTT without stretching."""
     def stamp(t,comma=False):
         ms=round(t*1000);seconds,ms=divmod(ms,1000);minutes,seconds=divmod(seconds,60);hours,minutes=divmod(minutes,60)

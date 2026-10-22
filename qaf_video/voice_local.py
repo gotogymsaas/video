@@ -67,16 +67,23 @@ def _worker(request,python):
 
 
 def transcribe_local(audio,python=None,asr_model=None,tts_model=None,language='Spanish'):
-    executable,_,asr=runtime_settings(python,tts_model,asr_model)
+    # ASR does not require the TTS model or its heavyweight runtime.
+    executable=Path(python or os.environ.get('QAF_ASR_PYTHON') or os.environ.get('QAF_VOICE_PYTHON') or sys.executable).absolute()
+    asr=Path(asr_model or os.environ.get('QAF_ASR_MODEL') or Path.cwd()/'voice_models/whisper-small').resolve()
+    require(executable.is_file() and (asr/'model.bin').is_file(),'Local ASR runtime or weights missing')
     return _worker({'operation':'transcribe','audio':str(Path(audio).resolve()),'asr_model':str(asr),
                     'language':normalize_language(language)},executable)
 
 
 def synthesize_local(profile,text,output,python=None,tts_model=None,asr_model=None,device='cpu',seed=22,target_seconds=None,
-                     language='Spanish',segments=None):
+                     language='Spanish',segments=None,rhythm=None):
     plan=speech_plan(text,language,segments)
     for part in plan:codec_token_budget(part['text'],target_seconds)
     require(device in ['cpu','cuda:0','mps'],'Unsupported inference device')
+    if rhythm is not None:
+        require(isinstance(rhythm,dict) and target_seconds is None,'Choose continuous rhythm or legacy timing')
+        require(all(p['language'] not in ['Chinese','Japanese','Korean'] for p in plan),'Use native phrase pacing for languages without comparable word counts')
+        require(80<=float(rhythm.get('target_wpm',175))<=240 and 3<=float(rhythm.get('episode_seconds',60))<=600,'Invalid rhythm budget')
     path=Path(profile).resolve();p=json.loads(path.read_text(encoding='utf-8'))
     require(p.get('schema')=='qaf_voice_profile_v1','Invalid voice profile')
     ref=local_asset(path.parent,p.get('reference_audio'))
@@ -85,4 +92,4 @@ def synthesize_local(profile,text,output,python=None,tts_model=None,asr_model=No
     executable,tts,asr=runtime_settings(python,tts_model,asr_model)
     return _worker({'operation':'synthesize','profile':str(path),'text':text,'output':str(output),
                     'tts_model':str(tts),'asr_model':str(asr),'device':device,'seed':seed,
-                    'target_seconds':target_seconds,'language':normalize_language(language),'segments':segments},executable)
+                    'target_seconds':target_seconds,'language':normalize_language(language),'segments':segments,'rhythm':rhythm},executable)

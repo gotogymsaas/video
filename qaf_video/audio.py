@@ -22,7 +22,7 @@ def measure(path, target_i=TARGET_I, target_tp=TARGET_TP):
     return json.loads(records[-1])
 
 
-def mix_audio(output, seconds, voice=None, music=None, ambience=None, effects=None):
+def mix_audio(output, seconds, voice=None, music=None, ambience=None, effects=None,profile=None):
     require(isinstance(seconds, (float, int)) and math.isfinite(seconds) and 0 < seconds <= 600,
             'Invalid audio duration')
     stems = {k: Path(v).resolve() for k, v in dict(voice=voice, music=music,
@@ -34,6 +34,10 @@ def mix_audio(output, seconds, voice=None, music=None, ambience=None, effects=No
     args = ['ffmpeg', '-y', '-v', 'error']
     graph = []
     gains = {'voice': 1., 'music': .18, 'ambience': .2, 'effects': .45}
+    profile=profile or {};require(isinstance(profile,dict) and set(profile)<={'gains','release_ms'},'Invalid mix profile')
+    overrides=profile.get('gains',{});require(isinstance(overrides,dict) and set(overrides)<=set(gains),'Unknown gain')
+    require(all(isinstance(v,(int,float)) and math.isfinite(v) and 0<=v<=2 for v in overrides.values()),'Invalid gain')
+    gains.update(overrides);release=float(profile.get('release_ms',450));require(math.isfinite(release) and 100<=release<=1500,'Invalid duck release')
     for i, (name, path) in enumerate(stems.items()):
         if name in ['music', 'ambience']:
             args += ['-stream_loop', '-1']
@@ -46,7 +50,7 @@ def mix_audio(output, seconds, voice=None, music=None, ambience=None, effects=No
                      f'amix=inputs={len(bed)}:normalize=0:duration=longest[bed]')
     if voice and bed:
         graph += ['[voice]asplit=2[mainvoice][sidechain]',
-                  '[bed][sidechain]sidechaincompress=threshold=0.025:ratio=8:attack=15:release=300[ducked]',
+                  f'[bed][sidechain]sidechaincompress=threshold=0.025:ratio=8:attack=15:release={release}[ducked]',
                   '[mainvoice][ducked]amix=inputs=2:normalize=0:duration=longest[mix]']
     else:
         graph.append('[voice]anull[mix]' if voice else '[bed]anull[mix]')
@@ -72,6 +76,7 @@ def mix_audio(output, seconds, voice=None, music=None, ambience=None, effects=No
               'ducking': bool(voice and bed), 'input_measurement': first,
               'output_measurement': measured, 'stems_sha256': {s: sha256(p) for s, p in stems.items()},
               'output_sha256': sha256(output), 'requires_listening_review': True}
+    report.update(gains=gains,duck_release_ms=release)
     atomic_json(output.with_suffix('.audio.json'), report)
     return report
 

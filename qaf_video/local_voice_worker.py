@@ -104,9 +104,14 @@ def main():
         raw=output.with_suffix('.unmastered.wav');sf.write(str(raw),combined,sr,subtype='PCM_24')
         del model,prompt;gc.collect()
         loudness=normalize_voice(raw,output)
-        transcript=transcribe_recording(output,request['asr_model'],spans=spans)
-        words=[w for s in transcript['segments'] for w in s['words']]
         timing=None
+        if request.get('rhythm'):
+            from .voice_rhythm import natural_voice
+            import os
+            adjusted=output.with_suffix('.continuous.wav')
+            timing=natural_voice(output,adjusted,spoken,**request['rhythm']);os.replace(adjusted,output)
+        transcript=transcribe_recording(output,request['asr_model'],spans=retime_spans(spans,timing))
+        words=[w for s in transcript['segments'] for w in s['words']]
         if request.get('target_seconds') is not None:
             from .voice_timing import fit_voice
             import os

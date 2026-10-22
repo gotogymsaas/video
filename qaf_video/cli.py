@@ -48,6 +48,13 @@ def parser():
     c=sub.add_parser('build',help='Execute a confined built-in production DAG')
     c.add_argument('workflow',type=Path);c.add_argument('--workspace',type=Path,required=True)
     c=sub.add_parser('serve');c.add_argument('--workspace',default='projects');c.add_argument('--port',type=int,default=8765)
+    c=sub.add_parser('voice-rhythm',help='Continuous speech without inserted sentence gaps')
+    c.add_argument('source',type=Path);c.add_argument('--text-file',type=Path,required=True);c.add_argument('--out',type=Path,required=True)
+    c.add_argument('--wpm',type=float,default=175);c.add_argument('--seconds',type=float,default=60)
+    for name in ['cinema-audit','cinema-storyboard','cinema-render']:
+        c=sub.add_parser(name);c.add_argument('project',type=Path);c.add_argument('--profile',choices=['proxy','vertical','landscape-proxy','horizontal'],default='vertical')
+        if name!='cinema-audit':c.add_argument('--out',type=Path,required=True)
+        if name=='cinema-render':c.add_argument('--no-cc',action='store_true');c.add_argument('--final',action='store_true')
     return p
 
 
@@ -124,6 +131,19 @@ def main(argv=None):
         elif a.command=='build':
             from .graph import build
             result=build(a.workflow,a.workspace)
+        elif a.command=='voice-rhythm':
+            from .voice_rhythm import natural_voice
+            result=natural_voice(a.source,a.out,a.text_file.read_text(encoding='utf-8'),a.seconds,a.wpm)
+        elif a.command=='cinema-audit':
+            from .cinema_pipeline import layout_audit
+            result=layout_audit(a.project,a.profile)
+        elif a.command=='cinema-storyboard':
+            from .cinema_pipeline import cinema_storyboard
+            result={'storyboard':str(cinema_storyboard(a.project,a.out,a.profile))}
+        elif a.command=='cinema-render':
+            from .cinema_pipeline import render_cinema
+            result=render_cinema(a.project,a.out,a.profile,not a.no_cc,a.final,progress=lambda x:print(f'\rCine {x:.0%}',end='',file=sys.stderr,flush=True))
+            print(file=sys.stderr)
         elif a.command=='serve':
             from .server import serve
             serve(a.workspace,a.port);return 0

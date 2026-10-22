@@ -12,6 +12,13 @@ from .core import ValidationError, require, load, validate, atomic_json, sha256,
 from .demo import create_project
 from .pipeline import render_project, storyboard
 from .planning import plan_project, benchmark
+from .cinema_project import SCHEMA,validate_cinema
+
+def validate_any(m,base,final=False):
+    return validate_cinema(m,base,final) if m.get('schema')==SCHEMA else validate(m,base,final)
+
+def read_any(path):
+    m=json.loads(Path(path).read_text(encoding='utf-8'));validate_any(m,Path(path).parent);return m
 
 
 def confined(root, name):
@@ -120,11 +127,14 @@ def handler(studio):
                 elif action=='benchmark':result=studio.job(action,lambda progress:benchmark())
                 else:
                     path=confined(studio.root,data.get('path',''));require(path.name=='project.json','Select a project.json')
-                    if action in ['save','import','attach-voice']:
+                    if action in ['save','import','attach-voice','phone-screen']:
                         with studio.lock:
                             require(not studio.busy(),'Wait for the active job before editing assets or project')
                             result=self.mutate(action,path,data)
-                    elif action=='validate':result=validate(load(path),path.parent,final=data.get('final') is True)
+                    elif action=='validate':result=validate_any(read_any(path),path.parent,final=data.get('final') is True)
+                    elif action=='cinema-audit':
+                        from .cinema_pipeline import layout_audit
+                        result=layout_audit(path,data.get('profile','vertical'))
                     elif action=='plan':
                         result=plan_project(path);atomic_json(path.parent/'outputs/plan.json',result)
                     elif action=='voice-prepare':
@@ -149,43 +159,63 @@ def handler(studio):
                         speech_plan(script,language,segments)
                         out=path.parent/'assets'/('voice-'+secrets.token_hex(4)+'.wav')
                         def make_voice(progress):
-                            progress(.05);episode_seconds=load(path)['duration']
-                            value=synthesize_local(profile,script,out,target_seconds=episode_seconds if episode_seconds>=3 else None,
-                                                   language=language,segments=segments)
-                            progress(.95);m=load(path)
+                            progress(.05);episode_seconds=read_any(path)['duration']
+                            use_rhythm=data.get('natural_rhythm',True) and language not in ['Chinese','Japanese','Korean'] and not segments
+                            value=synthesize_local(profile,script,out,target_seconds=None,language=language,segments=segments,
+                                rhythm={'episode_seconds':episode_seconds,'target_wpm':float(data.get('wpm',175))} if use_rhythm and episode_seconds>=3 else None)
+                            progress(.95);m=read_any(path)
                             attached=(value['script_comparison']['rate']<=.25 and bool(value['subtitles']) and
                                       value['seconds']<=m['duration'] and value['subtitles'][-1]['end']<=m['duration'])
                             if attached:
                                 m.update(voice=str(out.relative_to(path.parent)),subtitles=value['subtitles'],caption_audio_sha256=sha256(out),
                                          voice_synthesis={'report':str(out.with_suffix('.voice.json').relative_to(path.parent)),'human_approval':False})
-                                validate(m,path.parent);atomic_json(path,m)
+                                if m.get('schema')==SCHEMA:
+                                    m['assets'][m['voice']]={'sha256':sha256(out),'origin':'local reference-conditioned synthesis','rights':'workspace voice; review before sharing','privacy':'private'}
+                                validate_any(m,path.parent);atomic_json(path,m)
                             return {'audio':str(out.relative_to(studio.root)),'report':value,'attached':attached,
                                     'requires_listening_review':True,'reason':None if attached else 'Check script, duration and ASR before attaching'}
                         result=studio.job(action,make_voice)
                     elif action=='storyboard':
                         def make_board(progress):
-                            out=storyboard(path,path.parent/'outputs/storyboard.jpg');return {'media':str(out.relative_to(studio.root))}
+                            if read_any(path).get('schema')==SCHEMA:
+                                from .cinema_pipeline import cinema_storyboard
+                                out=cinema_storyboard(path,path.parent/'outputs/storyboard.jpg',data.get('profile','vertical'))
+                            else:out=storyboard(path,path.parent/'outputs/storyboard.jpg')
+                            return {'media':str(out.relative_to(studio.root))}
                         result=studio.job(action,make_board)
                     elif action=='render':
                         profile=data.get('profile','proxy');require(profile in ['proxy','vertical','landscape-proxy','horizontal'],'Invalid profile')
                         def make_video(progress):
                             out=path.parent/f'outputs/video-{profile}.mp4'
-                            report=render_project(path,out,profile,final=data.get('final') is True,progress=progress)
+                            if read_any(path).get('schema')==SCHEMA:
+                                from .cinema_pipeline import render_cinema
+                                report=render_cinema(path,out,profile,cc=data.get('cc',True),final=data.get('final') is True,progress=progress)
+                            else:report=render_project(path,out,profile,final=data.get('final') is True,progress=progress)
                             return {'media':str(out.relative_to(studio.root)),'report':report}
                         result=studio.job(action,make_video)
                     else:raise ValidationError('Unknown action')
                 self.reply(result)
             except (ValidationError,ValueError,KeyError,OSError,TypeError) as e:self.reply({'error':str(e)},400)
         def mutate(self,action,path,data):
+            if action=='phone-screen':
+                from .core import local_asset
+                from PIL import Image
+                m=read_any(path);require(m.get('schema')==SCHEMA,'Select a cinema project')
+                name=data.get('asset');screen=local_asset(path.parent,name)
+                with Image.open(screen) as im:im.verify()
+                m['phone_screen']=name;m['assets'][name]={'sha256':sha256(screen),'origin':'user-supplied original screenshot','rights':'supplied for production; review before sharing','privacy':'private'}
+                validate_cinema(m,path.parent);atomic_json(path,m);return {'phone_screen':name,'sha256':sha256(screen)}
             if action=='save':
-                m=data.get('project');validate(m,path.parent);atomic_json(path,m)
+                m=data.get('project');validate_any(m,path.parent);atomic_json(path,m)
                 return {'saved':True}
             if action=='attach-voice':
                 from .core import local_asset
-                m=load(path);name=data.get('asset');audio=local_asset(path.parent,name)
+                m=read_any(path);name=data.get('asset');audio=local_asset(path.parent,name)
                 require(audio.suffix.lower() in ['.wav','.mp3','.m4a','.flac','.ogg'],'Choose an audio recording')
                 m['voice']=name;m['subtitles']=data.get('subtitles',[])
-                m['caption_audio_sha256']=sha256(audio);validate(m,path.parent);atomic_json(path,m)
+                m['caption_audio_sha256']=sha256(audio)
+                if m.get('schema')==SCHEMA:m['assets'][name]={'sha256':sha256(audio),'origin':'imported audio','rights':'workspace recording; review before sharing','privacy':'private'}
+                validate_any(m,path.parent);atomic_json(path,m)
                 return {'attached':True,'caption_alignment_requires_review':True}
             name=data.get('name','');require(isinstance(name,str) and name==Path(name).name and name not in ['.','..'],'Invalid filename')
             require(Path(name).suffix.lower() in ['.png','.jpg','.jpeg','.webp','.mp4','.mov','.wav','.mp3','.m4a','.flac','.ogg'],'Unsupported asset extension')
