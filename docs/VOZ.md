@@ -36,7 +36,7 @@ Ejemplos de consola:
 
 ```bash
 python -m qaf_video voice-clone --profile projects/episodio-01/voice-profiles/barranquilla/voice-profile.json --text-file narration-en.txt --language en --out projects/episodio-01/assets/voice-en.wav
-python -m qaf_video voice-clone --profile projects/episodio-01/voice-profiles/barranquilla/voice-profile.json --segments-file examples/narration-multilingual.json --out projects/episodio-01/assets/voice-es-en.wav
+python -m qaf_video voice-clone --profile projects/episodio-01/voice-profiles/barranquilla/voice-profile.json --segments-file examples/narration-multilingual.json --seed 42 --out projects/episodio-01/assets/voice-es-en.wav
 ```
 
 El JSON contiene hasta 24 objetos con `text` e `language`; el total no supera 5000 caracteres. Se aceptan nombres del motor o códigos ISO (`es`, `en`, `pt`, etc.). Las variantes de país no se presentan como voces regionales certificadas. El presupuesto de audio considera caracteres CJK, evitando tratar una frase sin espacios como una sola palabra.

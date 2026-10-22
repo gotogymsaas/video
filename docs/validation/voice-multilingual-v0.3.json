@@ -101,5 +101,30 @@
     "output_thresh": "-24.94",
     "normalization_type": "dynamic",
     "target_offset": "0.61"
+  },
+  "post_synthesis_timing_check": {
+    "target_seconds": 17,
+    "pcm_frames": 816000,
+    "sample_rate": 48000,
+    "tempo_factor": 0.9657142857142856,
+    "per_phrase_asr_edit_rates": [
+      0.125,
+      0.0,
+      0.0
+    ],
+    "recognized_text": "Vamos en español una explicación cercana, en inglés decimos Our quantum coach explains machine learning with a warm, natural voice. la misma referencia de voz para conectar con más personas.",
+    "premaster_lufs": -17.99,
+    "premaster_dbtp": -2.06,
+    "passes_initial_script_gate": true,
+    "human_review": "pending"
+  },
+  "ci": {
+    "tested_code_commit": "5ffbe6569725d143a71ca6375c0183c530547050",
+    "python": [
+      "3.11",
+      "3.12"
+    ],
+    "result": "success",
+    "url": "https://github.com/gotogymsaas/video/actions/runs/39830129288"
   }
 }

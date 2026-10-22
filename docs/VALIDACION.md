@@ -8,6 +8,8 @@ Se sintetizaron dos tomas reales en CPU con la misma referencia privada y lengua
 
 Estas mediciones demuestran ejecución e integridad del guion en dos idiomas sobre una muestra; no acreditan pronunciación nativa, identidad vocal, continuidad artística o acento barranquillero. Los otros ocho idiomas del motor no se sintetizaron en esta actualización. El informe agregado `validation/voice-multilingual-v0.3.json` conserva alcance y límites. Las grabaciones, el perfil y los audios clonados se mantienen fuera del repositorio público.
 
+También se ajustó esa locución a 17 s (816000 muestras PCM a 48 kHz), con tempo 0.965714 y cierre de 2.86 s. La nueva transcripción mantuvo error 0 en inglés y en la última frase española; la primera tuvo 12.5%, dentro de la compuerta inicial. El MP3 de escucha conserva la toma de 13.52 s y mide -14.79 LUFS / -1.76 dBTP. La CI del código de esta versión pasó en Python 3.11 y 3.12; su ejecución se enlaza en el informe agregado. El ejemplo de consola utiliza el texto completo y semilla 42 de la toma que pasó la comparación.
+
 ## Edición de voz 0.2.0
 
 La edición 0.2 pasó 48 pruebas locales, incluidas preservación de tono, reducción contra un fixture con señal limpia conocida, picos entre muestras, duración exacta, transcripción temporal y bloqueo de red del proceso de inferencia. Se ejecutó Qwen3-TTS Base en CPU con una referencia aportada; el guion nuevo contiene 137 palabras. La salida se ajustó a 60 s con tempo 0.87158, sin recortar palabras, y se volvió a transcribir. Las métricas agregadas están en `validation/voice-v0.2.json`.
