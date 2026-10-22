@@ -1,4 +1,4 @@
-# Voz regional con referencia real · 0.2.0
+# Voz regional y pronunciación multilingüe · 0.3.0
 
 El objetivo es conservar una identidad vocal aportada, preparar audio utilizable y generar guiones nuevos. El origen regional es una descripción del usuario, no una inferencia automática del código.
 
@@ -24,13 +24,34 @@ La decodificación usa el muestreo recomendado en la configuración publicada de
 
 La inferencia CPU funciona sin GPU, con un coste de tiempo considerable. El parámetro CLI `--device` admite `cpu`, `cuda:0` y `mps`; en esta entrega se ejecuta y valida CPU. Los otros dispositivos requieren hardware y pruebas adicionales. El código y dependencias se instalan por separado de los pesos.
 
+## Palabras y frases en otros idiomas
+
+El motor publicado admite español, inglés, portugués, francés, italiano, alemán, chino, japonés, coreano y ruso. La versión 0.3 elimina el español fijo de síntesis y reconocimiento. El idioma del perfil sigue describiendo la **grabación de referencia**; elegir inglés como destino no hace que esa grabación española se transcriba como inglés. No se traduce el guion automáticamente.
+
+En **Tu voz de marca**, elige **Idioma de la narración**. Para nombres o expresiones extranjeras activa **Definir el idioma de cada frase**, escribe las frases en orden y elige el idioma de cada una. Se reutiliza el mismo prompt de referencia; las frases se sintetizan consecutivamente, con una pausa de 120 ms y fundidos de borde de 3 ms. La continuidad tímbrica y prosódica entre frases requiere audición. Conviene agrupar una expresión completa en lugar de cambiar de idioma en cada palabra.
+
+**Automático** deja la decisión al motor y al reconocedor. Es útil para ensayar texto mezclado, pero no garantiza que un nombre de marca se pronuncie como se desea. La selección explícita por frase ofrece control reproducible sobre el idioma solicitado; tampoco certifica fonemas, variedad regional o acento nativo. La guía de marca debe fijar cómo se dicen GoToGym y Quantum Coach, las siglas y los términos técnicos. Escribe los nombres correctamente en el guion; cualquier variante fonética experimental debe audicionarse y no sustituir silenciosamente el texto de marca en pantalla.
+
+Ejemplos de consola:
+
+```bash
+python -m qaf_video voice-clone --profile projects/episodio-01/voice-profiles/barranquilla/voice-profile.json --text-file narration-en.txt --language en --out projects/episodio-01/assets/voice-en.wav
+python -m qaf_video voice-clone --profile projects/episodio-01/voice-profiles/barranquilla/voice-profile.json --segments-file examples/narration-multilingual.json --out projects/episodio-01/assets/voice-es-en.wav
+```
+
+El JSON contiene hasta 24 objetos con `text` e `language`; el total no supera 5000 caracteres. Se aceptan nombres del motor o códigos ISO (`es`, `en`, `pt`, etc.). Las variantes de país no se presentan como voces regionales certificadas. El presupuesto de audio considera caracteres CJK, evitando tratar una frase sin espacios como una sola palabra.
+
+El ASR analiza cada intervalo de audio con su idioma, sin traducirlo; el informe conserva los tiempos y el idioma utilizado. Solo el modo automático registra probabilidad de detección; elegir un idioma explícito no demuestra que se haya detectado. Después del ajuste temporal vuelve a reconocer los intervalos del audio final. Para chino/japonés se utiliza distancia por caracteres; para los demás, por palabras. `script_comparison.rate` toma la peor frase: una expresión inglesa omitida no se diluye en una narración española larga. `word_error_rate` se conserva para compatibilidad en textos evaluados por palabras y es `null` cuando corresponde evaluar por caracteres.
+
+La aceptación inicial exige ≤25% en **cada frase**. Es una señal de integridad del guion basada en ASR; no mide pronunciación fonética ni prueba que el timbre conserve la identidad. `pronunciation_human_review` permanece `pending`. Antes de publicar, escuchar nombres, acentuación, consonantes, ritmo, respiraciones y uniones, y aprobar el carácter barranquillero con una persona familiarizada con esa voz.
+
 ## Sonoridad, guion y subtítulos
 
 Las comparaciones se preparan a -18 LUFS, mono 48 kHz, con objetivo de pico real -2 dBTP. Esa es una referencia de voz previa a mezcla. La distribución audiovisual mantiene el perfil editorial -14 LUFS definido en el sistema general.
 
 La transcripción del audio generado produce tiempos de palabras. Se agrupan en cues legibles y se exportan SRT/VTT. Los tiempos se calculan a partir del audio; no se inventan distribuyendo frases por minuto. Son estimaciones de ASR, no un alineamiento forzado certificado.
 
-Se compara el guion con lo reconocido mediante distancia de edición normalizada por palabras. Un error de ASR puede aumentar esa tasa; una tasa baja no prueba naturalidad, identidad o veracidad. La interfaz solo vincula automáticamente una toma con tasa ≤25%, subtítulos presentes y duración dentro del episodio. Esa compuerta es de revisión inicial, no aprobación editorial final.
+Se compara el guion con lo reconocido mediante distancia de edición por palabras o caracteres según el idioma. Un error de ASR puede aumentar esa tasa; una tasa baja no prueba naturalidad, identidad o veracidad. La interfaz solo vincula automáticamente una toma con tasa ≤25% en cada frase, subtítulos presentes y duración dentro del episodio. Esa compuerta es de revisión inicial, no aprobación editorial final.
 
 Para un minuto, escribe el guion, genera, mide y ajusta la redacción o la dirección vocal. El ajuste `--seconds 60` limita el tempo a 0.8–1.08 sin desplazamiento deliberado de tono, verifica pausas reales y reserva espacio de cierre. Después vuelve a transcribir el audio resultante. Rechaza guiones cuya duración no pueda acomodarse dentro de esos límites; no recorta palabras. La audición decide si la cadencia ajustada sirve para la campaña.
 

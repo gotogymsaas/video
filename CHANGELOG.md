@@ -1,5 +1,13 @@
 # Cambios
 
+## 0.3.0 · 2026-10-22
+
+- Selección de diez idiomas y modo automático, sin alterar el idioma de la grabación de referencia.
+- Frases por idioma en interfaz, API y CLI; reutilización de referencia y montaje de audio con pausas breves.
+- Reconocimiento por idioma sobre intervalos de audio real, comparación por caracteres para chino/japonés y control de la peor frase.
+- Registro de límites de frase y transformación temporal; presupuesto de generación compatible con texto CJK sin espacios.
+- Ejemplo español/inglés y revisión de pronunciación explícitamente pendiente de audición.
+
 ## 0.2.0 · 2026-10-22
 
 - Referencias regionales desde OGG de WhatsApp, análisis de señal y comparaciones A/B al mismo objetivo de sonoridad.

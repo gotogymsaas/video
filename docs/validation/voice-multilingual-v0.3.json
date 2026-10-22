@@ -1,0 +1,105 @@
+{
+  "version": "0.3.0",
+  "date": "2026-10-22",
+  "python": "3.12.14",
+  "unit_and_integration_tests": 54,
+  "tts_model": "Qwen/Qwen3-TTS-12Hz-0.6B-Base",
+  "tts_model_revision": "5d83992436eae1d760afd27aff78a71d676296fc",
+  "asr_model": "Systran/faster-whisper-small",
+  "asr_revision": "536b0662742c02347bc0e980a01041f333bce120",
+  "same_private_reference_for_all_cases": true,
+  "languages_executed": [
+    "Spanish",
+    "English"
+  ],
+  "other_eight_languages_tested": false,
+  "no_expected_text_prompt_given_to_asr": true,
+  "network_guard": "linux_seccomp_denies_network_syscalls",
+  "cases": [
+    {
+      "case": "short_brand_phrase",
+      "seed": 22,
+      "seconds": 7.68,
+      "target_phrases": [
+        {
+          "text": "Hola. Hoy hablaremos de",
+          "language": "Spanish"
+        },
+        {
+          "text": "Quantum Coach and machine learning.",
+          "language": "English"
+        },
+        {
+          "text": "Con una voz cercana y natural.",
+          "language": "Spanish"
+        }
+      ],
+      "recognized_text": "Hola, hoy hablaremos de… as a coach in machine learning. con una voz cercana y natural.",
+      "per_phrase_asr_edit_rates": [
+        0.0,
+        0.6,
+        0.0
+      ],
+      "global_asr_word_edit_rate": 0.2,
+      "worst_phrase_edit_rate": 0.6,
+      "passes_initial_script_gate": false,
+      "wall_seconds_cpu": 116.05084461399929,
+      "premaster_lufs": -18.01,
+      "premaster_dbtp": -2.06
+    },
+    {
+      "case": "contextual_brand_phrase",
+      "seed": 42,
+      "seconds": 13.52,
+      "target_phrases": [
+        {
+          "text": "En español, una explicación cercana. En inglés, decimos:",
+          "language": "Spanish"
+        },
+        {
+          "text": "Our Quantum Coach explains machine learning with a warm, natural voice.",
+          "language": "English"
+        },
+        {
+          "text": "La misma referencia de voz, para conectar con más personas.",
+          "language": "Spanish"
+        }
+      ],
+      "recognized_text": "en español una explicación cercana. En inglés decimos... Our quantum coach explains machine learning with a warm, natural voice. la misma referencia de voz para conectar con más personas.",
+      "per_phrase_asr_edit_rates": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "global_asr_word_edit_rate": 0.0,
+      "worst_phrase_edit_rate": 0.0,
+      "passes_initial_script_gate": true,
+      "wall_seconds_cpu": 165.6723357209994,
+      "premaster_lufs": -18.46,
+      "premaster_dbtp": -2.0
+    }
+  ],
+  "pronunciation_human_review": "pending",
+  "speaker_similarity_human_review": "pending",
+  "regional_accent_human_review": "pending",
+  "other_device_tests": "not_run",
+  "ui_syntax_check": "passed",
+  "ui_browser_visual_check": "not_run_browser_unavailable",
+  "limits": [
+    "ASR edit rate is a script-completeness proxy, not a phonetic score.",
+    "Context and seed changed together; no causal attribution to one intervention.",
+    "Language choices do not certify a country-specific accent."
+  ],
+  "download_mp3_measurement": {
+    "input_i": "-14.79",
+    "input_tp": "-1.76",
+    "input_lra": "5.30",
+    "input_thresh": "-25.12",
+    "output_i": "-14.61",
+    "output_tp": "-1.69",
+    "output_lra": "4.10",
+    "output_thresh": "-24.94",
+    "normalization_type": "dynamic",
+    "target_offset": "0.61"
+  }
+}

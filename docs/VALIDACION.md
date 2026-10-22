@@ -1,5 +1,13 @@
 # Validación de la entrega
 
+## Idiomas por frase · 0.3.0
+
+La versión 0.3 pasó **54 pruebas locales** en Python 3.12.14. Se añadieron controles de idioma de referencia independiente del idioma de salida, reconocimiento por frase con desplazamientos temporales, presupuesto CJK, comparación por caracteres, transformación de límites con pausas y rechazo de una expresión extranjera omitida aunque el error global fuera bajo. El JavaScript de la interfaz pasó revisión sintáctica; no se ejecutó revisión visual en navegador en esta actualización porque el ejecutable no estaba disponible.
+
+Se sintetizaron dos tomas reales en CPU con la misma referencia privada y lenguas español/inglés/español. La primera duró 7.68 s: la comparación ASR global fue 20%, pero la frase inglesa tuvo 60% y el nuevo control la retuvo para revisión. No se corrigió el reconocedor mediante un prompt que incluyera la respuesta esperada. La segunda toma aportó una frase inglesa más completa y cambió la semilla de 22 a 42; duró **13.52 s**. El reconocedor recuperó todas las palabras de las tres frases, incluidos **Quantum Coach** y **machine learning**, con error ASR 0 en esta muestra. No se atribuye la mejora a un único cambio porque variaron contexto y semilla.
+
+Estas mediciones demuestran ejecución e integridad del guion en dos idiomas sobre una muestra; no acreditan pronunciación nativa, identidad vocal, continuidad artística o acento barranquillero. Los otros ocho idiomas del motor no se sintetizaron en esta actualización. El informe agregado `validation/voice-multilingual-v0.3.json` conserva alcance y límites. Las grabaciones, el perfil y los audios clonados se mantienen fuera del repositorio público.
+
 ## Edición de voz 0.2.0
 
 La edición 0.2 pasó 48 pruebas locales, incluidas preservación de tono, reducción contra un fixture con señal limpia conocida, picos entre muestras, duración exacta, transcripción temporal y bloqueo de red del proceso de inferencia. Se ejecutó Qwen3-TTS Base en CPU con una referencia aportada; el guion nuevo contiene 137 palabras. La salida se ajustó a 60 s con tempo 0.87158, sin recortar palabras, y se volvió a transcribir. Las métricas agregadas están en `validation/voice-v0.2.json`.

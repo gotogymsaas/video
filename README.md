@@ -54,7 +54,7 @@ La opción `--final` exige composición lineal, afirmaciones vinculadas y verifi
 
 ## Voz colombiana
 
-### Tu propia referencia regional · versión 0.2
+### Tu propia referencia regional · versión 0.3
 
 El estudio admite notas OGG de WhatsApp, compara variantes de procesamiento con límites de preservación y prepara un perfil de voz local. En **Voz y recursos**, importa las muestras, selecciónalas en **Tu voz de marca** y pulsa **Preparar referencia**. Las comparaciones A/B usan el mismo objetivo de sonoridad.
 
@@ -75,6 +75,8 @@ La síntesis utiliza **Qwen3-TTS Base** preentrenado y transcripción local con 
 
 Los subtítulos provienen de tiempos de ASR, con revisión pendiente. Solo se vincula automáticamente una locución que cabe en el episodio y supera la comparación inicial con el guion. La semejanza, naturalidad, acento regional y pronunciación necesitan aprobación escuchando.
 
+Puedes elegir entre los diez idiomas admitidos por Qwen3-TTS, o activar **Definir el idioma de cada frase** para insertar expresiones inglesas dentro de una narración española. Se mantiene la misma referencia vocal y se reconoce cada frase en su idioma. En consola usa `--language en` con `--text-file`, o `--segments-file examples/narration-multilingual.json`. El guion no se traduce automáticamente y el modo `Auto` no garantiza la pronunciación de nombres. La comparación revisa cada frase para evitar que se omitan términos extranjeros. Consulta [la guía de pronunciación multilingüe](docs/VOZ.md#palabras-y-frases-en-otros-idiomas).
+
 ### Alternativa de catálogo
 
 Puedes usar una locutora de Barranquilla y cargar la grabación. Para probar el adaptador en línea:
@@ -86,7 +88,7 @@ python -m qaf_video voice --text-file projects/episodio-01/narration-es.txt --ou
 python -m qaf_video attach-voice projects/episodio-01/project.json --asset assets/voice.mp3 --captions projects/episodio-01/assets/voice.voice.json
 ```
 
-El candidato por defecto es `es-CO-SalomeNeural`. El catálogo depende del servicio externo. **La etiqueta colombiana no acredita acento barranquillero**: la grabación necesita audición local. No se incluye un modelo de voz entrenado ni clonación de voces. El adaptador envía únicamente el texto indicado al proveedor cuando se ejecuta explícitamente.
+El candidato por defecto es `es-CO-SalomeNeural`. El catálogo depende del servicio externo. **La etiqueta colombiana no acredita acento barranquillero**: la grabación necesita audición local. Este adaptador de catálogo no incluye clonación de voces. Envía únicamente el texto indicado al proveedor cuando se ejecuta explícitamente.
 
 ## Render, investigación y automatización
 

@@ -32,7 +32,11 @@ def parser():
     c.add_argument('files',type=Path,nargs='+');c.add_argument('--out',type=Path,required=True)
     c.add_argument('--name',default='Voz de referencia · Barranquilla')
     c=sub.add_parser('voice-clone',help='Generate a new script with a local reference-conditioned model')
-    c.add_argument('--profile',type=Path,required=True);c.add_argument('--text-file',type=Path,required=True)
+    c.add_argument('--profile',type=Path,required=True)
+    source=c.add_mutually_exclusive_group(required=True)
+    source.add_argument('--text-file',type=Path);source.add_argument('--segments-file',type=Path,help='JSON array of text/language phrases')
+    from .voice_languages import normalize_language,LANGUAGES
+    c.add_argument('--language',type=normalize_language,choices=list(LANGUAGES),default='Spanish',help='Target language name or ISO code; reference language remains independent')
     c.add_argument('--out',type=Path,required=True);c.add_argument('--python',type=Path)
     c.add_argument('--tts-model',type=Path);c.add_argument('--asr-model',type=Path)
     c.add_argument('--device',choices=['cpu','cuda:0','mps'],default='cpu');c.add_argument('--seed',type=int,default=22)
@@ -99,8 +103,10 @@ def main(argv=None):
                     'requires_listening_review':True}
         elif a.command=='voice-clone':
             from .voice_local import synthesize_local
-            result=synthesize_local(a.profile,a.text_file.read_text(encoding='utf-8'),a.out,a.python,
-                                    a.tts_model,a.asr_model,a.device,a.seed,a.seconds)
+            text=a.text_file.read_text(encoding='utf-8') if a.text_file else ''
+            segments=json.loads(a.segments_file.read_text(encoding='utf-8')) if a.segments_file else None
+            result=synthesize_local(a.profile,text,a.out,a.python,a.tts_model,a.asr_model,a.device,a.seed,a.seconds,
+                                    language=a.language,segments=segments)
         elif a.command=='attach-voice':
             from .core import local_asset,sha256
             m=load(a.project);audio=local_asset(a.project.resolve().parent,a.asset)

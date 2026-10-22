@@ -3,6 +3,7 @@ from __future__ import annotations
 import json,os,re,subprocess,sys,tempfile,unicodedata,math
 from pathlib import Path
 from .core import require,ValidationError,atomic_json,local_asset,sha256
+from .voice_languages import normalize_language,speech_plan,codec_token_budget
 
 
 def caption_words(words,max_chars=68):
@@ -65,13 +66,16 @@ def _worker(request,python):
         return json.loads((tmp/'result.json').read_text(encoding='utf-8'))
 
 
-def transcribe_local(audio,python=None,asr_model=None,tts_model=None):
+def transcribe_local(audio,python=None,asr_model=None,tts_model=None,language='Spanish'):
     executable,_,asr=runtime_settings(python,tts_model,asr_model)
-    return _worker({'operation':'transcribe','audio':str(Path(audio).resolve()),'asr_model':str(asr)},executable)
+    return _worker({'operation':'transcribe','audio':str(Path(audio).resolve()),'asr_model':str(asr),
+                    'language':normalize_language(language)},executable)
 
 
-def synthesize_local(profile,text,output,python=None,tts_model=None,asr_model=None,device='cpu',seed=22,target_seconds=None):
-    require(isinstance(text,str) and 1<=len(text.strip())<=5000,'Script must contain 1–5000 characters')
+def synthesize_local(profile,text,output,python=None,tts_model=None,asr_model=None,device='cpu',seed=22,target_seconds=None,
+                     language='Spanish',segments=None):
+    plan=speech_plan(text,language,segments)
+    for part in plan:codec_token_budget(part['text'],target_seconds)
     require(device in ['cpu','cuda:0','mps'],'Unsupported inference device')
     path=Path(profile).resolve();p=json.loads(path.read_text(encoding='utf-8'))
     require(p.get('schema')=='qaf_voice_profile_v1','Invalid voice profile')
@@ -81,4 +85,4 @@ def synthesize_local(profile,text,output,python=None,tts_model=None,asr_model=No
     executable,tts,asr=runtime_settings(python,tts_model,asr_model)
     return _worker({'operation':'synthesize','profile':str(path),'text':text,'output':str(output),
                     'tts_model':str(tts),'asr_model':str(asr),'device':device,'seed':seed,
-                    'target_seconds':target_seconds},executable)
+                    'target_seconds':target_seconds,'language':normalize_language(language),'segments':segments},executable)

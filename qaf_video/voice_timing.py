@@ -43,5 +43,6 @@ def fit_voice(source,output,seconds,words):
         loudness=normalize_voice(raw,output)
     return {'target_seconds':seconds,'original_seconds':original,'tempo_factor':rate,
             'added_pauses':len(additions),'lead_seconds':.15,'pitch_shift':False,
+            'pause_insertions':[{'at_seconds':cut/48000,'seconds':count/48000} for cut,count in additions],
             'closing_hold_seconds':(target-len(np.concatenate(parts)))/48000,'loudness':loudness,
             'listening_review':'pending; bounded timing does not prove editorial naturalness'}

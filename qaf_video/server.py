@@ -143,14 +143,17 @@ def handler(studio):
                     elif action=='voice-synthesize':
                         from .core import local_asset
                         from .voice_local import synthesize_local,runtime_settings
+                        from .voice_languages import speech_plan
                         profile=local_asset(path.parent,data.get('profile',''));runtime_settings()
-                        script=data.get('text','');require(isinstance(script,str) and 1<=len(script.strip())<=5000,'Enter a script of 1–5000 characters')
+                        script=data.get('text','');language=data.get('language','Spanish');segments=data.get('segments')
+                        speech_plan(script,language,segments)
                         out=path.parent/'assets'/('voice-'+secrets.token_hex(4)+'.wav')
                         def make_voice(progress):
                             progress(.05);episode_seconds=load(path)['duration']
-                            value=synthesize_local(profile,script,out,target_seconds=episode_seconds if episode_seconds>=3 else None)
+                            value=synthesize_local(profile,script,out,target_seconds=episode_seconds if episode_seconds>=3 else None,
+                                                   language=language,segments=segments)
                             progress(.95);m=load(path)
-                            attached=(value['word_error_rate']['rate']<=.25 and bool(value['subtitles']) and
+                            attached=(value['script_comparison']['rate']<=.25 and bool(value['subtitles']) and
                                       value['seconds']<=m['duration'] and value['subtitles'][-1]['end']<=m['duration'])
                             if attached:
                                 m.update(voice=str(out.relative_to(path.parent)),subtitles=value['subtitles'],caption_audio_sha256=sha256(out),

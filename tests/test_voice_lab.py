@@ -1,9 +1,12 @@
 import json,subprocess,sys,tempfile,unittest,shutil
 from pathlib import Path
 import numpy as np
+from unittest.mock import patch
+from types import SimpleNamespace
 from qaf_video.core import ValidationError
 from qaf_video.voice_lab import acoustic_metrics,spectral_enhance,preservation_metrics
 from qaf_video.voice_local import caption_words,word_error_rate,runtime_settings,synthesize_local
+from qaf_video.voice_languages import normalize_language,speech_plan,codec_token_budget,script_comparison,retime_spans
 
 
 class VoiceSignalTests(unittest.TestCase):
@@ -44,6 +47,61 @@ class VoiceSignalTests(unittest.TestCase):
             root=Path(tmp);(root/'bin').mkdir();exe=root/'bin/python';exe.symlink_to(sys.executable)
             (root/'model.safetensors').write_bytes(b'fixture');(root/'model.bin').write_bytes(b'fixture')
             actual,_,_=runtime_settings(exe,root,root);self.assertEqual(actual,exe.absolute())
+
+
+class MultilingualVoiceTests(unittest.TestCase):
+    def test_mixed_plan_retains_language_and_rejects_ambiguous_input(self):
+        parts=speech_plan('',segments=[{'text':'Hoy hablamos de','language':'es'},
+                                      {'text':'machine learning','language':'en'}])
+        self.assertEqual([p['language'] for p in parts],['Spanish','English'])
+        for invalid in [[],[{'text':''}],[{'text':'Hello','language':'unknown'}]]:
+            with self.assertRaises(ValidationError):speech_plan('',segments=invalid)
+        with self.assertRaises(ValidationError):speech_plan('Duplicated',segments=parts)
+        with self.assertRaises(ValidationError):speech_plan('',segments=[{'text':'a'*2500}]*3)
+        self.assertEqual(normalize_language('ENGLISH'),'English')
+    def test_cjk_budget_and_character_comparison_do_not_require_spaces(self):
+        self.assertGreater(codec_token_budget('科学技术让生活更加清晰而自然'*4),96)
+        comparison=script_comparison('科学技术','科学','Chinese')
+        self.assertEqual(comparison['unit'],'character');self.assertEqual(comparison['rate'],.5)
+        self.assertEqual(script_comparison('machine learning','machine','English')['rate'],.5)
+    def test_span_offsets_include_actual_pause_insertions(self):
+        mapped=retime_spans([{'start':2.,'end':4.,'language':'English'}],
+                            {'tempo_factor':.8,'lead_seconds':.15,'pause_insertions':[{'at_seconds':3.,'seconds':.5}]})
+        self.assertAlmostEqual(mapped[0]['start'],2.65);self.assertAlmostEqual(mapped[0]['end'],5.65)
+    def test_target_language_does_not_replace_reference_language(self):
+        from qaf_video.core import sha256
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);(root/'ref.wav').write_bytes(b'fixture')
+            p={'schema':'qaf_voice_profile_v1','reference_audio':'ref.wav','reference_sha256':sha256(root/'ref.wav'),
+               'language':'Spanish'}
+            (root/'profile.json').write_text(json.dumps(p))
+            with patch('qaf_video.voice_local.runtime_settings',return_value=(Path(sys.executable),root,root)),\
+                 patch('qaf_video.voice_local._worker',return_value={}) as worker:
+                synthesize_local(root/'profile.json','Clear technology.',root/'out.wav',language='en')
+            request=worker.call_args.args[0]
+            self.assertEqual(request['language'],'English')
+            self.assertEqual(json.loads((root/'profile.json').read_text())['language'],'Spanish')
+    def test_asr_uses_each_phrase_language_and_offsets_without_claiming_detection(self):
+        from qaf_video.local_voice_worker import transcribe_recording
+        calls=[]
+        class Recognizer:
+            def __init__(self,*args,**kwargs):pass
+            def transcribe(self,audio,**options):
+                calls.append(options)
+                word=SimpleNamespace(start=.1,end=.6,word='voice',probability=.9)
+                segment=SimpleNamespace(start=.1,end=.6,text='voice',avg_logprob=-.1,no_speech_prob=.01,words=[word])
+                return [segment],SimpleNamespace(language=options['language'] or 'en',language_probability=.9)
+        modules={'onnxruntime':SimpleNamespace(disable_telemetry_events=lambda:None),
+                 'faster_whisper':SimpleNamespace(WhisperModel=Recognizer)}
+        spans=[{'start':0,'end':1,'language':'Spanish'},{'start':2,'end':3,'language':'English'},
+               {'start':4,'end':5,'language':'Auto'}]
+        with patch.dict(sys.modules,modules),patch('qaf_video.voice_lab.decode',return_value=np.zeros(5*16000)):
+            result=transcribe_recording('fixture.wav','model',spans=spans)
+        self.assertEqual([c['language'] for c in calls],['es','en',None])
+        self.assertTrue(all(c['task']=='transcribe' for c in calls))
+        self.assertAlmostEqual(result['segments'][1]['words'][0]['start'],2.1)
+        self.assertIsNone(result['languages'][1]['detected_probability'])
+        self.assertEqual(result['languages'][2]['detected_probability'],.9)
 
 
 @unittest.skipUnless(sys.platform.startswith('linux'),'Linux network isolation')

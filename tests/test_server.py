@@ -1,4 +1,5 @@
 import base64,json,tempfile,threading,unittest
+from unittest.mock import patch
 from http.server import ThreadingHTTPServer
 from pathlib import Path
 from urllib.request import Request,urlopen
@@ -44,3 +45,19 @@ class LocalServerTests(unittest.TestCase):
         (self.root/'episode').mkdir()
         with self.assertRaises(HTTPError):
             self.post('voice-prepare',{'path':'episode/project.json','assets':['../../outside.ogg']})
+    def test_omitted_foreign_phrase_is_not_hidden_by_low_global_error(self):
+        root=self.root/'episode';root.mkdir();(root/'profile.json').write_text('{}')
+        m={'schema':'qaf_video_project_v1','duration':60,'fps':30,'mode':'conceptual','shots':[{'start':0,'end':60}]}
+        atomic_json(root/'project.json',m)
+        phrases=[{'language':'Spanish','text':'Una explicación larga.'},{'language':'English','text':'machine learning'}]
+        def generate(profile,text,out,**options):
+            self.assertEqual(options['segments'],phrases)
+            return {'word_error_rate':{'rate':.01},'script_comparison':{'rate':1.},'seconds':60,
+                    'subtitles':[{'start':.1,'end':59.,'text':'Una explicación larga.'}]}
+        with patch('qaf_video.voice_local.runtime_settings'),patch('qaf_video.voice_local.synthesize_local',side_effect=generate):
+            with self.post('voice-synthesize',{'path':'episode/project.json','profile':'profile.json','segments':phrases}) as r:
+                job=json.load(r)['job_id']
+            self.studio.worker.shutdown(wait=True)
+        result=self.studio.jobs[job]
+        self.assertEqual(result['state'],'completed');self.assertFalse(result['result']['attached'])
+        self.assertNotIn('voice',json.loads((root/'project.json').read_text()))
