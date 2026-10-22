@@ -1,0 +1,116 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [6 0 R 8 0 R] /Count 2 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+5 0 obj
+<< /Length 5167 >>
+stream
+0.04 0.15 0.25 RG 1.5 w 40 792 m 555 792 l S
+BT /F2 9.8 Tf .02 .18 .29 rg 44 766 Td (QAF GENERATIVE VIDEO RESEARCH / MANUSCRITO 10) Tj ET
+BT /F2 9.8 Tf .02 .18 .29 rg 44 746 Td (SELECCION MULTICRITERIO Y ABSTENCION) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 726 Td (Juan Manuel Goenaga | GoToGym Quantum Research | Bogota DC | 22 octubre 2026) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 713 Td (Investigacion prospectiva: Release Quality Gate | Estado previo: PARCIAL) Tj ET
+BT /F2 9.8 Tf .02 .18 .29 rg 44 700 Td (RESUMEN) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 680 Td (Esta investigacion propone una tecnologia matematica para la produccion audiovisual de GoToGym. Los) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 667 Td (resultados hasta ahora son propuestas y modelos numericos de referencia; no hay superioridad empirica) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 654 Td (audiovisual validada.) Tj ET
+BT /F2 9.8 Tf .02 .18 .29 rg 44 641 Td (1. PROBLEMA) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 621 Td (Una buena escena no puede compensar una violacion critica de marca o derechos.) Tj ET
+BT /F2 9.8 Tf .02 .18 .29 rg 44 608 Td (2. FORMULACION MATEMATICA) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 588 Td (u_j=sum w_k*S_jk-lambda*cost_j; j*=argmax_{eligible}u_j; release=human_review AND rights_ok) Tj ET
+BT /F2 9.8 Tf .02 .18 .29 rg 44 575 Td (3. ALGORITMO Y MECANISMO QAF) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 555 Td (Recomendacion de version bajo restricciones duras y costo, siempre con revision humana.) Tj ET
+BT /F2 9.8 Tf .02 .18 .29 rg 44 542 Td (4. ENTRADAS Y SALIDAS) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 522 Td (Entradas: imagenes y su procedencia; observaciones de camara/sujeto; guion, restricciones y contexto.) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 509 Td (Salidas: datos numericos verificables, decisiones de planificacion y diagnosticos que podran) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 496 Td (condicionar un motor I2V real.) Tj ET
+BT /F2 9.8 Tf .02 .18 .29 rg 44 483 Td (5. COMPARADORES) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 463 Td (Baselines: Reglas, Pareto, MILP, ranker clasico.) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 450 Td (Metricas principales: Error critico publicado, regret, abstenciones, costo.) Tj ET
+BT /F2 9.8 Tf .02 .18 .29 rg 44 437 Td (6. ALCANCE Y LIMITES) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 417 Td (No certifica derechos, veracidad ni calidad artistica.) Tj ET
+BT /F2 9.8 Tf .02 .18 .29 rg 44 404 Td (MOTIVACION Y FUNDAMENTO QAF) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 384 Td (La observacion visual debe incorporar datos X, contexto C, temporalidad T y orden O. QAF introduce) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 371 Td (observaciones relacionales derivadas Phi_Q\(X,C,T,O\), sin crear informacion fisica ausente. La ganancia) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 358 Td (debe medirse comparando el mejor baseline sobre los mismos datos.) Tj ET
+BT /F2 9.8 Tf .02 .18 .29 rg 44 345 Td (HIPOTESIS CIENTIFICA) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 325 Td (H1: la formulacion propuesta mejora la calidad y consistencia temporal frente a su baseline fuerte. H2:) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 312 Td (los beneficios se mantienen bajo oclusion, nuevos escenarios y cambios de prenda. H3: el aumento de) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 299 Td (computo no elimina la utilidad neta.) Tj ET
+BT /F2 9.8 Tf .02 .18 .29 rg 44 286 Td (METODO PROSPECTIVO) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 266 Td (Se propone un benchmark con 30 clips de running y 30 clips de otros deportes, 3 condiciones de luz, 3) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 253 Td (angulos de camara y varias semillas. Los conjuntos train, tune y test se separaran por sujeto y prenda.) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 240 Td (Las evaluaciones de calidad seran ciegas e independientes. Todos esos numeros son un DISENO, no) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 227 Td (resultados.) Tj ET
+BT /F2 9.8 Tf .02 .18 .29 rg 44 214 Td (ABLACIONES) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 194 Td (Comparar con y sin contexto, sin terminos de continuidad, sin proteccion de identidad y con una) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 181 Td (alternativa clasica que reciba el mismo conjunto de variables. Medir fidelidad, costo y error por) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 168 Td (subgrupo. Reportar intervalos agrupados, semilla y limites de memoria.) Tj ET
+BT /F2 9.8 Tf .02 .18 .29 rg 44 155 Td (FALSACION Y ATLAS) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 135 Td (Si DeltaJ frente al mejor baseline es 0 o negativo, etiquetar Classical-positive o Non-identifiable. Si) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 122 Td (se exceden recursos, Computational-breakdown. Solo DeltaJ positiva y estable OOD con costo admisible) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 109 Td (permitiria QAF-positive. Los trabajos G5-G6 rechazan la idea de superioridad universal.) Tj ET
+BT /F2 9.8 Tf .02 .18 .29 rg 44 96 Td (INTEGRACION IA) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 76 Td (Los modelos Python adjuntos son referencias matematicas reproducibles. No se incluyen pesos neuronales,) Tj ET
+BT /F1 7 Tf .32 .40 .48 rg 44 31 Td (GOTOGYM QAF - EXPERIMENTAL SCIENTIFIC PROPOSAL - 10 - PAGE 1/2) Tj ET
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 5 0 R >>
+endobj
+7 0 obj
+<< /Length 2615 >>
+stream
+0.04 0.15 0.25 RG 1.5 w 40 792 m 555 792 l S
+BT /F1 8.3 Tf .16 .22 .28 rg 44 766 Td (entrenamiento o un modelo difusivo ya instalado. La calidad de video generativo real requiere vision) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 753 Td (entrenada, backend I2V licenciado, render y validadores.) Tj ET
+BT /F2 9.8 Tf .02 .18 .29 rg 44 740 Td (PROPIEDAD INTELECTUAL Y RIESGOS) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 720 Td (Atribuir correctamente los antecedentes del programa QAF y la literatura clasica \(DP, EMA,) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 707 Td (masa-resorte, minimizacion variacional y flujos\). Esta propuesta no representa una patente concedida.) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 694 Td (Preservar consentimiento, procedencia, pantalla real del producto, marcas y revision humana.) Tj ET
+BT /F2 9.8 Tf .02 .18 .29 rg 44 681 Td (ESTADO DE EVIDENCIA) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 661 Td (Las pruebas sinteticas de los modulos numericos no constituyen mediciones de calidad video ni ventaja) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 648 Td (de QAF sobre modelos audiovisuales entrenados. Los resultados de los PDF QAF originales pertenecen a) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 635 Td (sus experimentos en otros dominios.) Tj ET
+BT /F2 9.8 Tf .02 .18 .29 rg 44 622 Td (REFERENCIAS) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 602 Td (Juan Manuel Goenaga \(2025-2026\): Quantum Analysis Frameworks, QAF Benchmark, CSRA, Escalabilidad) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 589 Td (MPS/MPO/TDVP, Motor Completo MPS-TDVP-RDM, G6 Atlas, Consolidated Evidence When to Use and Not Use,) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 576 Td (Validacion de Observaciones Relacionales. Antoni Bancells \(2026\): QAF dinamica operacional y) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 563 Td (compilacion QUBO. GoToGym repositorio video, revision 22 octubre 2026.) Tj ET
+BT /F2 9.8 Tf .02 .18 .29 rg 44 550 Td (10. CRITERIO DE PUBLICACION) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 530 Td (Sin evaluacion profesional, permisos reales y demostracion end-to-end de imagen->video, este manuscrito) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 517 Td (solo puede usarse para prototipado, no para afirmar un video cinematografico de maxima calidad ya) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 504 Td (implementado.) Tj ET
+BT /F2 9.8 Tf .02 .18 .29 rg 44 491 Td (FUNCION PYTHON) Tj ET
+BT /F1 8.3 Tf .16 .22 .28 rg 44 471 Td (qaf_video/generative_research/models.py y m10_release_quality_gate.py \(ver indice de investigacion\).) Tj ET
+BT /F1 7 Tf .32 .40 .48 rg 44 31 Td (GOTOGYM QAF - EXPERIMENTAL SCIENTIFIC PROPOSAL - 10 - PAGE 2/2) Tj ET
+endstream
+endobj
+8 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 7 0 R >>
+endobj
+xref
+0 9
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000121 00000 n 
+0000000191 00000 n 
+0000000266 00000 n 
+0000005484 00000 n 
+0000005620 00000 n 
+0000008286 00000 n 
+trailer
+<< /Size 9 /Root 1 0 R >>
+startxref
+8422
+%%EOF
