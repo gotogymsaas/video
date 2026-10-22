@@ -1,0 +1,17 @@
+test_beat_relative_release (test_music_research.MusicResearchTests.test_beat_relative_release) ... ok
+test_cluster_bootstrap_does_not_invent_evidence (test_music_research.MusicResearchTests.test_cluster_bootstrap_does_not_invent_evidence) ... ok
+test_dp_matches_exhaustive_oracle (test_music_research.MusicResearchTests.test_dp_matches_exhaustive_oracle) ... ok
+test_feasible_rho_and_same_information_control (test_music_research.MusicResearchTests.test_feasible_rho_and_same_information_control) ... ok
+test_freshness_and_future_rejection (test_music_research.MusicResearchTests.test_freshness_and_future_rejection) ... ok
+test_measured_mix_integration (test_music_research.MusicResearchTests.test_measured_mix_integration) ... ok
+test_no_silent_fallback_on_infeasible_cues (test_music_research.MusicResearchTests.test_no_silent_fallback_on_infeasible_cues) ... ok
+test_plan_cues_are_used (test_music_research.MusicResearchTests.test_plan_cues_are_used) ... ok
+test_reject_nonfinite (test_music_research.MusicResearchTests.test_reject_nonfinite) ... ok
+test_relation_changes_utility_without_quantum_advantage (test_music_research.MusicResearchTests.test_relation_changes_utility_without_quantum_advantage) ... ok
+test_rights_fail_closed_and_hash_bound (test_music_research.MusicResearchTests.test_rights_fail_closed_and_hash_bound) ... ok
+test_seed_pcm_duration_and_stems (test_music_research.MusicResearchTests.test_seed_pcm_duration_and_stems) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.896s
+
+OK

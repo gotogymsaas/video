@@ -1,0 +1,12 @@
+{
+  "as_of": "2026-10-22",
+  "status": "illustrative curator values; replace with dated audience-rated references",
+  "references": [
+    {"id":"brand_direction_fixture","observed_at":"2026-10-22","confidence":0.8,"features":[0.8,0.65,0.7,0.55,0.65]}
+  ],
+  "candidates": [
+    {"id":"coastal_pulse","features":[0.68,0.8,0.6,0.55,0.8],"feasible":true},
+    {"id":"run_club","features":[0.85,0.55,0.75,0.65,0.55],"feasible":true},
+    {"id":"future_stride","features":[0.95,0.7,0.8,0.85,0.4],"feasible":true}
+  ]
+}

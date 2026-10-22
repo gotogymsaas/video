@@ -1,0 +1,106 @@
+{
+  "target": {
+    "features": [
+      0.8000000000000002,
+      0.65,
+      0.6999999999999998,
+      0.55,
+      0.65
+    ],
+    "weights": [
+      1.0
+    ],
+    "as_of": "2026-10-22",
+    "scope": "curated reference centroid; no automatic trend discovery"
+  },
+  "decision": {
+    "selected_index": 1,
+    "selected": {
+      "id": "run_club",
+      "features": [
+        0.85,
+        0.55,
+        0.75,
+        0.65,
+        0.55
+      ],
+      "feasible": true,
+      "local_loss": 0.006999999999999997,
+      "relational_loss": 0.012656249999999973,
+      "loss": 0.011429687499999987
+    },
+    "alternatives": [
+      {
+        "id": "coastal_pulse",
+        "features": [
+          0.68,
+          0.8,
+          0.6,
+          0.55,
+          0.8
+        ],
+        "feasible": true,
+        "local_loss": 0.013880000000000003,
+        "relational_loss": 0.0043560000000000074,
+        "loss": 0.015404600000000006
+      },
+      {
+        "id": "run_club",
+        "features": [
+          0.85,
+          0.55,
+          0.75,
+          0.65,
+          0.55
+        ],
+        "feasible": true,
+        "local_loss": 0.006999999999999997,
+        "relational_loss": 0.012656249999999973,
+        "loss": 0.011429687499999987
+      },
+      {
+        "id": "future_stride",
+        "features": [
+          0.95,
+          0.7,
+          0.8,
+          0.85,
+          0.4
+        ],
+        "feasible": true,
+        "local_loss": 0.03749999999999999,
+        "relational_loss": 0.1350562499999999,
+        "loss": 0.08476968749999995
+      }
+    ],
+    "probabilities": [
+      0.38540479935278005,
+      0.39838484273759844,
+      0.21621035790962162
+    ],
+    "state": "rho=diag(p); PSD, trace one; fixed candidate basis",
+    "expected_loss": 0.028818505503598994,
+    "classical_baseline_index": 1,
+    "incremental_advantage_claimed": false,
+    "qubo": {
+      "diagonal": [
+        -1.0693650875,
+        -1.07334,
+        -1.0
+      ],
+      "off_diagonal": 2.14668,
+      "constant": 1.07334,
+      "penalty": 1.07334,
+      "convention": "upper triangular",
+      "forbidden_indices": [],
+      "solver": "native feasible enumeration; forbidden alternatives are hard constraints"
+    },
+    "feature_order": [
+      "energy",
+      "syncopation",
+      "brightness",
+      "density",
+      "warmth"
+    ]
+  }
+}

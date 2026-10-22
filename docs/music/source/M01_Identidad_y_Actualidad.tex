@@ -1,0 +1,89 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=23mm,top=25mm,bottom=24mm]{geometry}
+\usepackage{fontspec,polyglossia,amsmath,amssymb,booktabs,array,enumitem,xcolor,fancyhdr,xurl,hyperref,microtype}
+\setdefaultlanguage{spanish}\setmainfont{Latin Modern Roman}\setsansfont{DejaVu Sans}
+\definecolor{ink}{HTML}{153A45}\definecolor{mint}{HTML}{087D78}
+\hypersetup{colorlinks=true,urlcolor=mint,linkcolor=ink,pdfauthor={Juan Manuel Goenaga Castro}}
+\setlength{\parindent}{0pt}\setlength{\parskip}{6pt}\emergencystretch=3em
+\setlength{\headheight}{16pt}\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\sffamily\footnotesize GoToGym Quantum Research / Music Lab}
+\fancyhead[R]{\sffamily\footnotesize M01 / v0.1}
+\fancyfoot[L]{\scriptsize Prepublicación metodológica / 22 de octubre de 2026}
+\fancyfoot[R]{\small\thepage}\setlist{nosep,leftmargin=1.5em}
+\begin{document}
+\begin{center}{\sffamily\small\textcolor{mint}{SERIE QAF / TECNOLOGÍA MUSICAL / M01}}\par\vspace{8pt}
+{\sffamily\LARGE\bfseries\textcolor{ink}{Identidad sonora y actualidad verificable}}\par\vspace{10pt}
+\textbf{Juan Manuel Goenaga Castro}\\GoToGym Quantum Research\\22 de octubre de 2026
+\end{center}
+\colorbox{ink!6}{\parbox{.96\linewidth}{\small\textbf{Estado científico.} Propuesta matemática con prototipo ejecutable. Sin revisión por pares ni validación de preferencia musical. Las extensiones neuronales se identifican como trabajo futuro.}}
+\begin{abstract}
+Se transforma la observación del usuario, ``la música no suena actual'', en un problema falsable de selección contextual. El prototipo calcula un perfil a partir de referencias fechadas y compara candidatos por atributos y una interacción energía-densidad. La salida es una decisión auditable, no una estimación automática de popularidad. El objetivo es reducir el desajuste entre marca, audiencia y música sin confundir preferencia personal con una tendencia global. El módulo implementado conserva la región diagonal del estado QAF y un control clásico equivalente.
+\end{abstract}
+\section{Problema y alcance}
+La función antecedente \texttt{procedural\_score} produce un acorde ambiental con modulación lenta. No incluye batería independiente, bajo separado ni un proceso de actualización estética. El comentario del fundador identifica una debilidad del episodio Running: el sonido no acompaña la promesa de una tecnología contemporánea. La hipótesis de trabajo es que referencias recientes, evaluadas por la audiencia, mejorarán la pertinencia del brief frente a escoger una pista por intuición sin registrar criterios.
+
+Actualidad, calidad acústica y ajuste de marca son dimensiones distintas. Una pista muy reciente puede distraer del mensaje; un estilo antiguo puede funcionar para una audiencia específica. Por tanto, el sistema no incorpora un supuesto ranking universal de géneros ni afirma que un BPM sea moderno. Las tres direcciones \emph{coastal pulse}, \emph{run club} y \emph{future stride} son propuestas creativas para audicionar.
+\section{Observaciones necesarias}
+Cada referencia registra identificador, fecha de observación y confianza del curador. Sus cinco atributos, normalizados entre cero y uno, son energía, síncopa, brillo, densidad y calidez. En v0.1 son anotaciones manuales; no existe un extractor entrenado. Un brief de ejemplo contiene números ilustrativos rotulados como tales. Para una campaña real se reemplazan por una selección autorizada, por ejemplo con muestras privadas y valoraciones de personas del público objetivo.
+
+Se separan conjunto de calibración y episodios de evaluación. La selección del ganador no debe usar sus posteriores valoraciones como si fueran un test independiente. La fecha de observación tampoco sustituye la fecha de lanzamiento de una canción ni acredita vigencia comercial.
+
+\newpage
+\section{Modelo matemático propuesto e implementado}
+Sea $z_r\in[0,1]^5$ el descriptor de referencia, $d_r\geq0$ su antigüedad en días y $q_r\in(0,1]$ la confianza declarada. Para semivida $h>0$:
+\begin{equation}
+ a_r=q_r2^{-d_r/h},\qquad \bar z=\frac{\sum_r a_rz_r}{\sum_r a_r}.
+\end{equation}
+El peso decae con la antigüedad observada. Este es un mecanismo editorial propuesto, no una ley de difusión cultural. El código rechaza fechas futuras y vectores no finitos. El parámetro por defecto $h=90$ días debe calibrarse con la frecuencia real de actualización.
+
+Para candidato $i$, importancia $w_k\geq0$, $\sum_kw_k>0$, y peso relacional $\lambda\geq0$:
+\begin{align}
+ L_i^{\mathrm{local}}&=\frac{\sum_kw_k(z_{ik}-\bar z_k)^2}{\sum_kw_k},\\
+ R_i&=(z_{i,\mathrm{energía}}z_{i,\mathrm{densidad}}-
+ \bar z_{\mathrm{energía}}\bar z_{\mathrm{densidad}})^2,\\
+ L_i&=L_i^{\mathrm{local}}+\lambda R_i.
+\end{align}
+La interacción codifica una decisión concreta: energía alta y exceso de densidad pueden perjudicar conjuntamente una locución. Su forma no se deduce del benchmark CSRA; es una hipótesis musical nueva que se puede eliminar mediante ablación. Todas las pérdidas son adimensionales.
+\section{Lectura QAF y control clásico}
+Con factibilidad editorial $g_i\in\{0,1\}$, temperatura $\tau>0$ y mínimo factible $L_*$:
+\begin{equation}
+ p_i=\frac{g_i\exp[-(L_i-L_*)/\tau]}{\sum_jg_j\exp[-(L_j-L_*)/\tau]},\quad
+ \rho=\operatorname{diag}(p),\quad\rho\succeq0,\quad\operatorname{Tr}\rho=1.
+\end{equation}
+Se escoge $i^*=\arg\min_{i:g_i=1}L_i$, con desempate estable. Los pesos $p_i$ describen alternativas, no probabilidades validadas de éxito de ventas. La base es fija; no se inventan fases no observadas. Un modelo clásico con las mismas relaciones selecciona exactamente la misma alternativa. La aportación implementada es de representación y trazabilidad; no se declara ventaja cuántica ni necesidad de MPS.
+
+\newpage
+\section{Implementación reproducible}
+\texttt{qaf\_video/music\_research/preference.py} contiene \texttt{target} y \texttt{choose}. La primera calcula el centroide fechado; la segunda construye pérdidas, máscara y selección mediante el selector existente del repositorio. La interfaz \texttt{select} recibe \texttt{examples/music/running\_brief.json}. El resultado conserva orden de atributos, pérdidas locales y relacionales, alternativas y comparador clásico.
+
+El contrato admite como máximo 256 candidatos y 10.000 referencias. Son límites de memoria y auditabilidad del prototipo; no estimaciones de un catálogo global. El flag \texttt{feasible} no acredita licencia: requiere verificación separada M05. La operación es $O(Rd+Cd)$ con $d=5$, $R$ referencias y $C$ candidatos.
+\section{Verificación ejecutada y posibilidad de refutación}
+La prueba de decaimiento utiliza dos referencias igualmente confiables, una del día de corte y otra de 90 días antes. Con descriptores uno y cero, respectivamente, el centroide esperado es $2/3$ en cada componente y el test comprueba esa identidad. Otra prueba impide escoger el candidato de pérdida ideal si es infactible; verifica pesos no negativos, suma unitaria y coincidencia con el comparador.
+
+También se rechazan valores NaN y fechas futuras. Esas pruebas acreditan contratos algebraicos, no la conveniencia de los cinco atributos. La suite específica ejecutada de la entrega contiene doce pruebas de ingeniería; incluye controles de los otros cuatro artículos. El detalle se conserva en el registro de validación.
+\section{Experimento de preferencia pendiente}
+Comparar tres briefs: intuición sin referencias, centroide sin interacción y centroide con relación energía-densidad. Mantener la misma voz, montaje, sonoridad y posibilidades de elección; aleatorizar orden y ocultar el nombre del algoritmo. Valorar actualidad, coherencia de marca y comprensión por separado. Incluir un productor que seleccione una pista profesional como control fuerte, con el mismo presupuesto de tiempo y licencias.
+
+La hipótesis se rechaza si la interacción no mejora puntuaciones fuera de calibración, si la búsqueda consume más de su presupuesto o si una pista profesional curada obtiene mejor resultado. Si no hay observaciones recientes, la salida debe declarar incertidumbre y pedir audición, no rellenar una tendencia ficticia.
+
+\newpage
+\paragraph{Propiedad intelectual y fronteras.}
+La contribución propuesta por Juan Manuel Goenaga Castro consiste en integrar contexto de marca, control compositivo y evidencia de decisión en el sistema audiovisual GoToGym. Se conservan las atribuciones del QAF y del antecedente técnico de Antoni Bancells. DSP, teoría musical, programación dinámica, bootstrap, NumPy y FFmpeg no se presentan como invenciones propias. No se determina patentabilidad ni exclusividad. Los originales privados, voces, contratos y referencias comerciales no se redistribuyen. Una licencia del código no equivale a permiso sobre pesos, muestras, composición, máster o sincronización.
+\section{Aprendizaje de diseño}
+El marco QAF resulta útil aquí como disciplina: observar contexto, expresar relaciones, decidir bajo restricciones y medir la consecuencia. El documento CSRA aportado localiza su ventaja en una representación contextual específica y reconoce el control clásico con igual información. No permite extrapolar sus exactitudes al gusto musical. El motor MPS/TDVP/RDM aportado valida otro mecanismo experimental; no es un compositor de audio por sí mismo.
+
+El siguiente desarrollo debe añadir un registro privado de referencias con procedencia y valoraciones reales. Solo después tendría sentido aprender importancias $w$ o un modelo de preferencia pareada $P(A\succ B)=\sigma(\beta^T(\phi_A-\phi_B))$. Esa regresión no está entrenada ni implementada en v0.1; debe separar oyentes y campañas de entrenamiento y evaluación.
+
+\section{Conclusión}
+Se entrega un selector contextual reproducible y un protocolo para actualizar su evidencia. El sistema permite explicar por qué se escogió una propuesta musical y refutarla con escucha. Su uso responsable conserva la diferencia entre parámetros ilustrativos, una referencia observada y un resultado de audiencia.
+\section*{Referencias y trazabilidad}
+\begin{enumerate}\small
+\item Goenaga Castro, J. M. QAF (2025); \emph{Ventaja estructural CSRA} y \emph{Motor completo MPS/TDVP/RDM} (2026). Manuscritos aportados, consultados; inventario SHA-256 en \texttt{validation.json}. Su evidencia no se transfiere a música.
+\item Bancells, A. (2026). Antecedente técnico MPS/TDVP/QUBO, atribución conservada en la serie audiovisual del repositorio. No se reejecuta su motor en esta extensión.
+\item Copet et al. (2023). \emph{Simple and Controllable Music Generation}. NeurIPS 36. \url{https://arxiv.org/abs/2306.05284}.
+\item ITU-R BS.1770-5 y BS.1534-3. Sonoridad y evaluación subjetiva. \url{https://www.itu.int/rec/R-REC-BS.1770} y \url{https://www.itu.int/rec/R-REC-BS.1534}.
+\item FFmpeg. Filtros \texttt{loudnorm} y \texttt{sidechaincompress}. \url{https://ffmpeg.org/ffmpeg-filters.html}.
+\item Meta. Licencia de pesos AudioCraft. \url{https://github.com/facebookresearch/audiocraft/blob/main/LICENSE_weights}. Consulta de fuentes externas: 22/10/2026.
+\end{enumerate}
+
+\end{document}

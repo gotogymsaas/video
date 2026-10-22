@@ -1,0 +1,67 @@
+{
+  "schema": "qaf_music_validation_v1",
+  "date_bogota": "2026-10-22",
+  "base_commit": "034f07c9289f41a351e1e8474ca51c8457c0dc64",
+  "specific_tests": 12,
+  "full_suite_tests": 100,
+  "result": "passed",
+  "test_command": "python -m unittest discover -s tests -v",
+  "study_rows_real": 0,
+  "trained_neural_models": 0,
+  "papers": 5,
+  "paper_pages_each": 4,
+  "pdf_review": "20 rendered pages inspected, no layout overflow",
+  "sources": [
+    {
+      "name": "0. Quantum Analysis frameworks, QAF(2).pdf",
+      "sha256": "d888f2cc61c3f1251cb587cec63c61f0aaeb59316787c016f514621529a5364d",
+      "redistributed": false
+    },
+    {
+      "name": "QAF_Ventaja_Estructural_CSRA_Juan_Manuel_Goenaga.pdf",
+      "sha256": "e10e0ea545deefa91c0fff4364949ba603bb6d7e2631f7e3a3158893eba0c166",
+      "redistributed": false
+    },
+    {
+      "name": "QAF_Motor_Completo_MPS_TDVP_RDM_Juan_Manuel_Goenaga(1).pdf",
+      "sha256": "be6d24689fa1199b588bcc33f77341c5f9f5651235041f1d3a49841ef1341dbc",
+      "redistributed": false
+    }
+  ],
+  "demos": {
+    "coastal_pulse": {
+      "sha256": "2c457b48e4faf3640bf8436638790ed66b84f14407339ba61d50916d2d4c980f",
+      "decoded_lufs": -16.19,
+      "decoded_dbtp": -2.06,
+      "max_cue_error_seconds": 0.1785714285714306,
+      "duration_pcm_seconds": 60,
+      "encoded_mp3_padding": "container may include codec delay/padding; original WAV exactly 2880000 samples at 48kHz",
+      "human_approved": false
+    },
+    "run_club": {
+      "sha256": "c0480bf7b0cbae1ec03e46e107a87b947d2f0c2f33534ec685df422281212e9f",
+      "decoded_lufs": -15.97,
+      "decoded_dbtp": -1.87,
+      "max_cue_error_seconds": 0.16129032258064058,
+      "duration_pcm_seconds": 60,
+      "encoded_mp3_padding": "container may include codec delay/padding; original WAV exactly 2880000 samples at 48kHz",
+      "human_approved": false
+    },
+    "future_stride": {
+      "sha256": "ee223896135701b3d26b47e1780b158f4f68de3aad996eaba8f55de79dc75b6a",
+      "decoded_lufs": -15.94,
+      "decoded_dbtp": -1.88,
+      "max_cue_error_seconds": 0.20588235294117752,
+      "duration_pcm_seconds": 60,
+      "encoded_mp3_padding": "container may include codec delay/padding; original WAV exactly 2880000 samples at 48kHz",
+      "human_approved": false
+    }
+  },
+  "scientific_claim": "executable DSP/decision research prototype; no proven perceptual advantage",
+  "pending": [
+    "blinded audience study",
+    "producer audition and instrument/timbre refinement",
+    "new full running mix after track selection",
+    "rights review for any external reference or neural backend"
+  ]
+}

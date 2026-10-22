@@ -1,0 +1,86 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=23mm,top=25mm,bottom=24mm]{geometry}
+\usepackage{fontspec,polyglossia,amsmath,amssymb,booktabs,array,enumitem,xcolor,fancyhdr,xurl,hyperref,microtype}
+\setdefaultlanguage{spanish}\setmainfont{Latin Modern Roman}\setsansfont{DejaVu Sans}
+\definecolor{ink}{HTML}{153A45}\definecolor{mint}{HTML}{087D78}
+\hypersetup{colorlinks=true,urlcolor=mint,linkcolor=ink,pdfauthor={Juan Manuel Goenaga Castro}}
+\setlength{\parindent}{0pt}\setlength{\parskip}{6pt}\emergencystretch=3em
+\setlength{\headheight}{16pt}\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\sffamily\footnotesize GoToGym Quantum Research / Music Lab}
+\fancyhead[R]{\sffamily\footnotesize M03 / v0.1}
+\fancyfoot[L]{\scriptsize Prepublicación metodológica / 22 de octubre de 2026}
+\fancyfoot[R]{\small\thepage}\setlist{nosep,leftmargin=1.5em}
+\begin{document}
+\begin{center}{\sffamily\small\textcolor{mint}{SERIE QAF / TECNOLOGÍA MUSICAL / M03}}\par\vspace{8pt}
+{\sffamily\LARGE\bfseries\textcolor{ink}{Sincronía musical y estructura narrativa}}\par\vspace{10pt}
+\textbf{Juan Manuel Goenaga Castro}\\GoToGym Quantum Research\\22 de octubre de 2026
+\end{center}
+\colorbox{ink!6}{\parbox{.96\linewidth}{\small\textbf{Estado científico.} Propuesta matemática con prototipo ejecutable. Sin revisión por pares ni validación de preferencia musical. Las extensiones neuronales se identifican como trabajo futuro.}}
+\begin{abstract}
+Se estudia la colocación de cambios musicales dentro de un episodio de sesenta segundos. La propuesta conserva la voz y el montaje y desplaza únicamente fronteras del arreglo hacia una rejilla de pulsos, bajo tolerancias explícitas. Se implementa programación dinámica exacta para elegir conjuntamente las posiciones. Un caso pequeño se compara con enumeración exhaustiva. El mecanismo evita llamar sincronía cinematográfica a la simple superposición de una pista que no conoce el relato.
+\end{abstract}
+\section{Problema y pregunta}
+Una pista con buen timbre puede fallar si crece durante una frase íntima o pierde impulso cuando aparece el beneficio principal. La música del episodio debe tener relación temporal con conflicto, explicación, revelación y cierre. Sin embargo, forzar todos los cortes al beat puede producir un montaje mecánico. El objetivo es usar cambios de energía musicales como acentos y preservar la libertad narrativa.
+
+La pregunta técnica es: ¿se puede encontrar una secuencia ordenada de cambios musicales, cercana a cues editoriales, sin desplazar la narración? El prototipo responde esa pregunta acotada. No detecta pasos de running desde píxeles ni sincroniza automáticamente fonemas, golpes de cámara o todos los planos.
+\section{Representación del tiempo}
+El productor define tres cues interiores para formar cuatro secciones musicales. Para Running, el ejemplo usa $[13,29,50]$ segundos sobre un minuto. Deben ajustarse a la escucha del montaje definitivo: no son una afirmación sobre cada corte del video ya entregado. Se registran los cues solicitados y los alineados.
+
+Se usa tiempo continuo en segundos, convertido a muestras por redondeo al render. El video mantiene sus propios 30 FPS. La compatibilidad entre dominios se revisa en exportación; un cue musical no tiene que coincidir exactamente con un borde de cuadro para resultar útil.
+
+\newpage
+\section{Modelo restringido}
+Sea $B$ el tempo en pulsos por minuto y $\phi$ una fase en segundos, fijada por el productor. La rejilla es
+\begin{equation}
+ \mathcal G=\{\phi+k60/B:\ k\in\mathbb N_0,\ 0\leq\phi+k60/B<T\}.
+\end{equation}
+Para cue editorial $c_j$, tolerancia $\epsilon$ y separación mínima $\Delta>0$, definir $\mathcal C_j=\{b\in\mathcal G:|b-c_j|\leq\epsilon\}$. La optimización ejecutada es
+\begin{equation}
+ \min_{b_j\in\mathcal C_j}\sum_{j=1}^{J}(b_j-c_j)^2,
+ \qquad b_j-b_{j-1}\geq\Delta.
+\end{equation}
+La pérdida tiene unidades de segundos al cuadrado. Se conserva un BPM fijo; no se usa estiramiento temporal de audio ni se altera el tono. Si no hay solución se produce un error explícito: el algoritmo no agranda la tolerancia silenciosamente.
+\section{Solución exacta y comparador}
+La cadena permite recurrencia de Bellman:
+\begin{align}
+ D_1(b)&=(b-c_1)^2,\\
+ D_j(b)&=(b-c_j)^2+\min_{a\in\mathcal C_{j-1}:b-a\geq\Delta}D_{j-1}(a).
+\end{align}
+Se guardan predecesores y se reconstruye el camino óptimo. Con $m=\max_j|\mathcal C_j|$, tiempo $O(Jm^2)$ y memoria $O(Jm)$. El prototipo limita $J\leq64$, $T\leq600$ segundos, BPM entre 60 y 200 y tolerancia hasta un segundo. Las cotas son de ingeniería.
+
+El comparador clásico con las mismas entradas utiliza esta misma solución exacta. En términos QAF, el contexto selecciona las relaciones temporales pertinentes y restringe la decisión. No se necesita un estado MPS ni se afirma superioridad sobre programación dinámica. Una futura compilación QUBO requeriría conservar restricciones de orden y penalizaciones verificadas; no se implementa aquí por ausencia de una necesidad demostrada.
+
+\newpage
+\section{Conexión a la composición}
+\texttt{arrangement.align} entrega BPM, fase, duración, cues originales, cues alineados, error máximo y pérdida total. La interfaz \texttt{align} imprime JSON. \texttt{sketch --plan} comprueba que BPM y duración coinciden con el preset y usa las tres fronteras del resultado. El render guarda esos valores en su manifiesto.
+
+\texttt{energy\_at} mapea las fronteras a cuatro ganancias. Este primer contrato modula volumen y genera interrupciones breves de percusión. No implementa aún rearmonización de transición, pickups complejos o cambios inteligentes de instrumento. Por ello la estructura puede mejorar organización sin resolver la sofisticación completa de un arreglo profesional.
+\section{Resultados mecánicos y refutación}
+El test usa cues $[1.1,2.2,3.3]$ segundos, BPM 120, tolerancia 0.5 segundos y separación mínima 0.4. Enumera todas las combinaciones de candidatos permitidos y compara la pérdida mínima con la programación dinámica. Esa comprobación independiente valida el óptimo en el caso, no un resultado subjetivo de sincronía.
+
+Un segundo test rechaza un cue sin pulso dentro de tolerancia; otro rechaza cues duplicados. El ejemplo de Running puede generarse para cada uno de los tres tempos sin introducir cambios en imagen o locución. Los errores observados por preset se conservan en \texttt{validation.json}. No se informa una precisión audiovisual que no se haya medido.
+\section{Protocolo de experimento}
+Comparar cuatro condiciones: pista sin relación al montaje, alineación voraz independiente, solución conjunta propuesta y arreglo manual de compositor. Igualar duración, timbre y nivel; alternar episodio y oyente. Medir coherencia narrativa, énfasis del beneficio y sensación de montaje artificial. La solución exacta puede coincidir con el voraz cuando los cues están muy separados: en ese régimen no se declara ventaja incremental.
+
+Incluir cues muy cercanos, inicio a contratiempo y cierres deliberadamente fuera del beat. Una condición fallida aporta información sobre el presupuesto de tolerancia y sobre el costo de forzar la forma musical. Si el arreglo manual es preferido, conservarlo y usar el algoritmo solo para propuestas preliminares.
+
+\newpage
+\paragraph{Propiedad intelectual y fronteras.}
+La contribución propuesta por Juan Manuel Goenaga Castro consiste en integrar contexto de marca, control compositivo y evidencia de decisión en el sistema audiovisual GoToGym. Se conservan las atribuciones del QAF y del antecedente técnico de Antoni Bancells. DSP, teoría musical, programación dinámica, bootstrap, NumPy y FFmpeg no se presentan como invenciones propias. No se determina patentabilidad ni exclusividad. Los originales privados, voces, contratos y referencias comerciales no se redistribuyen. Una licencia del código no equivale a permiso sobre pesos, muestras, composición, máster o sincronización.
+\section{Aprendizajes y desarrollo posterior}
+La relación musical pertinente depende de la intención del plano. Un silencio expresivo antes de mostrar el teléfono puede tener mayor valor que coincidir con una cuadrícula. El siguiente modelo podría añadir costo por mover una revelación, por cortar una frase armónica y por romper un motivo, siempre con pesos aprendidos o declarados y un control clásico equivalente.
+
+Una formulación futura sería $L=\sum_j w_j(b_j-c_j)^2+\lambda\sum_j C_{\mathrm{armonía}}(b_{j-1},b_j)$, con estados que incluyan compás y acorde. Su implementación requeriría datos de partitura y anotación editorial que hoy no existen. No se atribuye a un sensor de imagen o un agente autónomo una información que solo aporta el productor.
+\section{Conclusión}
+El sistema entrega fronteras musicales verificables y mantiene la narración como referencia. El aporte es una decisión temporal reproducible, integrada al sintetizador de bocetos. La calidad cinematográfica se reserva a la escucha comparativa, a los silencios intencionales y a la revisión final del episodio.
+\section*{Referencias y trazabilidad}
+\begin{enumerate}\small
+\item Goenaga Castro, J. M. QAF (2025); \emph{Ventaja estructural CSRA} y \emph{Motor completo MPS/TDVP/RDM} (2026). Manuscritos aportados, consultados; inventario SHA-256 en \texttt{validation.json}. Su evidencia no se transfiere a música.
+\item Bancells, A. (2026). Antecedente técnico MPS/TDVP/QUBO, atribución conservada en la serie audiovisual del repositorio. No se reejecuta su motor en esta extensión.
+\item Copet et al. (2023). \emph{Simple and Controllable Music Generation}. NeurIPS 36. \url{https://arxiv.org/abs/2306.05284}.
+\item ITU-R BS.1770-5 y BS.1534-3. Sonoridad y evaluación subjetiva. \url{https://www.itu.int/rec/R-REC-BS.1770} y \url{https://www.itu.int/rec/R-REC-BS.1534}.
+\item FFmpeg. Filtros \texttt{loudnorm} y \texttt{sidechaincompress}. \url{https://ffmpeg.org/ffmpeg-filters.html}.
+\item Meta. Licencia de pesos AudioCraft. \url{https://github.com/facebookresearch/audiocraft/blob/main/LICENSE_weights}. Consulta de fuentes externas: 22/10/2026.
+\end{enumerate}
+
+\end{document}

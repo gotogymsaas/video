@@ -1,0 +1,88 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=23mm,top=25mm,bottom=24mm]{geometry}
+\usepackage{fontspec,polyglossia,amsmath,amssymb,booktabs,array,enumitem,xcolor,fancyhdr,xurl,hyperref,microtype}
+\setdefaultlanguage{spanish}\setmainfont{Latin Modern Roman}\setsansfont{DejaVu Sans}
+\definecolor{ink}{HTML}{153A45}\definecolor{mint}{HTML}{087D78}
+\hypersetup{colorlinks=true,urlcolor=mint,linkcolor=ink,pdfauthor={Juan Manuel Goenaga Castro}}
+\setlength{\parindent}{0pt}\setlength{\parskip}{6pt}\emergencystretch=3em
+\setlength{\headheight}{16pt}\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\sffamily\footnotesize GoToGym Quantum Research / Music Lab}
+\fancyhead[R]{\sffamily\footnotesize M02 / v0.1}
+\fancyfoot[L]{\scriptsize Prepublicación metodológica / 22 de octubre de 2026}
+\fancyfoot[R]{\small\thepage}\setlist{nosep,leftmargin=1.5em}
+\begin{document}
+\begin{center}{\sffamily\small\textcolor{mint}{SERIE QAF / TECNOLOGÍA MUSICAL / M02}}\par\vspace{8pt}
+{\sffamily\LARGE\bfseries\textcolor{ink}{Composición original y control de timbre}}\par\vspace{10pt}
+\textbf{Juan Manuel Goenaga Castro}\\GoToGym Quantum Research\\22 de octubre de 2026
+\end{center}
+\colorbox{ink!6}{\parbox{.96\linewidth}{\small\textbf{Estado científico.} Propuesta matemática con prototipo ejecutable. Sin revisión por pares ni validación de preferencia musical. Las extensiones neuronales se identifican como trabajo futuro.}}
+\begin{abstract}
+Se propone un motor por capas para sustituir el fondo ambiental uniforme por composiciones editables con batería, bajo, armonía y motivo. La implementación produce tres bocetos DSP originales y reproducibles, sin descargar muestras ni pesos. Se formaliza además una futura extensión neuronal condicionada por estilo, energía y narrativa. La síntesis ejecutada no se presenta como ese modelo entrenado: es una referencia funcional para audición y para construir contratos de control antes de invertir en datos y entrenamiento.
+\end{abstract}
+\section{Pregunta de investigación}
+¿Puede una composición con capas y variaciones explícitas aumentar el deseo de seguir viendo el episodio sin reducir comprensión de la voz? La observación de partida es la ausencia de un diseño de groove en el fondo anterior. La solución requiere componer y producir; aumentar volumen o velocidad no garantiza interés estético.
+
+Se eligen tres direcciones contrastables. \emph{Coastal pulse} explora bajo sincopado a 112 BPM; \emph{run club} usa pulso regular a 124 BPM; \emph{future stride} explora subdivisión más rápida a 136 BPM. Los nombres no acreditan autenticidad regional ni popularidad actual. Un productor y la audiencia deberán corregir patrones, instrumentación y transiciones después de escuchar.
+\section{Contribución y límites de los antecedentes}
+MusicGen es un antecedente primario de generación condicionada por texto y melodía mediante tokens musicales. Sus resultados no demuestran que esta integración GoToGym tenga igual calidad. Tampoco autorizan activar sus pesos en una campaña: la licencia publicada de pesos AudioCraft es no comercial. El prototipo actual evita esa dependencia y genera ondas y ruido desde fórmulas, con semilla fija.
+
+La propuesta QAF separa observación de marca, elección de parámetros y render de audio. Una matriz de decisión no sustituye la física de un oscilador ni el aprendizaje de un generador. La propiedad intelectual de integración se ubica en el diseño del sistema, sin apropiarse de síntesis, armonía o métodos de terceros.
+
+\newpage
+\section{Modelo de composición y señal ejecutado}
+La partitura de control es un conjunto de eventos $e_j=(s_j,d_j,p_j,v_j,k_j)$: inicio en segundos, duración, altura MIDI, ganancia y capa. La mezcla estereofónica se define por
+\begin{equation}
+ x_c[n]=G f[n]\sum_{k=1}^4\sum_{j:k_j=k}a_c(\pi_j)v_j
+ s_j^{(k)}[n-\operatorname{round}(f_s s_j)].
+\end{equation}
+Aquí $f_s$ es tasa de muestreo, $f[n]$ una envolvente de entrada/salida y $\pi_j\in[-1,1]$ el paneo, con $a_L=\sqrt{(1-\pi)/2}$ y $a_R=\sqrt{(1+\pi)/2}$. Cada capa se conserva por separado; una ganancia común mantiene su relación al exportar.
+
+Para bombo se usa un barrido de frecuencia amortiguado, no una muestra externa:
+\begin{equation}
+ f_K(t)=48+100e^{-t/0.025},\quad
+ K[n]=\sin\!\left(\frac{2\pi}{f_s}\sum_{m=0}^{n}f_K(m/f_s)\right)e^{-t/0.11}(1-e^{-t/0.001}).
+\end{equation}
+Las frecuencias están en Hz y las constantes de decaimiento en segundos. Clap y hat se obtienen con ruido seudorrandómico diferenciado y envolvente exponencial. No se afirma equivalencia a una batería profesional grabada.
+
+La altura $p$ se transforma en $f(p)=440\,2^{(p-69)/12}$ Hz. El bajo combina fundamental y segundo armónico; el motivo usa ataques cortos y paneo alterno. Las raíces por bloques son desplazamientos $[0,5,3,7]$ semitonos sobre la raíz de cada preset. Se conservan intervalos menores, terceras y quintas como decisiones editoriales, no como descubrimiento matemático.
+\section{Control narrativo}
+Con tres fronteras $c_1<c_2<c_3$ se asignan cuatro niveles de energía $[0.42,0.62,0.90,0.55]$. Son ganancias de diseño, no emociones medidas. Se atenúan brevemente golpes antes de las fronteras y se aplica salida suave de 0.7 segundos. El plan alineado de M03 puede suministrar las fronteras sin alterar la imagen ni la voz.
+
+\newpage
+\section{Extensión neuronal propuesta; no entrenada}
+Para superar el techo de timbre del DSP se propone evaluar un generador de flujo condicionado por brief $b$, curva de energía $E(t)$ y guía de eventos $u$. Sea $z_1$ una representación de audio autorizado y $z_0\sim\mathcal N(0,I)$:
+\begin{align}
+ z_t&=(1-t)z_0+tz_1,\quad t\sim U(0,1),\\
+ \mathcal L_{\mathrm{flow}}&=\mathbb E\|v_\theta(z_t,t,b,E,u)-(z_1-z_0)\|_2^2,\\
+ \mathcal L&=\mathcal L_{\mathrm{flow}}+\lambda_E\|\hat E-E\|_1+
+ \lambda_U\mathcal L_{\mathrm{onsets}}+\lambda_S\mathcal L_{\mathrm{stems}}.
+\end{align}
+Las pérdidas auxiliares requerirían extractores o decodificadores diferenciables, definición exacta de escala y una estrategia de entrenamiento. Estas ecuaciones son una propuesta de investigación, no código de actualización de pesos en esta entrega. El QAF se ubica en la selección contextual de condiciones y restricciones; no se asigna una ventaja al backbone por nombrarlo QAF.
+
+Requisitos: audio multitrack autorizado, derechos sobre composiciones y grabaciones, particiones por obra y artista, desduplicación, dataset card, modelo con licencia compatible, infraestructura GPU medida, productor responsable y validación independiente. No basta con disponer de canciones accesibles públicamente. La primera opción a comparar debe ser un productor con material original o una librería licenciada: puede resolver la campaña antes que entrenar.
+\section{Implementación presente}
+\texttt{synthesis.py} exporta cuatro stems WAV y un preview, estéreo, PCM de 16 bits, 48 kHz por defecto, duración de 60 segundos. La interfaz \texttt{sketch} recibe preset y semilla; el manifiesto conserva configuración, cues, hashes y aprobación pendiente. No accede a Internet ni clona un artista.
+
+La memoria es lineal en duración y canales: cuatro stems más acumuladores de mezcla. El contrato limita duración a 120 segundos y tasas a 16, 24 o 48 kHz. Las funciones de envolvente, acorde y percusión son explícitas para permitir sustituir cada instrumento sin reescribir selección ni mezcla.
+
+\newpage
+\paragraph{Propiedad intelectual y fronteras.}
+La contribución propuesta por Juan Manuel Goenaga Castro consiste en integrar contexto de marca, control compositivo y evidencia de decisión en el sistema audiovisual GoToGym. Se conservan las atribuciones del QAF y del antecedente técnico de Antoni Bancells. DSP, teoría musical, programación dinámica, bootstrap, NumPy y FFmpeg no se presentan como invenciones propias. No se determina patentabilidad ni exclusividad. Los originales privados, voces, contratos y referencias comerciales no se redistribuyen. Una licencia del código no equivale a permiso sobre pesos, muestras, composición, máster o sincronización.
+\section{Verificación y evaluación pendiente}
+Una prueba renderiza dos veces la misma semilla a 16 kHz y compara hashes por stem; comprueba duración exacta, dos canales y señal no silenciosa. Cambiar la semilla modifica el ruido de percusión. Otra prueba verifica que las fronteras recibidas se guardan y utilizan. Los demos completos de tres presets se generaron como bocetos para escuchar, no como máster aprobado.
+
+La evaluación debe separar composición de timbre: comparar el mismo patrón interpretado por DSP, instrumento virtual profesional y audio neuronal con licencia. Mantener nivel y narración. Valorar groove, naturalidad instrumental, fatiga y compatibilidad de marca. Registrar defectos de aliasing, repetición y transiciones, además del costo y latencia.
+
+\section{Conclusión}
+Se entrega una base compositiva ejecutable con stems y tres rutas creativas. Su virtud es permitir comparar y editar; su limitación es un timbre sintético sencillo. El desarrollo neuronal exige datos y entrenamiento reales. La mejora ``cool'' solo se podrá afirmar tras audicionar y comparar con una referencia profesional.
+\section*{Referencias y trazabilidad}
+\begin{enumerate}\small
+\item Goenaga Castro, J. M. QAF (2025); \emph{Ventaja estructural CSRA} y \emph{Motor completo MPS/TDVP/RDM} (2026). Manuscritos aportados, consultados; inventario SHA-256 en \texttt{validation.json}. Su evidencia no se transfiere a música.
+\item Bancells, A. (2026). Antecedente técnico MPS/TDVP/QUBO, atribución conservada en la serie audiovisual del repositorio. No se reejecuta su motor en esta extensión.
+\item Copet et al. (2023). \emph{Simple and Controllable Music Generation}. NeurIPS 36. \url{https://arxiv.org/abs/2306.05284}.
+\item ITU-R BS.1770-5 y BS.1534-3. Sonoridad y evaluación subjetiva. \url{https://www.itu.int/rec/R-REC-BS.1770} y \url{https://www.itu.int/rec/R-REC-BS.1534}.
+\item FFmpeg. Filtros \texttt{loudnorm} y \texttt{sidechaincompress}. \url{https://ffmpeg.org/ffmpeg-filters.html}.
+\item Meta. Licencia de pesos AudioCraft. \url{https://github.com/facebookresearch/audiocraft/blob/main/LICENSE_weights}. Consulta de fuentes externas: 22/10/2026.
+\end{enumerate}
+
+\end{document}

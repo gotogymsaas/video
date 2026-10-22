@@ -130,3 +130,11 @@ python -m qaf_video cinema-render projects/running-v2/project.json --profile hor
 `cinema-render --no-cc` genera una versión limpia; SRT y VTT se conservan por separado. Las exportaciones de revisión funcionan sin inventar aprobaciones; `--final` exige revisiones humanas registradas.
 
 Consulta [la auditoría y las ocho mejoras](docs/robustness/AUDITORIA.md), [los resultados ejecutados](docs/validation/robustness-v0.4.json) y [los artículos](docs/robustness/papers). Son prepublicaciones con propuestas computacionales implementadas y estudios perceptuales pendientes. QAF usa su región clásica identificable, sin reclamar ventaja cuántica.
+
+## Laboratorio musical QAF (v0.1)
+
+Cinco nuevas propuestas científicas de Juan Manuel Goenaga Castro y prototipos Python: referencias fechadas, composición DSP con cuatro stems, cues alineados mediante programación dinámica, mezcla medida con liberación por beat y evaluación/procedencia. [Documentación, cinco PDF y comandos](docs/music/README.md).
+
+`python -m qaf_video.music_research sketch --preset run_club --out outputs/run-club`
+
+Los bocetos son síntesis digital original; el modelo neuronal es una propuesta futura sin entrenamiento ejecutado. Actualidad y preferencia requieren audición. La ampliación no sustituye automáticamente la banda sonora del video aceptado.

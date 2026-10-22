@@ -1,0 +1,88 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=23mm,top=25mm,bottom=24mm]{geometry}
+\usepackage{fontspec,polyglossia,amsmath,amssymb,booktabs,array,enumitem,xcolor,fancyhdr,xurl,hyperref,microtype}
+\setdefaultlanguage{spanish}\setmainfont{Latin Modern Roman}\setsansfont{DejaVu Sans}
+\definecolor{ink}{HTML}{153A45}\definecolor{mint}{HTML}{087D78}
+\hypersetup{colorlinks=true,urlcolor=mint,linkcolor=ink,pdfauthor={Juan Manuel Goenaga Castro}}
+\setlength{\parindent}{0pt}\setlength{\parskip}{6pt}\emergencystretch=3em
+\setlength{\headheight}{16pt}\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\sffamily\footnotesize GoToGym Quantum Research / Music Lab}
+\fancyhead[R]{\sffamily\footnotesize M04 / v0.1}
+\fancyfoot[L]{\scriptsize Prepublicación metodológica / 22 de octubre de 2026}
+\fancyfoot[R]{\small\thepage}\setlist{nosep,leftmargin=1.5em}
+\begin{document}
+\begin{center}{\sffamily\small\textcolor{mint}{SERIE QAF / TECNOLOGÍA MUSICAL / M04}}\par\vspace{8pt}
+{\sffamily\LARGE\bfseries\textcolor{ink}{Mezcla adaptativa que conserva el groove}}\par\vspace{10pt}
+\textbf{Juan Manuel Goenaga Castro}\\GoToGym Quantum Research\\22 de octubre de 2026
+\end{center}
+\colorbox{ink!6}{\parbox{.96\linewidth}{\small\textbf{Estado científico.} Propuesta matemática con prototipo ejecutable. Sin revisión por pares ni validación de preferencia musical. Las extensiones neuronales se identifican como trabajo futuro.}}
+\begin{abstract}
+Se propone una integración de mezcla en la que la música mantiene presencia fuera de la voz y cede espacio durante el habla. El prototipo reutiliza el mezclador de cuatro stems con compresión sidechain y normalización medida en dos pasadas; añade liberación dependiente del tempo. La investigación diferencia sonoridad, enmascaramiento, bombeo y preferencia. La medición acústica no se presenta como demostración de inteligibilidad ni de modernidad.
+\end{abstract}
+\section{Problema observado y alcance}
+El carácter poco actual de una banda sonora puede deberse a composición y timbre; también puede agravarse si una mezcla baja demasiado la batería o comprime cada sílaba con bombeo. La solución debe mejorar la señal y no esconder un arreglo débil detrás del volumen. Se conservan stems para editar fuente, arreglo y mezcla por separado.
+
+La pregunta es si una recuperación relacionada con el beat puede proteger la voz y preservar mejor el pulso que una liberación fija. La hipótesis no se presupone verdadera: voces con cadencias distintas pueden requerir tiempos que no coincidan con subdivisiones musicales. En v0.1 se implementa un candidato y un procedimiento de medición, no un optimizador perceptual aprendido.
+\section{Antecedentes técnicos}
+ITU-R BS.1770 define algoritmos de sonoridad y pico verdadero; no prescribe que toda publicidad deba normalizarse a un único valor. El objetivo web heredado del repositorio es -14 LUFS y techo -1.5 dBTP de premáster para reservar margen de codificación. Son decisiones editoriales de esta plataforma, distintas de objetivos de radiodifusión.
+
+FFmpeg ejecuta el procesamiento y las medidas. Se conservan sus atribuciones; el trabajo propuesto consiste en integrar el control musical, registrar parámetros y exigir revisión auditiva del archivo realmente entregado.
+
+\newpage
+\section{Modelo de control y señal}
+Con voz $v[n]$, música $m[n]$, ambiente $a[n]$ y efectos $e[n]$, la estructura es
+\begin{equation}
+ y[n]=v[n]+g[n](\alpha_m m[n]+\alpha_a a[n]+\alpha_e e[n]).
+\end{equation}
+$g[n]$ procede de un compresor cuya entrada de control es la voz. La implementación existente agrupa las capas de fondo antes del sidechain: también se atenúan ambiente y efectos cuando se usan. No se declara un procesamiento multibanda ni una separación neuronal de fuentes.
+
+El tiempo de liberación propuesto para tempo $B$ y fracción de beat $\beta$ es
+\begin{equation}
+ r_{\mathrm{ms}}=\operatorname{clip}\left(\frac{60000\beta}{B},100,1500\right),
+ \qquad \beta=0.75.
+\end{equation}
+El caso $B=120$ produce 375 ms, comprobado por test. El ataque heredado es 15 ms y la razón 8:1, parámetros iniciales sujetos a escucha. La liberación relaciona recuperación y pulso; no garantiza ausencia de bombeo.
+\section{Criterio QAF de selección futura}
+Una rejilla de ganancias y tiempos podría compararse por
+\begin{equation}
+ L(\alpha,r)=\lambda_I\ell_{\mathrm{palabras}}+\lambda_P\ell_{\mathrm{bombeo}}+
+ \lambda_G\ell_{\mathrm{groove}}+\lambda_M\ell_{\mathrm{marca}},
+\end{equation}
+con restricciones de sonoridad, pico y ausencia de clipping. Las pérdidas subjetivas necesitan oyentes o modelos previamente validados. Por ello esta selección completa es una propuesta, no una función ejecutada. El wrapper actual aplica un solo candidato y mide su salida. El sistema anterior conserva un selector de margen RMS; ese proxy no se reutiliza como si predijera comprensión.
+
+La representación diagonal de alternativas y un control clásico con la misma evidencia siguen siendo la referencia QAF. No se usa una evolución de Schrödinger para controlar un compresor sin observaciones que identifiquen tal dinámica.
+
+\newpage
+\section{Implementación e integración}
+\texttt{mixing.release\_ms} valida BPM y fracción; \texttt{mixing.mix} llama al \texttt{mix\_audio} existente con ganancia musical inicial 0.24. Este reamuestra a 48 kHz, prepara estéreo y longitud, aplica sidechain, mezcla y escribe premáster temporal. Una primera medición alimenta la segunda pasada de \texttt{loudnorm}; otra lectura comprueba el WAV final.
+
+El informe conserva sonoridad integrada, pico, rango, hashes, ganancias, liberación, tempo y aprobación perceptual falsa. El WAV de salida usa PCM de 24 bits. La calidad de una futura exportación AAC o MP3 debe medirse otra vez: un WAV conforme no garantiza el mismo pico tras codificación.
+\section{Verificación ejecutada}
+El test de integración construye tres segundos de voz sintética intermitente y un boceto musical. Ejecuta FFmpeg real, verifica dos pasadas, sidechain activado, pico final menor o igual a -1 dBTP y revisión perceptual pendiente. No usa una simulación del mezclador ni una declaración de configuración como prueba de ejecución.
+
+Los tres demos entregados son musicales sin narración y se normalizan por separado para audición. No sustituyen una mezcla final del episodio Running. El video aceptado por el usuario conserva su archivo hasta escoger una dirección musical y volver a exportar y escuchar la película completa.
+\section{Diseño de escucha y ablación}
+Comparar sin ducking, liberación fija 450 ms y liberación de 0.75 beats. Mantener la misma composición, voz y nivel final. Medir palabras transcritas, esfuerzo de escucha, bombeo y energía percibida. Incluir móvil con altavoz, audífonos y parlante; usar niveles seguros y consistentes. No confundir mejor audibilidad por mayor volumen con mejor mezcla.
+
+Registrar consonantes perdidas y errores sobre el CTA. Si el pulso controla demasiado la mezcla o desaparece el bajo en el teléfono, cambiar arreglo o ecualización antes de aumentar compresión. El siguiente desarrollo puede añadir atenuación selectiva de banda, pero esa función no está implementada en esta versión.
+
+\newpage
+\paragraph{Propiedad intelectual y fronteras.}
+La contribución propuesta por Juan Manuel Goenaga Castro consiste en integrar contexto de marca, control compositivo y evidencia de decisión en el sistema audiovisual GoToGym. Se conservan las atribuciones del QAF y del antecedente técnico de Antoni Bancells. DSP, teoría musical, programación dinámica, bootstrap, NumPy y FFmpeg no se presentan como invenciones propias. No se determina patentabilidad ni exclusividad. Los originales privados, voces, contratos y referencias comerciales no se redistribuyen. Una licencia del código no equivale a permiso sobre pesos, muestras, composición, máster o sincronización.
+\section{Limitaciones y criterio de aceptación}
+El compresor depende de energía de voz, no de significado ni inteligibilidad. Una respiración fuerte puede accionar el ducking; una consonante suave puede quedar oculta. Los valores iniciales tampoco garantizan el mismo comportamiento con todos los stems: el nivel de entrada cambia cuánto actúa el compresor.
+
+Aceptar requiere ausencia de clipping, medidas del archivo codificado, voz comprensible y aprobación de groove por oyentes. Si la sonoridad pasa y la música parece plana, el sistema debe registrar fallo editorial. Si la mezcla gusta pero el CTA no se comprende, tampoco se publica como resultado correcto. Las condiciones duras y el juicio artístico son complementarios.
+\section{Conclusión}
+Se añade una conexión musical explícita al mezclador medido del repositorio. El control por beat se puede ejecutar, comparar y descartar si no aporta. La tecnología mejora la reproducibilidad de la mezcla; el gusto y la comprensión requieren evidencia de escucha.
+\section*{Referencias y trazabilidad}
+\begin{enumerate}\small
+\item Goenaga Castro, J. M. QAF (2025); \emph{Ventaja estructural CSRA} y \emph{Motor completo MPS/TDVP/RDM} (2026). Manuscritos aportados, consultados; inventario SHA-256 en \texttt{validation.json}. Su evidencia no se transfiere a música.
+\item Bancells, A. (2026). Antecedente técnico MPS/TDVP/QUBO, atribución conservada en la serie audiovisual del repositorio. No se reejecuta su motor en esta extensión.
+\item Copet et al. (2023). \emph{Simple and Controllable Music Generation}. NeurIPS 36. \url{https://arxiv.org/abs/2306.05284}.
+\item ITU-R BS.1770-5 y BS.1534-3. Sonoridad y evaluación subjetiva. \url{https://www.itu.int/rec/R-REC-BS.1770} y \url{https://www.itu.int/rec/R-REC-BS.1534}.
+\item FFmpeg. Filtros \texttt{loudnorm} y \texttt{sidechaincompress}. \url{https://ffmpeg.org/ffmpeg-filters.html}.
+\item Meta. Licencia de pesos AudioCraft. \url{https://github.com/facebookresearch/audiocraft/blob/main/LICENSE_weights}. Consulta de fuentes externas: 22/10/2026.
+\end{enumerate}
+
+\end{document}

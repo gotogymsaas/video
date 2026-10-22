@@ -1,0 +1,87 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=23mm,top=25mm,bottom=24mm]{geometry}
+\usepackage{fontspec,polyglossia,amsmath,amssymb,booktabs,array,enumitem,xcolor,fancyhdr,xurl,hyperref,microtype}
+\setdefaultlanguage{spanish}\setmainfont{Latin Modern Roman}\setsansfont{DejaVu Sans}
+\definecolor{ink}{HTML}{153A45}\definecolor{mint}{HTML}{087D78}
+\hypersetup{colorlinks=true,urlcolor=mint,linkcolor=ink,pdfauthor={Juan Manuel Goenaga Castro}}
+\setlength{\parindent}{0pt}\setlength{\parskip}{6pt}\emergencystretch=3em
+\setlength{\headheight}{16pt}\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\sffamily\footnotesize GoToGym Quantum Research / Music Lab}
+\fancyhead[R]{\sffamily\footnotesize M05 / v0.1}
+\fancyfoot[L]{\scriptsize Prepublicación metodológica / 22 de octubre de 2026}
+\fancyfoot[R]{\small\thepage}\setlist{nosep,leftmargin=1.5em}
+\begin{document}
+\begin{center}{\sffamily\small\textcolor{mint}{SERIE QAF / TECNOLOGÍA MUSICAL / M05}}\par\vspace{8pt}
+{\sffamily\LARGE\bfseries\textcolor{ink}{Validación musical y propiedad intelectual}}\par\vspace{10pt}
+\textbf{Juan Manuel Goenaga Castro}\\GoToGym Quantum Research\\22 de octubre de 2026
+\end{center}
+\colorbox{ink!6}{\parbox{.96\linewidth}{\small\textbf{Estado científico.} Propuesta matemática con prototipo ejecutable. Sin revisión por pares ni validación de preferencia musical. Las extensiones neuronales se identifican como trabajo futuro.}}
+\begin{abstract}
+Se propone cerrar el ciclo de mejora musical con evaluación pareada, trazabilidad de activos y límites explícitos a las afirmaciones. El prototipo implementa bootstrap por oyente y verificación declarativa de procedencia ligada al hash del archivo. No sustituye una revisión contractual ni aprueba automáticamente una campaña. Se formula un mapa de uso QAF condicionado a evidencia, con opciones de empate o no uso. El resultado permite distinguir software correcto, música preferida y mejora comercial.
+\end{abstract}
+\section{Por qué un sistema necesita esta capa}
+Una nueva fórmula puede generar audio válido sin que el público lo encuentre atractivo. A su vez, una pista preferida puede carecer de permisos para una campaña. La decisión de publicación necesita ambos caminos: calidad y derechos. Los documentos CSRA y MPS/TDVP/RDM suministrados muestran mecanismos experimentales específicos y reconocen límites; no contienen un estudio de preferencia para esta música.
+
+La pregunta es cómo decidir una mejora sin usar el propio algoritmo como juez exclusivo. Se propone comparar contra la música anterior y contra una referencia profesional con licencia. Un productor, editor, ingeniero de mezcla, responsable de marca, investigador de audiencia e interlocutor de derechos aportan criterios diferentes. No se afirma que un programa haya adquirido sus credenciales profesionales.
+\section{Variables y diseño}
+Cada fila de escucha registra oyente, episodio, valoración del control y del candidato en la misma escala de cero a cien. Actualidad, ajuste de marca y comprensión deben almacenarse como métricas separadas y con una primaria preregistrada. La función incluida procesa una métrica a la vez. Los datos de ejemplo y tests son sintéticos y se rotulan; no se registran como participantes reales.
+
+Orden y etiqueta del método se ocultan. Se conserva voz, imagen y sonoridad; se aleatoriza exposición, se comprueba dispositivo y familiaridad. La repetición de un mismo video no se cuenta como evidencia de muchos episodios independientes.
+
+\newpage
+\section{Estimación implementada}
+Para oyente $l$, episodio $e$ y diferencia $d_{le}=s^{\mathrm{nuevo}}_{le}-s^{\mathrm{control}}_{le}$:
+\begin{equation}
+ \bar d_l=\frac{1}{n_l}\sum_ed_{le},\qquad
+ \hat\Delta=\frac{1}{L}\sum_l\bar d_l.
+\end{equation}
+Cada oyente tiene igual peso. El bootstrap remuestrea oyentes completos y obtiene percentiles 2.5 y 97.5 de la media de sus diferencias. Es un intervalo condicionado a los episodios evaluados; no estima incertidumbre entre campañas ni convierte escalas ordinales en evidencia causal universal.
+
+Se rechazan filas duplicadas del mismo par oyente-episodio. Si hay repeticiones deben agregarse antes, con regla registrada. El mínimo de 20 oyentes y cinco episodios es una compuerta de piloto del software, no un cálculo de potencia. El estado favorable se llama \texttt{pilot\_signal}; jamás ``eficacia probada''. El tamaño confirmatorio se calculará con variabilidad de un piloto real.
+\section{Extensión confirmatoria propuesta}
+Un modelo cruzado permitiría separar oyente y episodio:
+\begin{equation}
+ d_{le}=\mu+u_l+v_e+\varepsilon_{le},\quad
+ u_l\sim\mathcal N(0,\sigma_l^2),\quad v_e\sim\mathcal N(0,\sigma_e^2).
+\end{equation}
+Su adecuación dependerá de distribución y escala. No está ajustado en v0.1. La prueba de ventas debe ser otro experimento con asignación, tráfico y denominadores verificables; una preferencia auditiva no prueba más conversiones.
+\section{Regiones de decisión QAF propuestas}
+Para ganancia empírica $\Delta$, intervalo $[a,b]$, costo $C$ y presupuesto $C_{\max}$: QAF-positive solo si el criterio preregistrado se supera fuera de calibración y dentro de presupuesto; classical-positive si el control lo supera; non-identifiable si no se separan; computational-breakdown si el costo impide operar. Son regiones para un benchmark futuro, no etiquetas adjudicadas al prototipo. Los algoritmos actuales de selección y alineación coinciden con sus controles clásicos de igual información.
+
+\newpage
+\section{Contrato de procedencia implementado}
+\texttt{verify\_asset} exige hash SHA-256, origen, identificador de licencia, referencia a evidencia de derechos, revisor, fecha de revisión y vigencia. Requiere declaraciones explícitas de uso comercial y sincronización. Calcula el hash de los bytes y comprueba fecha de corte dentro de la vigencia declarada:
+\begin{equation}
+ H(\mathrm{archivo})=h_{\mathrm{registrado}},\qquad
+ t_{\mathrm{revisión}}\leq t_{\mathrm{uso}}\leq t_{\mathrm{vigencia}}.
+\end{equation}
+Estas igualdades vinculan evidencia declarada y activo; no autentican un contrato ni prueban titularidad. Los documentos de permisos deben estar en almacenamiento privado. No se carga una voz del usuario al repositorio para evaluar música.
+
+La licencia de código, de pesos neuronales, de grabación, de composición y de sincronización son objetos distintos. El código DSP original evita incorporar muestras descargadas, pero no acredita automáticamente exclusividad o registrabilidad de toda secuencia generada. Un modelo neuronal futuro requerirá dataset card, versión de pesos y trazabilidad de entrenamiento.
+\section{Pruebas ejecutadas y fallos esperados}
+El test estadístico crea cuatro oyentes y dos episodios con ganancia constante de 20 puntos; confirma esa media pero conserva evidencia insuficiente por tamaño. Un duplicado se rechaza. El test de procedencia acepta un fixture completo, rechaza permiso de sincronización falso y rechaza bytes modificados después de registrar el hash.
+
+La suite específica contiene doce controles de ingeniería, incluyendo selección, sincronía exacta, síntesis reproducible y mezcla FFmpeg. Su éxito no equivale a doce oyentes ni a doce videos preferidos. Los informes de validación conservan comandos, condición sintética y ausencia de estudio humano.
+\section{Protocolo de publicación}
+Primero audicionar tres bocetos; después comparar el seleccionado con productor o pista profesional autorizada; luego mezclar con voz real y revisar el archivo codificado. Conservar perdedores y parámetros. Cualquier cambio posterior de activo invalida su aprobación hasta nueva revisión. El checker nunca escribe una aprobación artística verdadera ni autoriza una campaña por la existencia de un hash.
+
+\newpage
+\paragraph{Propiedad intelectual y fronteras.}
+La contribución propuesta por Juan Manuel Goenaga Castro consiste en integrar contexto de marca, control compositivo y evidencia de decisión en el sistema audiovisual GoToGym. Se conservan las atribuciones del QAF y del antecedente técnico de Antoni Bancells. DSP, teoría musical, programación dinámica, bootstrap, NumPy y FFmpeg no se presentan como invenciones propias. No se determina patentabilidad ni exclusividad. Los originales privados, voces, contratos y referencias comerciales no se redistribuyen. Una licencia del código no equivale a permiso sobre pesos, muestras, composición, máster o sincronización.
+\section{Aprendizajes y criterios de parada}
+La evidencia debe poder decir que el nuevo sistema no mejora. Si un track profesional produce mayor preferencia a menor costo, usarlo para la campaña y conservar el laboratorio como desarrollo. Si falta un derecho o un dato de evaluación, declarar ese hueco sin sustituirlo por un índice agregado.
+
+El capital intelectual documentable incluye contratos entre módulos, modelos matemáticos explícitos, decisiones de marca, diseños de evaluación y código reproducible. No incluye apropiarse de estándares de sonoridad, teoría musical ni resultados de terceros. La publicación propuesta conserva esas fronteras y no presenta la propiedad intelectual como garantía de calidad.
+\section{Conclusión}
+Se entrega un mecanismo para aprender de la audiencia y controlar qué evidencia acompaña cada archivo. La mejora musical se podrá afirmar cuando una comparación independiente la sostenga. Mientras tanto, la plataforma entrega bocetos, controles y un camino verificable hacia esa prueba.
+\section*{Referencias y trazabilidad}
+\begin{enumerate}\small
+\item Goenaga Castro, J. M. QAF (2025); \emph{Ventaja estructural CSRA} y \emph{Motor completo MPS/TDVP/RDM} (2026). Manuscritos aportados, consultados; inventario SHA-256 en \texttt{validation.json}. Su evidencia no se transfiere a música.
+\item Bancells, A. (2026). Antecedente técnico MPS/TDVP/QUBO, atribución conservada en la serie audiovisual del repositorio. No se reejecuta su motor en esta extensión.
+\item Copet et al. (2023). \emph{Simple and Controllable Music Generation}. NeurIPS 36. \url{https://arxiv.org/abs/2306.05284}.
+\item ITU-R BS.1770-5 y BS.1534-3. Sonoridad y evaluación subjetiva. \url{https://www.itu.int/rec/R-REC-BS.1770} y \url{https://www.itu.int/rec/R-REC-BS.1534}.
+\item FFmpeg. Filtros \texttt{loudnorm} y \texttt{sidechaincompress}. \url{https://ffmpeg.org/ffmpeg-filters.html}.
+\item Meta. Licencia de pesos AudioCraft. \url{https://github.com/facebookresearch/audiocraft/blob/main/LICENSE_weights}. Consulta de fuentes externas: 22/10/2026.
+\end{enumerate}
+
+\end{document}

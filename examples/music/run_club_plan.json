@@ -1,0 +1,19 @@
+{
+  "bpm": 124.0,
+  "phase_seconds": 0.0,
+  "duration": 60,
+  "input_cues": [
+    13.0,
+    29.0,
+    50.0
+  ],
+  "aligned_cues": [
+    13.064516129032258,
+    29.032258064516128,
+    49.83870967741936
+  ],
+  "loss_seconds_squared": 0.031217481789800744,
+  "max_error_seconds": 0.16129032258064058,
+  "solver": "exact chain dynamic programming; classical baseline identical",
+  "scope": "music cues only; does not move picture edits or voice"
+}
