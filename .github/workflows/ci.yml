@@ -1,0 +1,33 @@
+name: Verify audiovisual system
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ['3.11', '3.12']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install FFmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - run: python -m pip install .
+      - run: python -m unittest discover -s tests -v
+      - run: python -m qaf_video benchmark --out outputs/benchmark.json
+      - name: CLI end-to-end smoke
+        run: |
+          python -m qaf_video init projects/ci --seconds 2 --fps 12 --samples 2
+          python -m qaf_video render projects/ci/project.json --out outputs/smoke.mp4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: checks-python-${{ matrix.python }}
+          path: |
+            outputs/benchmark.json
+            outputs/smoke.report.json

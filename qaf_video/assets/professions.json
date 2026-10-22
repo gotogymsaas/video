@@ -1,0 +1,282 @@
+[
+  {
+    "id": 1,
+    "profession": "Dirección científica",
+    "responsibility_and_artifact": "Pregunta, hipótesis, límites y revisión de transferencia entre dominios."
+  },
+  {
+    "id": 2,
+    "profession": "Matemática aplicada",
+    "responsibility_and_artifact": "Modelos bien definidos, unidades, hipótesis y pruebas de consistencia."
+  },
+  {
+    "id": 3,
+    "profession": "Redes tensoriales",
+    "responsibility_and_artifact": "Codificación, gauge, enlace, RDM y errores frente a referencia pequeña."
+  },
+  {
+    "id": 4,
+    "profession": "Optimización",
+    "responsibility_and_artifact": "Formulación restringida, certificados y comparadores bajo el mismo presupuesto."
+  },
+  {
+    "id": 5,
+    "profession": "Estadística",
+    "responsibility_and_artifact": "Diseño, potencia, intervalos y análisis por unidades independientes."
+  },
+  {
+    "id": 6,
+    "profession": "Aprendizaje automático",
+    "responsibility_and_artifact": "Datos, particiones, ajuste, generalización y ausencia de fuga."
+  },
+  {
+    "id": 7,
+    "profession": "Visión computacional",
+    "responsibility_and_artifact": "Geometría, movimiento, máscaras y límites de estimación visual."
+  },
+  {
+    "id": 8,
+    "profession": "Ingeniería de conocimiento",
+    "responsibility_and_artifact": "Grafo de evidencia, procedencia y vínculo entre claim y plano."
+  },
+  {
+    "id": 9,
+    "profession": "Arquitectura de sistemas",
+    "responsibility_and_artifact": "Contratos, fronteras de servicio, fallos y operación reproducible."
+  },
+  {
+    "id": 10,
+    "profession": "Ingeniería de pipeline",
+    "responsibility_and_artifact": "Grafo de tareas, caché, revisiones y publicación de artefactos."
+  },
+  {
+    "id": 11,
+    "profession": "Ingeniería GPU",
+    "responsibility_and_artifact": "Perfilado, memoria pico, paralelismo y coste real de ejecución."
+  },
+  {
+    "id": 12,
+    "profession": "QA de software",
+    "responsibility_and_artifact": "Pruebas significativas, casos adversos y regresiones de entrega."
+  },
+  {
+    "id": 13,
+    "profession": "Producción ejecutiva",
+    "responsibility_and_artifact": "Alcance, recursos, cronograma y aceptación de resultados."
+  },
+  {
+    "id": 14,
+    "profession": "Dirección creativa",
+    "responsibility_and_artifact": "Concepto coherente entre propósito, audiencia y acabado."
+  },
+  {
+    "id": 15,
+    "profession": "Dirección cinematográfica",
+    "responsibility_and_artifact": "Puesta en escena, interpretación, cámara y significado del montaje."
+  },
+  {
+    "id": 16,
+    "profession": "Estrategia de marca",
+    "responsibility_and_artifact": "Identidad, tono, tokens y revisión de consistencia."
+  },
+  {
+    "id": 17,
+    "profession": "Estrategia de marketing",
+    "responsibility_and_artifact": "Etapa comercial, promesa, CTA y métricas con denominador."
+  },
+  {
+    "id": 18,
+    "profession": "Investigación de audiencia",
+    "responsibility_and_artifact": "Necesidades, comprensión y sesgos de selección del público."
+  },
+  {
+    "id": 19,
+    "profession": "Guion",
+    "responsibility_and_artifact": "Conflicto, mecanismo, transformación y locución medible."
+  },
+  {
+    "id": 20,
+    "profession": "Comunicación científica",
+    "responsibility_and_artifact": "Precisión, incertidumbre y traducción sin distorsión de capacidades."
+  },
+  {
+    "id": 21,
+    "profession": "Storyboard",
+    "responsibility_and_artifact": "Planos ejecutables, continuidad y relación entre imagen y voz."
+  },
+  {
+    "id": 22,
+    "profession": "Dirección de arte",
+    "responsibility_and_artifact": "Lenguaje visual, materiales y coherencia del mundo representado."
+  },
+  {
+    "id": 23,
+    "profession": "Diseño de producción",
+    "responsibility_and_artifact": "Espacios, objetos y recursos realizables para cada escena."
+  },
+  {
+    "id": 24,
+    "profession": "Dirección de fotografía",
+    "responsibility_and_artifact": "Exposición, óptica, luz, textura y referencias verificables."
+  },
+  {
+    "id": 25,
+    "profession": "Operación de cámara",
+    "responsibility_and_artifact": "Encuadre, foco, movimiento y continuidad de toma."
+  },
+  {
+    "id": 26,
+    "profession": "Iluminación y gaffer",
+    "responsibility_and_artifact": "Montaje de luz seguro, consistencia y separación del sujeto."
+  },
+  {
+    "id": 27,
+    "profession": "Producción de campo",
+    "responsibility_and_artifact": "Localizaciones, logística y disponibilidad de recursos."
+  },
+  {
+    "id": 28,
+    "profession": "Continuidad de rodaje",
+    "responsibility_and_artifact": "Vestuario, objetos, ejes, gestos y estados entre planos."
+  },
+  {
+    "id": 29,
+    "profession": "Casting",
+    "responsibility_and_artifact": "Selección de personas/voz por criterios y contexto de marca."
+  },
+  {
+    "id": 30,
+    "profession": "Interpretación",
+    "responsibility_and_artifact": "Acción humana creíble y continuidad de actuación."
+  },
+  {
+    "id": 31,
+    "profession": "Vestuario",
+    "responsibility_and_artifact": "Identidad de prenda, ajuste, textura y continuidad."
+  },
+  {
+    "id": 32,
+    "profession": "Maquillaje y caracterización",
+    "responsibility_and_artifact": "Apariencia consistente con luz, cámara y personaje."
+  },
+  {
+    "id": 33,
+    "profession": "Modelado 3D",
+    "responsibility_and_artifact": "Geometría, escala, topología y activos editables."
+  },
+  {
+    "id": 34,
+    "profession": "Texturizado",
+    "responsibility_and_artifact": "Resolución, detalle, origen y coherencia entre superficies."
+  },
+  {
+    "id": 35,
+    "profession": "Look development y shading",
+    "responsibility_and_artifact": "Materiales, respuesta de luz y parámetros físicamente consistentes."
+  },
+  {
+    "id": 36,
+    "profession": "Rigging",
+    "responsibility_and_artifact": "Controles, deformación estable y límites anatómicos del personaje."
+  },
+  {
+    "id": 37,
+    "profession": "Animación",
+    "responsibility_and_artifact": "Peso, intención, ritmo y movimiento sin artefactos."
+  },
+  {
+    "id": 38,
+    "profession": "Efectos y simulación",
+    "responsibility_and_artifact": "Fenómenos, unidades, estabilidad y reproducibilidad de simulación."
+  },
+  {
+    "id": 39,
+    "profession": "Composición VFX",
+    "responsibility_and_artifact": "Integración, máscaras, alfa, luz, grano y profundidad."
+  },
+  {
+    "id": 40,
+    "profession": "Motion graphics",
+    "responsibility_and_artifact": "Diagramas, tipografía y transiciones que expliquen el mecanismo."
+  },
+  {
+    "id": 41,
+    "profession": "Colorismo",
+    "responsibility_and_artifact": "Transformaciones, balance, continuidad y salida revisada."
+  },
+  {
+    "id": 42,
+    "profession": "Edición y montaje",
+    "responsibility_and_artifact": "Ritmo, continuidad, exactitud de duración y revisión narrativa."
+  },
+  {
+    "id": 43,
+    "profession": "Lingüística y fonética regional",
+    "responsibility_and_artifact": "Pronunciación, variedad del español y evaluación contextual de acento."
+  },
+  {
+    "id": 44,
+    "profession": "Dirección de voz",
+    "responsibility_and_artifact": "Interpretación, respiraciones, énfasis y consistencia de identidad."
+  },
+  {
+    "id": 45,
+    "profession": "Locución",
+    "responsibility_and_artifact": "Dicción y actuación vocal; tomas y derechos de uso documentados."
+  },
+  {
+    "id": 46,
+    "profession": "Diseño sonoro",
+    "responsibility_and_artifact": "Ambiente, efectos y motivos que apoyen la historia."
+  },
+  {
+    "id": 47,
+    "profession": "Composición y supervisión musical",
+    "responsibility_and_artifact": "Identidad musical, edición y procedencia de pistas."
+  },
+  {
+    "id": 48,
+    "profession": "Mezcla y mastering de audio",
+    "responsibility_and_artifact": "Balance, dinámica, sonoridad, picos y escucha final."
+  },
+  {
+    "id": 49,
+    "profession": "Accesibilidad",
+    "responsibility_and_artifact": "Subtítulos, legibilidad, contraste y equivalencia de información."
+  },
+  {
+    "id": 50,
+    "profession": "Especialista del dominio explicado",
+    "responsibility_and_artifact": "Revisión del contenido de entrenamiento, nutrición o salud según alcance."
+  },
+  {
+    "id": 51,
+    "profession": "Gestión de derechos y licencias",
+    "responsibility_and_artifact": "Permisos de imagen, voz, música, modelos y distribución."
+  },
+  {
+    "id": 52,
+    "profession": "Mastering y entrega de video",
+    "responsibility_and_artifact": "Máster, codec, cuadros, sincronía y reproducción de exportaciones."
+  },
+  {
+    "id": 53,
+    "profession": "Seguridad y privacidad",
+    "responsibility_and_artifact": "Separación de cuentas, datos sintéticos y acceso a fuentes."
+  },
+  {
+    "id": 54,
+    "profession": "MLOps y granja de render",
+    "responsibility_and_artifact": "Versiones, colas, observabilidad, reintentos e infraestructura."
+  },
+  {
+    "id": 55,
+    "profession": "Economía de producción",
+    "responsibility_and_artifact": "Coste total, revisión, reutilización y análisis calidad--presupuesto."
+  },
+  {
+    "id": 56,
+    "profession": "Investigación con participantes",
+    "responsibility_and_artifact": "Información al participante, protocolo, registro y custodia de evaluaciones."
+  }
+]

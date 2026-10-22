@@ -1,0 +1,80 @@
+{
+  "date_utc": "2026-10-22",
+  "version": "0.1.0",
+  "python": "3.12.14",
+  "tests": {
+    "command": "python -m unittest discover -s tests -v",
+    "passed": 37,
+    "failed": 0
+  },
+  "syntax_python_3_11": "parsed successfully; runtime matrix in GitHub Actions",
+  "ui_javascript_syntax": "node --check passed",
+  "ui_http": "local server endpoints covered by tests",
+  "ui_browser_visual_test": "not executed: browser runtime download unavailable",
+  "optional_integrations": {
+    "blender": "not installed; adapter not executed",
+    "edge_tts": "optional adapter not executed; network and audition required"
+  },
+  "media": [
+    {
+      "frames": 1800,
+      "seconds": 60,
+      "resolution": [
+        540,
+        960
+      ],
+      "color_pipeline": "srgb_preview",
+      "technical": {
+        "technical_passed": true,
+        "checks": {
+          "frames": true,
+          "duration": true,
+          "size": true,
+          "fps": true,
+          "codec": true,
+          "decode": true,
+          "audio": true
+        },
+        "audio_present": true,
+        "editorial_quality": "requires human playback review"
+      },
+      "output_sha256": "dd2d5e15a910dbadab6caf65d177b22bafb5aafbdef547d12b7a377b06bf5d95",
+      "wall_seconds": 45.41384611600006,
+      "audio_lufs": "-14.02",
+      "audio_true_peak_dbtp": "-5.23",
+      "delivery_attempts": 1,
+      "recovered_errors": []
+    },
+    {
+      "frames": 24,
+      "seconds": 2.0,
+      "resolution": [
+        1920,
+        1080
+      ],
+      "color_pipeline": "srgb_linear_composite",
+      "technical": {
+        "technical_passed": true,
+        "checks": {
+          "frames": true,
+          "duration": true,
+          "size": true,
+          "fps": true,
+          "codec": true,
+          "decode": true,
+          "audio": true
+        },
+        "audio_present": true,
+        "editorial_quality": "requires human playback review"
+      },
+      "output_sha256": "c9d9cb474226bd72cf6fed6ad4783bbf3ff530afc19752762185d1d96c4db92c",
+      "wall_seconds": 13.280610669999987,
+      "audio_lufs": "-14.02",
+      "audio_true_peak_dbtp": "-6.60",
+      "delivery_attempts": 1,
+      "recovered_errors": []
+    }
+  ],
+  "human_editorial_review": "not asserted",
+  "note": "First 60-second validation produced a transient incomplete-container error; repeat passed. Release adds and tests one bounded remux retry."
+}

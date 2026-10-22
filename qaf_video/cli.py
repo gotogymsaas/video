@@ -1,0 +1,107 @@
+"""Command-line interface. All core production commands work without cloud keys."""
+from __future__ import annotations
+import argparse, asyncio, importlib.util, json, shutil, sys
+from pathlib import Path
+from .core import ValidationError, load, validate, atomic_json, run
+
+
+def parser():
+    p=argparse.ArgumentParser(prog='qaf-video',description='GoToGym Quantum Coach · audiovisual studio')
+    sub=p.add_subparsers(dest='command',required=True)
+    sub.add_parser('doctor',help='Check local dependencies and optional integrations')
+    init=sub.add_parser('init',help='Create a portable 60-second conceptual demonstration')
+    init.add_argument('folder');init.add_argument('--seconds',type=float,default=60);init.add_argument('--fps',type=int,default=30);init.add_argument('--samples',type=int,default=12)
+    for name in ['validate','plan','storyboard','render']:
+        c=sub.add_parser(name);c.add_argument('project',type=Path)
+        if name in ['validate','render']:c.add_argument('--final',action='store_true')
+        if name in ['plan','storyboard','render']:c.add_argument('--out',type=Path,required=True)
+        if name in ['storyboard','render']:c.add_argument('--profile',choices=['proxy','vertical','landscape-proxy','horizontal'],default='proxy')
+        if name=='plan':c.add_argument('--budget',type=int)
+    c=sub.add_parser('native-render');c.add_argument('--out',type=Path,required=True)
+    c.add_argument('--width',type=int,default=640);c.add_argument('--height',type=int,default=360)
+    c.add_argument('--samples',type=int,default=16);c.add_argument('--seed',type=int,default=22);c.add_argument('--bounces',type=int,default=5)
+    c=sub.add_parser('blender-render');c.add_argument('--out',type=Path,required=True)
+    c.add_argument('--width',type=int,default=1920);c.add_argument('--height',type=int,default=1080);c.add_argument('--samples',type=int,default=64)
+    c=sub.add_parser('mix');c.add_argument('--out',type=Path,required=True);c.add_argument('--seconds',type=float,required=True)
+    for name in ['voice','music','ambience','effects']:c.add_argument('--'+name,type=Path)
+    c=sub.add_parser('voice',help='Optional online synthesis; Colombian locale, accent subject to audition')
+    c.add_argument('--list',action='store_true');c.add_argument('--locale',default='es-CO')
+    c.add_argument('--text-file',type=Path);c.add_argument('--out',type=Path)
+    c.add_argument('--voice',default='es-CO-SalomeNeural');c.add_argument('--rate',default='+0%');c.add_argument('--pitch',default='+0Hz')
+    c=sub.add_parser('attach-voice',help='Attach recording and real caption intervals to a project')
+    c.add_argument('project',type=Path);c.add_argument('--asset',required=True)
+    c.add_argument('--captions',type=Path,required=True,help='JSON list, or .voice.json containing subtitles')
+    c=sub.add_parser('benchmark');c.add_argument('--out',type=Path)
+    c=sub.add_parser('build',help='Execute a confined built-in production DAG')
+    c.add_argument('workflow',type=Path);c.add_argument('--workspace',type=Path,required=True)
+    c=sub.add_parser('serve');c.add_argument('--workspace',default='projects');c.add_argument('--port',type=int,default=8765)
+    return p
+
+
+def main(argv=None):
+    p=parser();a=p.parse_args(argv)
+    try:
+        if a.command=='doctor':
+            result={'python':sys.version.split()[0],'ffmpeg':shutil.which('ffmpeg'),
+                    'ffprobe':shutil.which('ffprobe'),'blender':shutil.which('blender'),
+                    'edge_tts_installed':bool(importlib.util.find_spec('edge_tts')),
+                    'native_renderer':'CPU reference available','cloud_video_generation':'not integrated',
+                    'voice_accent':'Barranquilla requires an audition; not certified by locale',
+                    'core_ready':bool(shutil.which('ffmpeg') and shutil.which('ffprobe'))}
+        elif a.command=='init':
+            from .demo import create_project
+            result={'project':str(create_project(a.folder,a.seconds,a.fps,a.samples))}
+        elif a.command=='validate':result=validate(load(a.project),a.project.resolve().parent,a.final)
+        elif a.command=='plan':
+            from .planning import plan_project
+            result=plan_project(a.project,a.budget);atomic_json(a.out,result)
+        elif a.command=='storyboard':
+            from .pipeline import storyboard
+            result={'storyboard':str(storyboard(a.project,a.out,a.profile))}
+        elif a.command=='render':
+            from .pipeline import render_project
+            result=render_project(a.project,a.out,a.profile,a.final,
+                    progress=lambda x:print(f'\rRender {x:.0%}',end='',file=sys.stderr,flush=True))
+            print(file=sys.stderr)
+        elif a.command=='native-render':
+            from .render.pathtrace import save
+            result=save(a.out,width=a.width,height=a.height,samples=a.samples,seed=a.seed,bounces=a.bounces)
+        elif a.command=='blender-render':
+            from .render.blender_adapter import render
+            result={'image':str(render(a.out,width=a.width,height=a.height,samples=a.samples))}
+        elif a.command=='mix':
+            from .audio import mix_audio
+            result=mix_audio(a.out,a.seconds,a.voice,a.music,a.ambience,a.effects)
+        elif a.command=='voice':
+            from .voice import available_voices,synthesize
+            if a.list:result=asyncio.run(available_voices(a.locale))
+            else:
+                if not a.text_file or not a.out:p.error('voice requires --text-file and --out (or --list)')
+                result=asyncio.run(synthesize(a.text_file.read_text(encoding='utf-8'),a.out,a.voice,a.rate,a.pitch))
+        elif a.command=='attach-voice':
+            from .core import local_asset,sha256
+            m=load(a.project);audio=local_asset(a.project.resolve().parent,a.asset)
+            captions=json.loads(a.captions.read_text(encoding='utf-8'))
+            m.update(voice=a.asset,subtitles=captions.get('subtitles',[]) if isinstance(captions,dict) else captions,
+                     caption_audio_sha256=sha256(audio))
+            validate(m,a.project.resolve().parent);atomic_json(a.project,m)
+            from .voice import write_captions
+            write_captions(a.project.resolve().parent/'subtitles',m['subtitles'])
+            result={'attached':a.asset,'alignment_requires_human_review':True}
+        elif a.command=='benchmark':
+            from .planning import benchmark
+            result=benchmark()
+            if a.out:atomic_json(a.out,result)
+        elif a.command=='build':
+            from .graph import build
+            result=build(a.workflow,a.workspace)
+        elif a.command=='serve':
+            from .server import serve
+            serve(a.workspace,a.port);return 0
+        else:p.error('Unknown command')
+        print(json.dumps(result,ensure_ascii=False,indent=2,allow_nan=False));return 0
+    except (ValidationError,ValueError,OSError,RuntimeError) as e:
+        print(f'ERROR: {e}',file=sys.stderr);return 2
+
+
+if __name__=='__main__':raise SystemExit(main())

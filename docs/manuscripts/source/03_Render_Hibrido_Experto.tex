@@ -1,0 +1,132 @@
+\def\paperRoman{III}
+\input{preamble}
+\begin{document}
+\papertitle{III}{Arquitectura de render híbrido de nivel experto}{Transporte de luz, síntesis controlada, color y asignación de cómputo}
+\status{Especificación de un sistema de render por desarrollar. No se presenta el compositor actual como path tracer, motor 3D o generador de video cinematográfico.}
+\begin{abstract}
+Se propone un motor de producción híbrido que integra tomas reales, geometría tridimensional, render físicamente basado, recursos generativos controlados y composición tipográfica exacta. La contribución se sitúa en la coordinación de estos componentes: especificación de escena, restricciones de identidad y evidencia, presupuestos de error y decisiones de cómputo auditables. Se formalizan la ecuación de transporte de luz, un estimador Monte Carlo, muestreo por importancia, regularización temporal y asignación de muestras bajo presupuesto. La gestión de color se separa en cálculo radiométrico, apariencia de escena y gráficos de marca. El modelo QAF se considera una capa opcional de planificación de dependencias y recursos; su estado complejo no se confunde con radiancia óptica. Se especifica un benchmark para comparar calidad, tiempo y memoria frente a motores clásicos igualmente configurados, y se describe la transición desde el compositor Python existente. El resultado es una arquitectura para investigar acabado profesional con criterios de aceptación y límites reproducibles.
+\end{abstract}
+\keywords{render, Monte Carlo, PBR, composición, difusión latente, color, coherencia temporal, QAF}
+
+\section{Definición operacional de render experto}
+Un sistema de nivel experto debe producir imágenes coherentes con su intención física y narrativa, conservar identidad, permitir revisiones locales y dejar un máster reproducible. La resolución o la cantidad de efectos no bastan. Se requieren geometría y movimiento plausibles, iluminación consistente, materiales legibles, texto exacto, estabilidad temporal, color controlado y sonido integrado. La calidad final incluye lo que se ve en el dispositivo de destino tras compresión.
+
+La arquitectura diferencia cuatro rutas: material filmado, render 3D, recursos generados y gráficos determinísticos. Una toma humana puede conservarse como base mientras una visualización conceptual se compone aparte. Un modelo generativo puede proponer una textura o un fondo; no debe regenerar el logo, la cifra de una demostración o una interfaz que deba ser exacta. La ruta elegida se registra por plano y por capa.
+
+La contribución QAF propuesta organiza las relaciones entre elección de toma, continuidad, coste, evidencia y resultado. La integración no convierte el cálculo radiométrico en un proceso cuántico físico. La interferencia representacional de decisiones y la luz simulada pertenecen a objetos matemáticos diferentes. El sistema debe funcionar con un planificador clásico cuando esa sea la opción mejor sustentada.
+
+\section{Representación canónica de escena y grafo de producción}
+Una escena incluye unidades, geometría, cámaras, transformaciones, materiales, iluminación, ambiente, animación y objetivos de salida. Los activos poseen identificador de contenido, origen, permiso, versión y dependencias. La línea de tiempo mantiene cuadros racionales, capas, recortes y transiciones. Un formato de intercambio como OpenTimelineIO puede transportar decisiones de montaje y referencias externas; no contiene por sí mismo los medios ni los renderiza \cite{otio}.
+
+El grafo dirigido acíclico $G=(V,E)$ representa tareas de producción. Una arista $u\to v$ indica dependencia de datos; una relación estética entre planos se registra en otro grafo y no debe crear ciclos de ejecución. Cada nodo declara entradas, salida esperada, motor, versión, semilla, estimación de tiempo, memoria y condición de invalidación. Una revisión de color no debe obligar a reconstruir geometría si no cambian sus dependencias.
+
+La clave de caché es un hash de la representación canónica de entradas, versión de motor y configuración. Ordenar claves JSON y fijar unidades evita diferencias irrelevantes. La reproducibilidad de un renderer GPU puede ser estadística, no idéntica bit a bit: se registra tolerancia numérica y plataforma. El hash prueba identidad de bytes; no prueba derechos ni corrección de la escena.
+
+\section{Transporte de luz y estimación}
+Para superficies, el modelo físico de referencia es la ecuación de render \cite{pbr}:
+\begin{equation}
+ L_o(x,\omega_o)=L_e(x,\omega_o)+\int_{\Omega^+}f_r(x,\omega_i,\omega_o)
+ L_i(x,\omega_i)|n\cdot\omega_i|\,d\omega_i.
+\end{equation}
+$L_o$ y $L_i$ son radiancias, $L_e$ emisión y $f_r$ una BRDF con unidades de inverso de estereorradián. La BRDF debe satisfacer condiciones físicas apropiadas, incluidas no negatividad y conservación de energía. El modelo se amplía para transmisión, volumen y espectro cuando la escena lo necesita; no se finge que una superficie opaca cubre todos esos fenómenos.
+
+Un estimador de una integral de contribución de caminos $f(\xi)$ es
+\begin{equation}
+ \widehat L=\frac1N\sum_{n=1}^N\frac{f(\xi_n)}{p(\xi_n)},\qquad\xi_n\sim p,
+\end{equation}
+con soporte de $p$ sobre las contribuciones relevantes y densidades expresadas respecto a la misma medida. Muestrear direcciones, área o caminos exige conversiones de medida correctas. La estimación sin sesgo no implica una imagen sin ruido para $N$ finito.
+
+Cuando se combinan técnicas de muestreo $p_k$, se usa un estimador MIS con pesos que sumen uno para una contribución dada. La heurística de potencia es una opción:
+\begin{equation}
+ w_k(\xi)=\frac{(n_kp_k(\xi))^\beta}{\sum_j(n_jp_j(\xi))^\beta},\qquad\beta>0.
+\end{equation}
+No se mezclan muestras omitiendo su densidad o contabilizando dos veces una luz. Russian roulette puede terminar caminos con reponderación para mantener el estimador adecuado. El trazado, los materiales y estos muestreos corresponden a motores de render especializados; no están implementados por el compositor de video del prototipo.
+
+\section{Asignación adaptativa de muestras y presupuesto}
+Se estima la varianza de cada región $\sigma_i^2$ con muestras piloto independientes o con un estimador cuya dependencia se controle. Si una muestra cuesta $c_i$ y la región tiene importancia editorial $w_i$, una aproximación al error esperado es
+\begin{equation}
+ \min_{n_i>0}\sum_i\frac{w_i\sigma_i^2}{n_i}
+ \quad\text{sujeto a}\quad\sum_ic_in_i\leq B.
+\end{equation}
+La condición de primer orden proporciona
+\begin{equation}
+ n_i^*=\sigma_i\sqrt{\frac{w_i}{\lambda c_i}},\qquad
+ \sqrt\lambda=\frac{\sum_i\sigma_i\sqrt{w_ic_i}}{B}.
+\end{equation}
+Se añaden mínimos de muestras, límites, redondeo entero y reasignación del resto del presupuesto. $w_i$ puede elevarse para rostro, prenda, logo o información crítica, pero debe definirse antes de observar el resultado de evaluación. Las correlaciones temporales y el sesgo de denoising requieren un modelo de error adicional.
+
+La memoria impone una restricción simultánea por dispositivo: texturas, geometría, buffers y red neuronal deben caber en el pico, no solo en el tamaño del archivo. La latencia integral se descompone en preparación, carga, compilación, render, denoising, composición y codificación. Se reporta tanto trabajo total como camino crítico; sumar tiempos de tareas paralelas no equivale al tiempo de pared.
+
+Un planificador QAF solo tiene sentido si las dependencias no aditivas cambian materialmente la asignación: por ejemplo, dos planos que necesitan la misma textura de alta resolución o un cambio de iluminación que invalida varias capas. El comparador clásico recibe esas mismas interacciones. La heurística de varianza anterior constituye un baseline fuerte y transparente.
+
+\section{Recursos generativos y conservación de identidad}
+Los modelos de difusión latente constituyen un antecedente para síntesis condicionada de imágenes \cite{ldm}; no demuestran por sí mismos continuidad de personajes o control cinematográfico de un minuto. Se propone un contrato que separa referencia de identidad, descripción de escena, pose, profundidad, máscaras y restricciones de edición. El objetivo de entrenamiento o ajuste debe distinguir reconstrucción, condición y consistencia.
+
+Una función de diseño para recursos secuenciales es
+\begin{equation}
+ \mathcal L=\lambda_r\mathcal L_{\mathrm{recon}}+
+ \lambda_c\mathcal L_{\mathrm{cond}}+\lambda_i\mathcal L_{\mathrm{id}}+
+ \lambda_t\mathcal L_{\mathrm{temp}}+\lambda_b\mathcal L_{\mathrm{marca}}.
+\end{equation}
+La formulación es propuesta: pesos, corpus y modelos no han sido entrenados para esta serie. Las métricas de identidad se complementan con inspección de rostro, manos, vestuario y producto; una distancia de embeddings pequeña no impide un error visible.
+
+Para regiones visibles en cuadros consecutivos, una pérdida temporal candidata es
+\begin{equation}
+ \mathcal L_{\mathrm{temp}}=\sum_t\|M_t\odot[I_t-W(I_{t-1},v_t)]\|_1.
+\end{equation}
+$W$ es una deformación con flujo o movimiento y $M_t$ excluye oclusiones, zonas nuevas y cambios intencionales. Penalizar sin máscara puede producir arrastre de imagen o borrar movimiento real. Los cortes no se tratan como continuidad de píxel. Se mantienen también restricciones de geometría y materiales, porque estabilizar píxeles no garantiza física consistente.
+
+Los elementos exactos se generan fuera de la red de imagen: números, subtítulos, ejes, fuentes, rótulos y logo original. La separación facilita corregir una afirmación sin regenerar el rostro. Una imagen conceptual conserva metadatos que permitan identificar qué parte es recreación.
+
+\section{Color, composición y máster}
+El transporte se calcula en un espacio adecuado de trabajo lineal. La configuración de color, transformaciones y dispositivo de revisión se versionan. ACES ofrece una arquitectura de transformaciones hacia salidas y condiciones de visualización específicas; no se aplica una curva indistinta a todos los archivos \cite{aces}. OpenColorIO permite configurar y validar transformaciones; una configuración sintácticamente correcta tampoco garantiza una intención de color correcta \cite{ocio}.
+
+La composición debe respetar el significado de alfa. Para colores premultiplicados:
+\begin{equation}
+ C_{\mathrm{out}}^{p}=C_f^{p}+(1-\alpha_f)C_b^{p},\qquad
+ \alpha_{\mathrm{out}}=\alpha_f+(1-\alpha_f)\alpha_b.
+\end{equation}
+Operar en un espacio codificado no lineal o confundir alfa recto y premultiplicado produce bordes y mezclas incorrectas. El compositor actual basado en Pillow no se certifica como pipeline lineal ACES; es una base de animatic y composición editorial. La transición profesional requiere un compositor y transformaciones con precisión y gestión de color demostradas.
+
+Se separan capas referidas a escena de gráficos referidos a pantalla. Un logo no debe recibir automáticamente el mismo look que una tela iluminada. El flujo de gráficos debe asegurar una conversión correcta a la salida, evitando transformaciones dobles. Los códigos de marca se verifican en parches controlados y en la imagen final; no se garantiza identidad perceptual en todos los móviles sin perfiles y condiciones conocidos.
+
+El máster de imagen puede almacenarse como secuencia de alta precisión con audio sin pérdidas y metadatos. El formato de distribución se deriva del máster y se revisa tras codificar. Una versión de 10 bits, si se adopta, requiere soporte en toda la cadena y en la salida; cambiar el contenedor no crea información de color ausente.
+
+\section{Motor, módulos y estados de desarrollo}
+\begin{table}[ht]\centering\compacttable
+\begin{tabular}{p{.27\linewidth}p{.31\linewidth}p{.31\linewidth}}\toprule
+Componente & Base observada & Desarrollo propuesto \\\midrule
+Composición editorial & Python, imágenes/clips, texto, timeline & Intercambio y composición lineal de precisión.\\
+Render físico & No implementado en Studio v2 & Adaptador a motor PBR, escenas y capas.\\
+Generación temporal & No acreditada & Proveedor/modelo con pruebas de identidad.\\
+Gestión de color & No certificada ACES & Configuración versionada y monitorización.\\
+Recursos QAF & Formalismo de decisión & Comparación contra asignador clásico.\\
+QA de entrega & Duración, cuadros y decodificación & Error temporal, color, memoria y evaluación humana.\\\bottomrule
+\end{tabular}\caption{Separación entre prototipo y capacidades que necesitan implementación.}
+\end{table}
+
+El render se ejecuta por lotes idempotentes. Cada lote declara rango de cuadros y estado: pendiente, en ejecución, parcial, fallido o verificado. Un cuadro ausente no se sustituye silenciosamente por el anterior. Se conserva el log del motor y la lista exacta de resultados; la entrega se publica después de completar la verificación, mediante cambio atómico de versión.
+
+Los nodos no tienen autoridad para modificar textos aprobados o reemplazar el logo. Una propuesta generada se somete a revisión de evidencia y marca antes de ser aceptada en el grafo. Las dependencias permiten invalidar solo lo necesario cuando cambia una cifra o una toma.
+
+\section{Benchmark y definición de liderazgo técnico}
+El banco propuesto contiene escenas humanas, textiles, superficies reflectantes, luz interior, exteriores y gráficos sobre video. Se incluyen movimiento, oclusión y cambios de formato. Los métodos reciben igual geometría, materiales, duración, activos permitidos y presupuesto. Se compara un motor clásico configurado profesionalmente, una asignación adaptativa clásica y el planificador relacional propuesto.
+
+Se miden error de imagen contra referencia convergida cuando exista, estabilidad temporal, desviación de parches, exactitud de texto, tiempo de pared, memoria pico, energía medida y coste de revisión. LPIPS puede aportar una distancia perceptual de referencia \cite{lpips}; no es una medida suficiente de calidad artística o verdad de producto. Los cambios creativos deliberados no se penalizan como error de reconstrucción contra una referencia inadecuada.
+
+La aspiración de liderazgo mundial debe convertirse en comparaciones públicas o auditables, con configuración documentada, fallos y evaluación a ciegas. Un resultado aislado de resolución alta o render veloz no acredita ese liderazgo. Debe demostrarse una frontera calidad--coste favorable en el conjunto de tareas y conservar la capacidad de repetirla.
+
+\section{Conclusión}
+El camino a un render experto combina transporte físico, control de activos, coherencia temporal, composición exacta y operación reproducible. La aportación QAF se investiga en la coordinación de decisiones y recursos; su utilidad no se supone. Esta separación permite explotar el conocimiento del marco sin atribuirle efectos ópticos o ventajas que no se han medido.
+
+\begin{thebibliography}{E6}
+\bibitem[Q2]{q2} Bancells, A. (2026). \emph{QAF: dinámica operacional no conmutativa y compilación QUBO asíncrona}. Documento aportado.
+\bibitem[Q5]{q5} Goenaga, J. M. (2026). \emph{Consolidated Experimental Evidence for QAF}. Documento aportado.
+\bibitem[E1]{pbr} Pharr, M.; Jakob, W.; Humphreys, G. \emph{Physically Based Rendering}, 4.ª ed., cap. 13. \url{https://www.pbr-book.org/4ed/Light_Transport_I_Surface_Reflection/Path_Tracing}.
+\bibitem[E2]{ldm} Rombach et al. (2022). High-resolution image synthesis with latent diffusion models. CVPR. \url{https://arxiv.org/abs/2112.10752}.
+\bibitem[E3]{aces} Academy of Motion Picture Arts and Sciences. ACES Output Transforms. \url{https://docs.acescentral.com/system-components/output-transforms/}.
+\bibitem[E4]{ocio} Academy Software Foundation. OpenColorIO, Authoring Configurations. \url{https://opencolorio.readthedocs.io/en/latest/guides/authoring/authoring.html}.
+\bibitem[E5]{otio} Academy Software Foundation. OpenTimelineIO, documentación primaria. \url{https://opentimelineio.readthedocs.io/en/latest/index.html}.
+\bibitem[E6]{lpips} Zhang et al. (2018). The unreasonable effectiveness of deep features as a perceptual metric. CVPR. \url{https://arxiv.org/abs/1801.03924}.
+\end{thebibliography}
+\end{document}

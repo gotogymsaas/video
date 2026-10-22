@@ -1,0 +1,39 @@
+{
+  "status": "provisional_from_supplied_references",
+  "colors": {
+    "graphite": "#101012",
+    "emerald": "#1A9B76",
+    "sapphire": "#17375C",
+    "silver": "#E0E3E6",
+    "gold": "#D4B46A",
+    "cobalt": "#284F7E",
+    "turquoise": "#0FBFB0",
+    "purple": "#69324F",
+    "carbon": "#404045",
+    "white": "#F8F9FA"
+  },
+  "editorial_extension": {
+    "status": "proposal_to_align_with_brand_team",
+    "warm_paper": "#EEEAE1",
+    "campaign_cyan": "#35B5E5",
+    "campaign_blue": "#0864C8"
+  },
+  "voice": {
+    "candidate": "es-CO-SalomeNeural",
+    "rate": "+0%",
+    "pitch": "+0Hz",
+    "barranquilla_accent": "requires_audition"
+  },
+  "export": {
+    "fps": 30,
+    "seconds": 60,
+    "vertical": [
+      1080,
+      1920
+    ],
+    "horizontal": [
+      1920,
+      1080
+    ]
+  }
+}

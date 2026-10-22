@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gotogym-qaf-video"
+version = "0.1.0"
+description = "Evidence-aware audiovisual production system for GoToGym"
+requires-python = ">=3.11"
+authors = [{name = "Juan Manuel Goenaga Castro"}]
+license = {text = "All rights reserved; see NOTICE.md and bundled font license"}
+dependencies = ["numpy>=2.0,<3", "Pillow>=11,<13"]
+
+[project.optional-dependencies]
+voice = ["edge-tts>=7,<8"]
+
+[project.scripts]
+qaf-video = "qaf_video.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["qaf_video*"]
+
+[tool.setuptools.package-data]
+qaf_video = ["assets/*.json", "assets/fonts/*", "web/*.html"]

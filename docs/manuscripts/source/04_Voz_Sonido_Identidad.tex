@@ -1,0 +1,122 @@
+\def\paperRoman{IV}
+\input{preamble}
+\begin{document}
+\papertitle{IV}{Voz, sonido e identidad audiovisual}{Síntesis expresiva, casting barranquillero, sincronización y mezcla verificable}
+\status{Arquitectura y protocolo de evaluación. Existe una prueba técnica con tonos sintéticos; no se ha seleccionado ni validado una voz barranquillera para la serie.}
+\begin{abstract}
+Se propone un sistema de identidad sonora para películas explicativas de GoToGym que separa voz de marca, pronunciación, acento regional, inteligibilidad, expresividad y calidad de mezcla. La locución femenina colombiana con identidad barranquillera se trata como un problema de casting y validación perceptual, no como un parámetro de velocidad o tono. Se formalizan un modelo condicionado de generación de voz, una optimización restringida de duración y una alineación temporal basada en señales reales. La mezcla se define por stems independientes, control de dinámica y medición de sonoridad conforme al algoritmo de referencia pertinente. Se distingue el objetivo editorial de distribución digital de la normalización de radiodifusión. Se especifican conjuntos de prueba, evaluadores, métricas, contratos de proveedor y criterios de rechazo. La contribución QAF se plantea en la coordinación contextual entre mensaje, momento narrativo y decisiones de sonido, con comparación frente a reglas y modelos clásicos igualmente informados.
+\end{abstract}
+\keywords{voz de marca, español colombiano, Barranquilla, TTS, prosodia, alineación, sonoridad, diseño sonoro}
+
+\section{La identidad vocal como objeto de diseño}
+La voz de marca debe ser reconocible sin volverse una caricatura. En esta serie se propone una voz adulta, femenina, cálida, segura y cercana, con cadencia barranquillera natural. La especificación describe una intención; el acento y la identidad se acreditan mediante escucha por personas competentes, incluidas hablantes y oyentes de la región. Un identificador de idioma colombiano no prueba pertenencia a una ciudad ni valoración cultural adecuada.
+
+El sistema mantiene rutas equivalentes para una locutora humana y para síntesis autorizada. La primera permite dirigir interpretación y pronunciación con control regional; la segunda puede facilitar versiones y revisiones cuando la identidad esté aprobada. No se presupone que un modelo propio será mejor que una voz licenciada bien seleccionada. Se registra quién puede usar la voz, para qué medios, durante cuánto tiempo y si está permitida una adaptación sintética.
+
+La dirección sonora depende de la función del segmento. El gancho puede iniciar con voz íntima y ambiente reconocible; el mecanismo exige dicción precisa; el cierre deja tiempo de lectura. La emoción se relaciona con lo que se cuenta, no con un incremento automático de pitch o volumen. Los elementos de salud se narran con calma; un efecto de alarma no debe conferir autoridad médica a una orientación educativa.
+
+\section{Modelo condicionado y restricciones}
+Sea $x$ el texto normalizado, $s$ la identidad vocal autorizada, $r$ la referencia regional aprobada y $v$ el estado expresivo. La generación puede representarse por
+\begin{equation}
+ y\sim p_\theta(y\mid x,s,r,v,\tau),
+\end{equation}
+donde $y$ es la señal de audio y $\tau$ el presupuesto temporal. La arquitectura concreta puede usar modelos acústicos, vocoders o inferencia conjunta. VITS constituye un antecedente de generación con variables latentes y duraciones estocásticas \cite{vits}; no se usa su desempeño publicado como evidencia para español barranquillero o para un proveedor distinto.
+
+El acento no se define únicamente por formantes, frecuencia fundamental o velocidad media. Incluye rasgos segmentales, ritmo, entonación y variación individual, con interacción entre texto, estilo y situación. Un modelo que tenga un embedding regional puede no reproducirlos de forma consistente. La aceptación depende de escucha, estabilidad en textos nuevos y ausencia de exageración.
+
+Se propone separar funciones de pérdida y requisitos:
+\begin{equation}
+ \mathcal L_{\mathrm{voz}}=\lambda_a\mathcal L_{\mathrm{acústica}}+
+ \lambda_d\mathcal L_{\mathrm{duración}}+\lambda_p\mathcal L_{\mathrm{prosodia}}+
+ \lambda_i\mathcal L_{\mathrm{identidad}},
+\end{equation}
+con restricciones de inteligibilidad, autorización y pronunciación. Esta es una especificación de entrenamiento o evaluación, no un modelo entrenado para la serie. Una reducción de pérdida acústica puede no mejorar la preferencia humana o la autenticidad regional.
+
+\section{Texto, glosario y tiempo narrativo}
+El texto escrito para pantalla y el texto pronunciable son objetos ligados pero distintos. Se mantiene un glosario con nombre canónico, pronunciación aprobada y variantes prohibidas. GoToGym, Quantum Coach, QAF, siglas y números deben escucharse antes de fijar la voz. Los sustitutos fonéticos del sintetizador no se muestran como nombres escritos de marca.
+
+La normalización verbal expande fechas, unidades, abreviaturas y símbolos conforme al contexto. Una expresión como ``15 min'' se pronuncia como una cantidad de tiempo y una incertidumbre como intervalo; no se borra una limitación científica porque dificulte el ritmo. Las decisiones de verbalización se versionan junto con el guion.
+
+Se considera una secuencia de unidades de habla $j$, con duraciones estimadas $d_j$ y pausas $p_j$:
+\begin{equation}
+ T_{\mathrm{voz}}=\sum_jd_j+\sum_jp_j\leq T_{\mathrm{presupuesto}}.
+\end{equation}
+La restricción inicial del proyecto es locución de hasta 55 s dentro de un episodio de 60 s; es una decisión editorial, no una regla universal. La duración se mide sobre el audio generado o grabado. La cuenta de palabras solo sirve para escribir una primera versión.
+
+Para ajustar ritmo se minimiza una distancia a la interpretación aprobada:
+\begin{equation}
+ \min_{d,p}\sum_jw_j(d_j-d_j^0)^2+\sum_j\eta_j(p_j-p_j^0)^2,
+\end{equation}
+sujeto a límites de duración por unidad, pausas mínimas y tiempo total. Las cifras y términos científicos pueden recibir mayor protección. Si la solución exige cambios excesivos, se reescribe el guion. Acelerar globalmente una voz no equivale a resolver la narración.
+
+\section{Alineación y sincronización con imagen}
+Los subtítulos se alinean contra el audio real de la versión elegida. Se admite transcripción con tiempos, alineación forzada o ajuste manual verificable. No se asignan tiempos uniformes a palabras porque el habla contiene pausas y duraciones desiguales. La señal y el texto normalizado comparten identificador para evitar alinear una toma con otro guion.
+
+En una formulación CTC, las secuencias temporales $\pi$ incluyen símbolos y blancos; la probabilidad del texto $\ell$ es
+\begin{equation}
+ P(\ell\mid y)=\sum_{\pi:\mathcal B(\pi)=\ell}\prod_tP(\pi_t\mid y).
+\end{equation}
+El operador $\mathcal B$ elimina blancos y repeticiones conforme al modelo. El alineador requiere un modelo compatible con el idioma; confianza alta no garantiza una pronunciación correcta de una marca. Se inspeccionan fronteras de palabras y segmentos críticos, con errores expresados en milisegundos.
+
+La programación audiovisual conserva tres tiempos: cuadro, muestra de audio y tiempo del alineador. Para 30 fps y 48 kHz, un cuadro contiene 1.600 muestras exactamente. Otras frecuencias requieren aritmética racional para evitar deriva. Los cortes deben preservar consonantes, colas de reverberación y respiraciones que tengan función expresiva.
+
+No se introduce sincronía labial si la película usa narración externa sobre personas que no hablan. Si aparece una cara hablando, se evalúan fonemas, visemas, oclusión y movimiento facial; la correspondencia temporal por sí sola no garantiza naturalidad. La generación de labios es un componente adicional pendiente, no una propiedad automática de cualquier clip.
+
+\section{Diseño sonoro y mezcla por stems}
+Los stems mínimos son voz, música, ambiente y efectos. Cada uno mantiene origen, licencia, nivel, transformaciones y rangos de uso. El ambiente establece presencia; la música sostiene continuidad; los efectos señalan una relación o decisión. La mezcla debe seguir siendo comprensible en un altavoz móvil y conservar sentido sin auriculares.
+
+Una envolvente de sidechain puede definirse desde la energía de voz:
+\begin{align}
+ e[n]&=\alpha e[n-1]+(1-\alpha)x_v[n]^2,\\
+ g_m[n]&=\min\left(1,\left(\frac{T}{\sqrt{e[n]}+\varepsilon}\right)^\kappa\right),\\
+ y[n]&=g_vx_v[n]+g_m[n]g_{m,0}x_m[n]+x_a[n]+x_e[n].
+\end{align}
+Es un modelo ilustrativo. Una implementación profesional distingue ataque, liberación, umbral, ratio y detección de canal; debe evitar bombeo y cambios perceptibles en pausas cortas. El ducking no resuelve frecuencias que enmascaran consonantes ni una música inadecuada para la voz. Ecualización, automatización y selección musical siguen siendo decisiones de mezcla.
+
+La compresión dinámica, la limitación de picos y la normalización de sonoridad tienen funciones diferentes. Una señal normalizada puede contener distorsión, ruido o consonantes débiles. El objetivo editorial inicial de distribución digital es $-14$ LUFS integrados y pico real máximo $-1$ dBTP, sujeto al canal y a la prueba de escucha; no se atribuye a una exigencia universal de redes sociales.
+
+\section{Medición y control de calidad}
+La recomendación ITU-R BS.1770-5 especifica algoritmos de sonoridad de programa y pico real \cite{itu}. Una expresión resumida del cálculo sobre energías ponderadas es
+\begin{equation}
+ L_K=-0.691+10\log_{10}\left(\sum_iG_iz_i\right),
+\end{equation}
+con filtrado, canales y compuertas definidos por el estándar; implementar solo la fórmula sin esos componentes no reproduce la medición. EBU R 128 recomienda $-23$ LUFS para su contexto de normalización de programa \cite{ebu}. Ese objetivo no se confunde con el perfil digital de esta serie.
+
+El pico real requiere estimación entre muestras; el máximo de amplitud discreta no basta. Se mide también después de codificar la distribución, porque el codec puede cambiar picos y sonoridad. Un informe incluye formato de entrada/salida, frecuencia de muestreo, canales, herramienta y versión, objetivo, medida final y estado de escucha humana.
+
+En el prototipo anterior se probó mezcla y normalización con tonos sintéticos, obteniéndose $-14{,}19$ LUFS y $-6{,}39$ dBTP en esa señal de prueba. El resultado acredita que esa ruta pudo producir una salida medida en su objetivo aproximado; no acredita calidad de voz, inteligibilidad, acento o preferencia musical. Los tonos no se presentan como audición.
+
+\section{Casting y evaluación de identidad barranquillera}
+El casting utiliza los mismos textos, sin identificar el proveedor ante los oyentes. Se incluyen frases conversacionales, términos de producto, números, preguntas y advertencias. Las candidatas iniciales pueden ser una voz sintética colombiana, una locutora barranquillera y una voz personalizada autorizada si existe corpus adecuado. La selección no depende únicamente de precio o latencia.
+
+\begin{table}[ht]\centering\compacttable
+\begin{tabular}{p{.24\linewidth}p{.37\linewidth}p{.29\linewidth}}\toprule
+Dimensión & Prueba & Criterio propuesto \\\midrule
+Inteligibilidad & Transcripción y escucha con ruido móvil & Error y omisiones, especialmente nombres/cifras.\\
+Autenticidad regional & Oyentes y profesional de habla regional & Juicio contextual; no estereotipo fonético fijo.\\
+Naturalidad & Preferencia pareada y escala ordinal & Intervalo de incertidumbre y dispersión.\\
+Marca & Reconocimiento y adecuación de tono & Cercanía y credibilidad sin promesa médica.\\
+Consistencia & Textos nuevos y varias sesiones & Identidad estable sin entonación repetitiva.\\
+Tiempo & Audio medido y alineación & Sin palabras cortadas ni aceleración excesiva.\\\bottomrule
+\end{tabular}\caption{Dimensiones separadas para evitar que naturalidad sustituya autenticidad.}
+\end{table}
+
+WER mide transcripción, no autenticidad regional. Un reconocedor puede tener sesgo frente a variedades del español; los errores se revisan manualmente. La escala MOS se trata como ordinal y se acompaña de preferencia pareada, distribución y análisis por oyente. El panel registra familiaridad regional, condiciones de escucha y contexto, sin afirmar que una persona representa a toda Barranquilla.
+
+\section{Coordinación QAF y operación}
+La aportación relacional candidata vincula intención, evidencia, estado narrativo, pronunciación y presupuesto temporal. Se puede modelar un grafo en el que una cifra incierta exige una verbalización más cauta, una pausa de lectura limita el texto siguiente y un corte modifica la música. La representación QAF se compara con un planificador de restricciones o modelo secuencial clásico que reciba ese mismo grafo.
+
+No se sintetiza una voz distinta silenciosamente si el proveedor falla. El servicio genera identificadores de toma, aplica reintentos acotados, guarda el error y verifica duración y archivo. La publicación usa una toma aprobada por su hash; los subtítulos y la mezcla se invalidan cuando cambia la voz. Se mantiene acceso al audio humano original cuando esa sea la fuente elegida.
+
+\section{Conclusión}
+La identidad sonora profesional emerge de casting, interpretación, texto, alineación y mezcla medidos como capacidades distintas. El formalismo permite coordinar restricciones; no crea automáticamente una voz regional auténtica. La siguiente fase debe producir audiciones y ensayos de escucha antes de fijar la identidad de toda la serie.
+
+\begin{thebibliography}{E5}
+\bibitem[Q5]{q5} Goenaga, J. M. (2026). \emph{Consolidated Experimental Evidence for QAF}. Documento aportado.
+\bibitem[E1]{vits} Kim, J.; Kong, J.; Son, J. (2021). Conditional variational autoencoder with adversarial learning for end-to-end text-to-speech. \emph{PMLR 139}, 5530--5540. \url{https://proceedings.mlr.press/v139/kim21f.html}.
+\bibitem[E2]{itu} ITU-R. \emph{BS.1770-5: Algorithms to measure audio programme loudness and true-peak audio level}. 2023. \url{https://www.itu.int/rec/R-REC-BS.1770/en}.
+\bibitem[E3]{ebu} EBU. \emph{R 128: Loudness normalisation and permitted maximum level of audio signals}, versión 5.0, noviembre 2023. \url{https://tech.ebu.ch/publications/r128}.
+\bibitem[E4]{ffmpeg} FFmpeg. Filters documentation, loudnorm y sidechaincompress. Consulta 22/10/2026. \url{https://www.ffmpeg.org/ffmpeg-filters.html}.
+\bibitem[E5]{ctc} Graves et al. (2006). Connectionist temporal classification. ICML. Antecedente del criterio CTC; la arquitectura de alineación regional debe verificarse independientemente. \url{https://www.cs.toronto.edu/~graves/icml_2006.pdf}.
+\end{thebibliography}
+\end{document}

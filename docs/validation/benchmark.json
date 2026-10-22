@@ -1,0 +1,71 @@
+{
+  "seed": 22,
+  "sites": 3,
+  "chi": 4,
+  "local_rdm_max_error": 2.236810554189509e-16,
+  "tdvp_reference": [
+    {
+      "dt": 0.04,
+      "state_l2_error": 6.088719389701735e-06
+    },
+    {
+      "dt": 0.02,
+      "state_l2_error": 7.644628229685403e-07
+    },
+    {
+      "dt": 0.01,
+      "state_l2_error": 9.576967939344089e-08
+    }
+  ],
+  "classical_exact_reference": "Hermitian eigendecomposition; same H and initial state",
+  "qubo_selected": [
+    "B",
+    "C"
+  ],
+  "coherence_fixture": {
+    "available": true,
+    "real": -0.30137968651625846,
+    "imag": 0.7743687843104898,
+    "magnitude": 0.8309492942166472
+  },
+  "povm_phase_fixture": {
+    "plus": [
+      1.0,
+      0.0
+    ],
+    "minus": [
+      0.0,
+      1.0
+    ]
+  },
+  "evidence_event_fixture": {
+    "replan": true,
+    "trace_distance": 0.0,
+    "evidence_invalidation": true,
+    "new_constraint": false,
+    "threshold": 0.05
+  },
+  "sampling_advisor_fixture": {
+    "samples": [
+      25,
+      75
+    ],
+    "spent": 100.0,
+    "budget": 100,
+    "expected_variance_proxy": 0.16,
+    "method": "continuous_square_root_plus_greedy_integer",
+    "global_integer_optimality": false
+  },
+  "power_example": {
+    "independent_pairs": 32,
+    "approximate": true,
+    "alpha": 0.05,
+    "power": 0.8,
+    "delta": 0.4,
+    "assumed_sigma_difference": 0.8,
+    "note": "Requires independent paired units and suitable distribution assumptions; not clustered ratings."
+  },
+  "wall_seconds": 0.014596302999962063,
+  "scope": "small-system numerical smoke benchmark; no claim of production speed or perceptual superiority",
+  "qaf_superiority_claim": false
+}

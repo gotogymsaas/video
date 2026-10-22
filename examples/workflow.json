@@ -1,0 +1,32 @@
+{
+  "schema": "qaf_production_graph_v1",
+  "nodes": [
+    {
+      "id": "light",
+      "kind": "native_render",
+      "output": "episodio-01/assets/light-study.png",
+      "settings": {"width": 640, "height": 360, "samples": 32, "seed": 22, "bounces": 5}
+    },
+    {
+      "id": "evidence",
+      "kind": "validate",
+      "project": "episodio-01/project.json",
+      "depends": ["light"]
+    },
+    {
+      "id": "storyboard",
+      "kind": "storyboard",
+      "project": "episodio-01/project.json",
+      "output": "episodio-01/outputs/storyboard.jpg",
+      "depends": ["evidence"]
+    },
+    {
+      "id": "delivery",
+      "kind": "render",
+      "project": "episodio-01/project.json",
+      "output": "episodio-01/outputs/video-proxy.mp4",
+      "profile": "proxy",
+      "depends": ["evidence"]
+    }
+  ]
+}

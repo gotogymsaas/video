@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+build/
+dist/
+outputs/
+projects/
+.env
+.qaf-cache/
+*.aux
+*.log
+*.out
+*.toc

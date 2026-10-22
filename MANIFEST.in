@@ -1,0 +1,6 @@
+include README.md NOTICE.md CHANGELOG.md start_studio.sh start_studio.bat
+recursive-include qaf_video/assets *.json *.ttf *.txt
+recursive-include qaf_video/web *.html
+recursive-include docs *.md *.pdf *.tex *.json
+recursive-include examples *.json *.jpg
+recursive-include tests *.py

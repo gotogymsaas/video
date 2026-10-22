@@ -1,0 +1,41 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[margin=22mm,top=23mm,bottom=23mm]{geometry}
+\usepackage{fontspec}
+\setmainfont{Latin Modern Roman}
+\setsansfont{DejaVu Sans}
+\usepackage{babel}
+\babelprovide[import,main]{spanish}
+\usepackage{amsmath,amssymb}
+\usepackage{unicode-math}
+\setmathfont{Latin Modern Math}
+\usepackage{graphicx,booktabs,longtable,array,enumitem,xcolor,fancyhdr,xurl,hyperref,tikz,microtype}
+\usetikzlibrary{arrows.meta,positioning}
+\definecolor{navy}{HTML}{17375C}
+\definecolor{teal}{HTML}{0F8F86}
+\definecolor{gold}{HTML}{B28B3C}
+\hypersetup{colorlinks=true,linkcolor=navy,urlcolor=teal,citecolor=navy,pdfauthor={Juan Manuel Goenaga Castro}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.2pt}
+\linespread{1.07}
+\setlist{nosep,leftmargin=1.5em,topsep=4pt}
+\setlength{\headheight}{15pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\footnotesize GoToGym Quantum Research}
+\fancyhead[R]{\sffamily\footnotesize Serie QAF audiovisual / \paperRoman}
+\fancyfoot[L]{\sffamily\scriptsize Prepublicación metodológica / 22 de octubre de 2026}
+\fancyfoot[R]{\sffamily\footnotesize\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\newcommand{\papertitle}[3]{\begin{center}\sffamily\small\textcolor{teal}{MANUSCRITO #1 / ARQUITECTURA AUDIOVISUAL QAF}\par\vspace{9pt}{\huge\bfseries\textcolor{navy}{#2}}\par\vspace{7pt}{\large #3}\par\vspace{11pt}{\normalsize\bfseries Juan Manuel Goenaga Castro}\par\small GoToGym Quantum Research / Bogotá D.C., Colombia\par\small 22 de octubre de 2026 / Versión 1.0\end{center}\vspace{4pt}}
+\newcommand{\status}[1]{\noindent\colorbox{navy!7}{\parbox{0.966\linewidth}{\small\textbf{Naturaleza del trabajo.} #1}}\par\vspace{6pt}}
+\newcommand{\keywords}[1]{\textbf{Palabras clave:} #1.}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\tr}{\operatorname{Tr}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\argmin}{\operatorname*{arg\,min}}
+\newcommand{\argmax}{\operatorname*{arg\,max}}
+\newcommand{\IP}{\mathcal{I}}
+\newcommand{\sectionpage}[1]{\clearpage\section{#1}}
+\newcommand{\compacttable}{\small\renewcommand{\arraystretch}{1.22}}
+\emergencystretch=2em

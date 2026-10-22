@@ -1,0 +1,173 @@
+\def\paperRoman{V}
+\input{preamble}
+\begin{document}
+\papertitle{V}{Validación, competencias y ejecución del sistema}{Gobernanza multidisciplinaria y programa experimental de producción experta}
+\status{Protocolo de desarrollo y validación. Reúne 56 perfiles profesionales y controles de competencia; no certifica que un asistente sustituya su experiencia práctica o sus responsabilidades.}
+\begin{abstract}
+Se propone una organización de investigación y producción que convierte los cuatro manuscritos anteriores en entregables verificables. Se identifican 56 perfiles que cubren ciencia, ingeniería, marca, dirección, producción, postproducción, sonido, accesibilidad y evaluación. Cada perfil se define por responsabilidad, artefacto y criterio de revisión. La competencia se verifica mediante casos, reproducción y evaluación independiente, en lugar de declararse por adopción de un rol. El protocolo compara el sistema propuesto con alternativas clásicas y producción profesional bajo recursos equivalentes; separa calidad percibida, exactitud de producto y coste operacional. Se presentan los controles algebraicos ejecutados, la evidencia heredada del prototipo y un diseño de estudio con asignación aleatoria y análisis jerárquico. Se especifican hitos, contratos, causas de rechazo y un piloto de running. La contribución central es una ruta para transformar propiedad intelectual y capacidades de software en películas auditables, con criterios explícitos para avanzar, revisar o descartar una técnica.
+\end{abstract}
+\keywords{validación audiovisual, competencias, profesiones, experimentos, reproducibilidad, QAF, gobernanza}
+
+\section{Qué significa competencia experta en este sistema}
+La aspiración de calidad mundial requiere decisiones comparables a las de profesionales y un proceso que permita detectar errores. No se obtiene por afirmar que un modelo ``es experto'' en una lista de profesiones. En esta arquitectura, un perfil es un conjunto de tareas, conocimientos, límites y entregables. Una persona puede cubrir varios perfiles; una función de software puede asistir a varios. La responsabilidad de validar un artefacto no desaparece al automatizar su producción.
+
+Se propone una escala de competencia de cuatro niveles: ejecución guiada, ejecución autónoma en casos conocidos, resolución de variaciones y revisión competente de terceros. El nivel no se asigna por una autoevaluación del agente. Debe incluir casos desconocidos, fallos sembrados, reproducción y revisión independiente. Para dominios sensibles se conserva la intervención de un profesional pertinente.
+
+La lista siguiente es un mapa amplio de \textbf{56 perfiles base para esta arquitectura}; no pretende enumerar todas las especialidades posibles del cine o la ciencia. Las revisiones de localización, idiomas y formato pueden requerir perfiles adicionales. La integración de saberes se materializa en checklists, modelos y pruebas, no en una supuesta adquisición instantánea de experiencia humana.
+
+\clearpage
+\section{Mapa profesional y artefactos exigidos}
+{\compacttable
+\begin{longtable}{p{.05\linewidth}p{.25\linewidth}p{.56\linewidth}}
+\toprule N.º & Perfil & Responsabilidad y evidencia de competencia \\\midrule\endfirsthead
+\toprule N.º & Perfil & Responsabilidad y evidencia de competencia \\\midrule\endhead
+1 & Dirección científica & Pregunta, hipótesis, límites y revisión de transferencia entre dominios.\\
+2 & Matemática aplicada & Modelos bien definidos, unidades, hipótesis y pruebas de consistencia.\\
+3 & Redes tensoriales & Codificación, gauge, enlace, RDM y errores frente a referencia pequeña.\\
+4 & Optimización & Formulación restringida, certificados y comparadores bajo el mismo presupuesto.\\
+5 & Estadística & Diseño, potencia, intervalos y análisis por unidades independientes.\\
+6 & Aprendizaje automático & Datos, particiones, ajuste, generalización y ausencia de fuga.\\
+7 & Visión computacional & Geometría, movimiento, máscaras y límites de estimación visual.\\
+8 & Ingeniería de conocimiento & Grafo de evidencia, procedencia y vínculo entre claim y plano.\\
+9 & Arquitectura de sistemas & Contratos, fronteras de servicio, fallos y operación reproducible.\\
+10 & Ingeniería de pipeline & Grafo de tareas, caché, revisiones y publicación de artefactos.\\
+11 & Ingeniería GPU & Perfilado, memoria pico, paralelismo y coste real de ejecución.\\
+12 & QA de software & Pruebas significativas, casos adversos y regresiones de entrega.\\
+13 & Producción ejecutiva & Alcance, recursos, cronograma y aceptación de resultados.\\
+14 & Dirección creativa & Concepto coherente entre propósito, audiencia y acabado.\\
+15 & Dirección cinematográfica & Puesta en escena, interpretación, cámara y significado del montaje.\\
+16 & Estrategia de marca & Identidad, tono, tokens y revisión de consistencia.\\
+17 & Estrategia de marketing & Etapa comercial, promesa, CTA y métricas con denominador.\\
+18 & Investigación de audiencia & Necesidades, comprensión y sesgos de selección del público.\\
+19 & Guion & Conflicto, mecanismo, transformación y locución medible.\\
+20 & Comunicación científica & Precisión, incertidumbre y traducción sin distorsión de capacidades.\\
+21 & Storyboard & Planos ejecutables, continuidad y relación entre imagen y voz.\\
+22 & Dirección de arte & Lenguaje visual, materiales y coherencia del mundo representado.\\
+23 & Diseño de producción & Espacios, objetos y recursos realizables para cada escena.\\
+24 & Dirección de fotografía & Exposición, óptica, luz, textura y referencias verificables.\\
+25 & Operación de cámara & Encuadre, foco, movimiento y continuidad de toma.\\
+26 & Iluminación y gaffer & Montaje de luz seguro, consistencia y separación del sujeto.\\
+27 & Producción de campo & Localizaciones, logística y disponibilidad de recursos.\\
+28 & Continuidad de rodaje & Vestuario, objetos, ejes, gestos y estados entre planos.\\
+29 & Casting & Selección de personas/voz por criterios y contexto de marca.\\
+30 & Interpretación & Acción humana creíble y continuidad de actuación.\\
+31 & Vestuario & Identidad de prenda, ajuste, textura y continuidad.\\
+32 & Maquillaje y caracterización & Apariencia consistente con luz, cámara y personaje.\\
+33 & Modelado 3D & Geometría, escala, topología y activos editables.\\
+34 & Texturizado & Resolución, detalle, origen y coherencia entre superficies.\\
+35 & Look development y shading & Materiales, respuesta de luz y parámetros físicamente consistentes.\\
+36 & Rigging & Controles, deformación estable y límites anatómicos del personaje.\\
+37 & Animación & Peso, intención, ritmo y movimiento sin artefactos.\\
+38 & Efectos y simulación & Fenómenos, unidades, estabilidad y reproducibilidad de simulación.\\
+39 & Composición VFX & Integración, máscaras, alfa, luz, grano y profundidad.\\
+40 & Motion graphics & Diagramas, tipografía y transiciones que expliquen el mecanismo.\\
+41 & Colorismo & Transformaciones, balance, continuidad y salida revisada.\\
+42 & Edición y montaje & Ritmo, continuidad, exactitud de duración y revisión narrativa.\\
+43 & Lingüística y fonética regional & Pronunciación, variedad del español y evaluación contextual de acento.\\
+44 & Dirección de voz & Interpretación, respiraciones, énfasis y consistencia de identidad.\\
+45 & Locución & Dicción y actuación vocal; tomas y derechos de uso documentados.\\
+46 & Diseño sonoro & Ambiente, efectos y motivos que apoyen la historia.\\
+47 & Composición y supervisión musical & Identidad musical, edición y procedencia de pistas.\\
+48 & Mezcla y mastering de audio & Balance, dinámica, sonoridad, picos y escucha final.\\
+49 & Accesibilidad & Subtítulos, legibilidad, contraste y equivalencia de información.\\
+50 & Especialista del dominio explicado & Revisión del contenido de entrenamiento, nutrición o salud según alcance.\\
+51 & Gestión de derechos y licencias & Permisos de imagen, voz, música, modelos y distribución.\\
+52 & Mastering y entrega de video & Máster, codec, cuadros, sincronía y reproducción de exportaciones.\\
+53 & Seguridad y privacidad & Separación de cuentas, datos sintéticos y acceso a fuentes.\\
+54 & MLOps y granja de render & Versiones, colas, observabilidad, reintentos e infraestructura.\\
+55 & Economía de producción & Coste total, revisión, reutilización y análisis calidad--presupuesto.\\
+56 & Investigación con participantes & Información al participante, protocolo, registro y custodia de evaluaciones.\\\bottomrule
+\end{longtable}}
+
+Un artefacto puede requerir firmas de varias competencias. El perfil de comunicación científica revisa el significado; el de fotografía revisa la imagen; el de dominio revisa el alcance especializado. Una nota estética no compensa una afirmación errónea. Tampoco una prueba matemática acredita una mezcla musical de calidad.
+
+\section{Gobernanza de decisiones y contratos}
+Cada módulo recibe una tarea acotada, evidencia y límites. Produce propuesta, incertidumbre, dependencias, coste y pruebas. El orquestador coordina estados y revisiones; no decide por autoridad retórica de un agente. Las decisiones críticas conservan una regla de abstención y un motivo verificable.
+
+La compuerta de entrega es conjuntiva:
+\begin{equation}
+ G_{\mathrm{entrega}}=G_E\land G_D\land G_B\land G_A\land G_T\land G_R,
+\end{equation}
+para evidencia, derechos, marca, accesibilidad, controles técnicos y reproducción final. Los valores son estados revisados con procedencia. Un agente que escriba \texttt{true} sin realizar la comprobación no crea una certificación. Las revisiones independientes deben recibir el artefacto y la tarea, sin revelar la respuesta esperada cuando se pretende evaluar competencia.
+
+Un error de alta severidad invalida el segmento dependiente y activa nueva versión. Se define una pérdida jerárquica: primero se minimizan violaciones críticas; después se optimizan comprensión, estética y recursos sobre el conjunto admisible. Esto evita que una suma ponderada permita ``pagar'' una falsedad con una mejora visual.
+
+La protección de propiedad intelectual comienza con procedencia y acceso, no con una declaración automática de titularidad. Los materiales se clasifican como aportados, creados, licenciados o derivados, con permisos de distribución. Los documentos de esta serie citan a Antoni Bancells donde corresponde y conservan bibliografía de los métodos de terceros. No se realizó una búsqueda exhaustiva de patentes o libertad de operación.
+
+\section{Resultados verificados y límites de esta serie}
+Se ejecutó \texttt{validate\_models.py} con Python 3.12.14 y NumPy 2.3.5. El código y los resultados se incluyen en el paquete. Las comprobaciones son pequeñas y algebraicas:
+
+\begin{table}[ht]\centering\compacttable
+\begin{tabular}{p{.25\linewidth}p{.30\linewidth}p{.34\linewidth}}\toprule
+Control & Resultado observado & Qué acredita \\\midrule
+Cuatro estados de fase & Una diagonal; cuatro características complejas & Identificabilidad en un generador construido.\\
+Aproximación de Bell & Fidelidad máxima de rango uno 0,5 & Necesidad de rango dos en ese ejemplo.\\
+QUBO de seis variables & 64 estados, ocho factibles; mismo óptimo & Equivalencia de la compilación específica.\\
+Cámara de mínimo jerk & Extremos correctos; integral 720,000072 & Concordancia numérica con 720 a tolerancia fijada.\\
+Tiempo editorial & 1.800 cuadros a 30 fps & Duración de 60 s del esquema de cuadros.\\\bottomrule
+\end{tabular}\caption{Controles nuevos ejecutados; no son un benchmark de espectadores o render.}
+\end{table}
+
+En el prototipo Studio v2 se habían ejecutado nueve pruebas del compositor y nueve escenarios en ocho motores de producto, además de un animatic gráfico de 60 s. Es evidencia antecedente del trabajo local; no una validación nueva de los modelos neuronales o del renderer físico aquí propuestos. La presente serie no ha producido una película final con rodaje, casting regional y render 3D integrado.
+
+Las métricas de Q3--Q6 se citan como evidencia aportada por el programa QAF y con sus denominadores. No se reejecutaron sus bancos completos en esta tarea. El material de referencia identifica también regiones clásicas favorables, evidencia insuficiente y colapso computacional. El sistema conserva esas posibilidades como resultados válidos de la investigación.
+
+\section{Diseño experimental de calidad y utilidad}
+Se propone un estudio en dos etapas. El piloto usa 12 episodios y tres métodos: plantilla reproducible, planificación clásica profesional y planificación QAF. Se preparan 36 versiones verticales comparables. Un diseño equilibrado puede asignar a 60 personas seis episodios distintos por persona, dos por método, generando 360 evaluaciones y diez por versión. Nadie ve dos versiones del mismo episodio para reducir aprendizaje y comparación directa. Estos números son un diseño inicial, no una potencia estadística acreditada.
+
+El desenlace primario es comprensión de mecanismo, con preguntas preespecificadas. Se registran confusión sobre capacidades, recuerdo, credibilidad, estética, autenticidad vocal y siguiente paso. El coste incluye producción, generación descartada y revisión. Se anotan fallos y no solo la mejor toma. El efecto del método puede estimarse con un modelo jerárquico:
+\begin{equation}
+ y_{epr}=\mu+\beta_{\mathrm{método}(r)}+u_e+v_p+\epsilon_{epr},
+\end{equation}
+donde $e$ identifica episodio y $p$ persona. Para respuestas binarias se usa enlace logístico; para escalas ordinales, un modelo ordinal. Los intervalos deben respetar agrupación por episodio y persona. Reutilizar muchas valoraciones de un único video no crea muchos videos independientes.
+
+Para planear una comparación pareada confirmatoria, una aproximación de potencia es
+\begin{equation}
+ n\simeq\left[\frac{(z_{1-\alpha/2}+z_{1-\beta})\sigma_d}{\delta}\right]^2.
+\end{equation}
+Con $\alpha=0,05$, potencia 0,80, desviación de diferencias hipotética $\sigma_d=0,8$ y diferencia relevante $\delta=0,4$, resulta $n\approx32$ unidades pareadas independientes. Es un ejemplo de cálculo, no justifica tratar el piloto de 12 episodios como confirmatorio. El tamaño final se recalcula con varianzas y correlaciones del piloto.
+
+Los desenlaces secundarios se preespecifican y se controla multiplicidad. Los pesos del score de calidad se fijan antes de abrir resultados. Se reporta el efecto y su incertidumbre, no únicamente un valor $p$. La mejora artística sin reducción de confusión puede ser una ganancia estética y un fracaso de comunicación.
+
+\section{Baselines, ablaciones y regiones de no uso}
+Los comparadores reciben las mismas fuentes, funciones disponibles, restricciones, datos de audiencia, presupuesto y número de intentos. Se iguala también el acceso a características relacionales complejas: compararlo solo con observaciones marginales no aísla la contribución de MPS o TDVP. Se utilizan modelos clásicos con grafo, secuencia y optimización cuando sean pertinentes.
+
+Las ablaciones retiran, una por vez, relaciones, fase, dinámica, estado persistente y optimización; conservan lo demás. La comparación MPS contra estado denso en problemas pequeños mide fidelidad numérica, no superioridad sobre un algoritmo clásico. El contraste con la misma característica compleja y el mismo solver separa calidad de representación y efecto del optimizador.
+
+Se prueban cambios de idioma, producto, audiencia, duración, presupuesto, escenas adversas y fuentes contradictorias. QAF se rechaza operacionalmente si la mejora no supera un umbral útil, desaparece fuera del generador o excede recursos. La categoría ``no identificable'' indica necesidad de mejores observaciones. No debe convertirse en una invitación a aumentar el tamaño del modelo sin datos adicionales.
+
+\section{Programa de implementación y recursos}
+\begin{table}[ht]\centering\compacttable
+\begin{tabular}{p{.15\linewidth}p{.36\linewidth}p{.37\linewidth}}\toprule
+Fase & Entregable & Condición para avanzar \\\midrule
+1 & Fuentes, claims y contrato de episodio & Trazabilidad y alcance revisados.\\
+2 & Guion, storyboard y audición & Comprensión preliminar y voz seleccionada.\\
+3 & Pipeline clásico y máster & Render, color, mezcla y revisión reproducibles.\\
+4 & Capa relacional QAF y ablaciones & Paridad de inputs, calidad y presupuesto.\\
+5 & Piloto con audiencia y revisión & Efectos, fallos e incertidumbre publicados internamente.\\
+6 & Serie y monitorización & Calidad sostenida y control de versiones.\\\bottomrule
+\end{tabular}\caption{Hitos de trabajo; la duración se estima tras comprobar equipo, activos y acceso.}
+\end{table}
+
+El coste total se expresa como $C=\sum_r h_rv_r+C_{\mathrm{cómputo}}+C_{\mathrm{activos}}+C_{\mathrm{revisión}}$, con horas por rol $h_r$ y tarifa $v_r$ confirmada. No se asignan precios de mercado o una granja GPU ficticia. Un equipo pequeño puede cubrir varios perfiles; las revisiones críticas deben mantener independencia suficiente y competencia pertinente.
+
+Los módulos iniciales son: gestor de fuentes, compilador de claims, timeline canónico, adaptadores de render, gestor de color, voz/alineación, mezcla, QA y registro experimental. La capa QAF se añade después de disponer de una referencia clásica medible. Cada módulo tiene interfaz, dataset de pruebas, versión y responsable. El primer entregable es una película revisable, no una plataforma enorme sin piloto terminado.
+
+\section{Piloto de referencia y criterio de finalización}
+El caso de running permite conectar situación humana, datos declarados y propuesta sin recurrir a capacidades futuras. Se requiere validar el recorrido real de la experiencia, seleccionar voz y producir tomas. El ejemplo sintético se rotula hasta disponer de captura autenticada y anonimizada. La narrativa no presenta la caminata como tratamiento ni como sesión ya realizada.
+
+La película se considera lista al completar máster, versión de distribución, subtítulos, fuentes, proyecto editable e informe de revisión. Duración y codec son necesarios pero insuficientes. La revisión final debe reproducir imagen y sonido, comprobar pantalla móvil y confirmar que el público puede explicar la capacidad sin atribuciones falsas. La publicación no se deduce de la existencia de un archivo exportado.
+
+\section{Conclusión}
+La profesionalización del sistema exige integrar competencias con entregables, límites y pruebas. Esta serie aporta formalismo, dirección, arquitectura de render, identidad sonora y validación. El resultado actual es un programa científico y técnico ejecutable por etapas; la pretensión de ser la mejor tecnología del mundo permanece como una meta que necesita comparación independiente y evidencia sostenida.
+
+\begin{thebibliography}{Q6}
+\bibitem[Q1]{q1} Goenaga, J. M. (2025). \emph{Quantum Analysis Frameworks}. Aportado.
+\bibitem[Q2]{q2} Bancells, A. (2026). \emph{QAF: dinámica operacional no conmutativa y compilación QUBO asíncrona}. Aportado.
+\bibitem[Q3]{q3} Goenaga, J. M. (2026). \emph{Validación preliminar del QAF mediante benchmarking computacional reproducible}. Aportado.
+\bibitem[Q4]{q4} Goenaga, J. M. (2026). \emph{Validación end-to-end del motor QAF: MPS + TDVP + 1-RDM/2-RDM}. Aportado.
+\bibitem[Q5]{q5} Goenaga, J. M. (2026). \emph{Consolidated Experimental Evidence for QAF}. Aportado.
+\bibitem[Q6]{q6} Goenaga, J. M. (2026). \emph{Value and Non-Value Regions of QAF}. Aportado.
+\bibitem[R1]{rep} Goenaga, J. M. (2026). \emph{Controles algebraicos de QAF audiovisual}. Código, resultados, versiones y hashes adjuntos a esta serie.
+\end{thebibliography}
+\end{document}
