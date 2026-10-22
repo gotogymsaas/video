@@ -1,0 +1,16 @@
+{
+  "inventory": true,
+  "audits": [
+    {
+      "profile": "vertical",
+      "passed": true
+    },
+    {
+      "profile": "horizontal",
+      "passed": true
+    }
+  ],
+  "media_range": true,
+  "client_syntax": true,
+  "scope": "HTTP and JS syntax smoke; not a browser visual test"
+}

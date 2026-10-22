@@ -1,0 +1,167 @@
+{
+  "schema": "qaf_robustness_release_v1",
+  "version": "0.4.0",
+  "date": "2026-10-22",
+  "tests": {
+    "count": 72,
+    "passed": true
+  },
+  "shots": 13,
+  "claims": 3,
+  "voice": {
+    "tempo_factor": 0.9219512195121952,
+    "speed_increase_percent": 12.433075550267713,
+    "previous_added_pauses": 11,
+    "current_added_pauses": 0,
+    "narration_seconds": 42.76677083333333,
+    "max_internal_gap_seconds": 0.54,
+    "internal_gaps_over_650ms": 0,
+    "script_words": 123,
+    "asr_edits": 6,
+    "caption_cues": 14,
+    "caption_review_flags": 3,
+    "max_caption_cps": 24.58
+  },
+  "phone": {
+    "screen_box": [
+      33,
+      33,
+      826,
+      1434
+    ],
+    "source_size": [
+      992,
+      1722
+    ],
+    "screen_size": [
+      826,
+      1434
+    ],
+    "aspect_error": 6.31745707774245e-05,
+    "method": "full original screenshot; rounded corners only",
+    "homography": [
+      [
+        0.6787878787878789,
+        -0.00533689126084056,
+        237.6
+      ],
+      [
+        0.013468013468013532,
+        0.7092728485657105,
+        384.0
+      ],
+      [
+        1.1999210756640504e-19,
+        9.434240802657406e-22,
+        1.0
+      ]
+    ],
+    "quad": [
+      [
+        237.6,
+        384.0
+      ],
+      [
+        842.4000000000001,
+        396.0
+      ],
+      [
+        834.4000000000001,
+        1459.2
+      ],
+      [
+        229.6,
+        1447.2
+      ]
+    ]
+  },
+  "mix": {
+    "music_gain": 0.22,
+    "median_margin_db": 17.05490581754935,
+    "p10_margin_db": 5.614632242221581,
+    "lufs": -14.03
+  },
+  "renders": [
+    {
+      "profile": "vertical",
+      "seconds": 60,
+      "frames": 1800,
+      "fps": 30,
+      "resolution": [
+        1080,
+        1920
+      ],
+      "audio_encoded": {
+        "input_i": "-13.98",
+        "input_tp": "-1.44",
+        "input_lra": "11.60",
+        "input_thresh": "-24.54",
+        "output_i": "-15.14",
+        "output_tp": "-1.94",
+        "output_lra": "7.20",
+        "output_thresh": "-25.41",
+        "normalization_type": "dynamic",
+        "target_offset": "1.14"
+      },
+      "technical": {
+        "technical_passed": true,
+        "checks": {
+          "frames": true,
+          "duration": true,
+          "size": true,
+          "fps": true,
+          "codec": true,
+          "decode": true,
+          "audio": true
+        },
+        "audio_present": true,
+        "editorial_quality": "requires human playback review"
+      },
+      "video_encode_generations": 1,
+      "wall_seconds": 173.57751942100003,
+      "output_sha256": "a56fe359add679e2a5ee25d5f2508284ef8fd56d5bfafb10d5e52f2817f764e1"
+    },
+    {
+      "profile": "horizontal",
+      "seconds": 60,
+      "frames": 1800,
+      "fps": 30,
+      "resolution": [
+        1920,
+        1080
+      ],
+      "audio_encoded": {
+        "input_i": "-13.98",
+        "input_tp": "-1.44",
+        "input_lra": "11.60",
+        "input_thresh": "-24.54",
+        "output_i": "-15.14",
+        "output_tp": "-1.94",
+        "output_lra": "7.20",
+        "output_thresh": "-25.41",
+        "normalization_type": "dynamic",
+        "target_offset": "1.14"
+      },
+      "technical": {
+        "technical_passed": true,
+        "checks": {
+          "frames": true,
+          "duration": true,
+          "size": true,
+          "fps": true,
+          "codec": true,
+          "decode": true,
+          "audio": true
+        },
+        "audio_present": true,
+        "editorial_quality": "requires human playback review"
+      },
+      "video_encode_generations": 1,
+      "wall_seconds": 169.11517321200006,
+      "output_sha256": "492cfad131324f24d3337c3093567c2c144ef45fe2325de7adbc97243b9a3903"
+    }
+  ],
+  "engineering_checks_passed": true,
+  "perceptual_review": "pending human playback; no participant study reported",
+  "product_evidence": "gotogymsaas/appdesplegada@6d2e95d031c2e3c2b83c8c1e442fd6315ef95d62; local fixtures and documented integration, not a production test"
+}

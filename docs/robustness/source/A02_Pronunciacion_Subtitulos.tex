@@ -1,0 +1,68 @@
+\def\paperid{A02}
+\documentclass[10pt,a4paper]{article}
+\usepackage[margin=23mm,top=24mm,bottom=24mm]{geometry}
+\usepackage{fontspec,polyglossia,amsmath,amssymb,booktabs,array,enumitem,xcolor,fancyhdr,xurl,hyperref,microtype}
+\setdefaultlanguage{spanish}\setmainfont{Latin Modern Roman}\setsansfont{DejaVu Sans}
+\definecolor{ink}{HTML}{17375C}\definecolor{mint}{HTML}{0F8F86}
+\hypersetup{colorlinks=true,urlcolor=mint,linkcolor=ink,pdfauthor={Juan Manuel Goenaga Castro}}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}\linespread{1.05}\emergencystretch=2em
+\setlength{\headheight}{15pt}\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\sffamily\footnotesize GoToGym / Quantum Coach}\fancyhead[R]{\sffamily\footnotesize Robustecimiento QAF / \paperid}
+\fancyfoot[L]{\scriptsize Prepublicación metodológica / 22 de octubre de 2026}\fancyfoot[R]{\small\thepage}
+\setlist{nosep,leftmargin=1.5em}
+\begin{document}
+\begin{center}{\sffamily\small\textcolor{mint}{SERIE DE ROBUSTECIMIENTO / A02}}\par\vspace{10pt}{\sffamily\LARGE\bfseries\textcolor{ink}{Inteligibilidad multilingüe y subtítulos medidos}}\par\vspace{7pt}{\large Separación de transcripción, fonética e identidad}\par\vspace{12pt}\textbf{Juan Manuel Goenaga Castro}\par GoToGym Quantum Research\par 22 de octubre de 2026 / versión 1.1\end{center}\colorbox{ink!6}{\parbox{.96\linewidth}{\small\textbf{Estado.} Prepublicación metodológica sin revisión por pares. Propuesta computacional implementada; evaluación perceptual y estudio con participantes pendientes.}}\begin{abstract}Se implementa un contrato que mantiene texto canónico, palabras realmente medidas, equivalencias explícitas y una cola de revisión de términos. El agrupador reduce fragmentación sin fabricar tiempos uniformes. La propuesta QAF coordina alternativas bajo compuertas de integridad, y no transforma distancia ASR en una valoración de fonética o identidad regional. Se presenta el problema observado, una formalización con unidades y restricciones, el código correspondiente y sus controles. Se distingue la verificación de ingeniería de calidad percibida, identidad regional y efecto comercial. El uso QAF corresponde a la región clásica identificable y conserva un comparador con los mismos recursos.\end{abstract}
+\section{Diagnóstico y pregunta de investigación}
+Un reconocedor puede equivocarse ante una pronunciación correcta y una marca puede estar mal pronunciada aunque el subtítulo visible sea perfecto. La versión antecedente ya controlaba el máximo de error por frase para evitar que un tramo largo en español ocultara una frase extranjera omitida. Persistían cifras verbalizadas de dos formas, nombres inestables y grupos de subtítulo que dejaban palabras huérfanas.
+
+Se implementa un contrato que mantiene texto canónico, palabras realmente medidas, equivalencias explícitas y una cola de revisión de términos. El agrupador reduce fragmentación sin fabricar tiempos uniformes. La propuesta QAF coordina alternativas bajo compuertas de integridad, y no transforma distancia ASR en una valoración de fonética o identidad regional.
+\section{Modelo matemático y restricciones}
+Para cada frase k se registran secuencias esperada y reconocida, idioma solicitado, unidad de comparación y tiempos de palabra. Para cada subtítulo c se conservan el conjunto de anclas A, texto, cobertura y tasa de caracteres por segundo. El mapa de equivalencias solo actúa en comparación; no cambia la marca escrita.
+\begin{equation}d_k=\operatorname{Lev}(a_k,b_k)/|a_k|,\qquad d_{\max}=\max_k d_k.\end{equation}
+
+\begin{equation}\mathrm{CPS}_c=|s_c|/(t_c^{\rm fin}-t_c^{\rm inicio}),\quad t_c^{\rm inicio}=\min_{j\in A_c}t_j^{\rm inicio}.\end{equation}
+
+\begin{equation}G_c=\mathbf1[|A_c|>0]\,\mathbf1[H(y)=H_{\rm alineado}],\quad U_c=\mathbf1[\mathrm{CPS}_c>25\ \lor\ \mathrm{cobertura}_c<1].\end{equation}
+La distancia de edición usa palabras cuando existe separación léxica comparable y caracteres cuando corresponde. Tomar el máximo por frase impide diluir una omisión local. Los tiempos de inicio y fin proceden de anclas ASR, nunca de dividir por igual el número de palabras. Las equivalencias cinco/5 y veinte/20 son explícitas y no autorizan sustituir nombres de marca. Los grupos cortos se fusionan conservando las primeras y últimas anclas. El hash invalida subtítulos al cambiar la señal, aunque el texto sea idéntico. La tasa de 25 CPS es una alarma editorial, no una norma universal.
+\subsection{Región identificable QAF y comparador}
+La integración usa el caso diagonal del formalismo, con base fija de candidatos y compuerta de factibilidad g:
+\begin{equation}
+p_j=\frac{g_j\exp[-(L_j-L_{\min})/\tau]}{\sum_k g_k\exp[-(L_k-L_{\min})/\tau]},\quad\rho=\operatorname{diag}(p),\quad\rho\succeq0,\quad\operatorname{Tr}\rho=1.
+\end{equation}
+Estos pesos describen decisión, no satisfacción del público. No se aprende ni asigna fase sin observaciones que la identifiquen. La enumeración nativa selecciona el mínimo factible; el comparador clásico recibe exactamente los mismos candidatos y coincide por construcción. No se reclama ventaja cuántica. MPS y TDVP siguen disponibles como referencias matemáticas anteriores, pero no intervienen en la síntesis de voz, el transporte de luz o una supuesta dinámica cerebral.
+
+Con pérdidas desplazadas no negativas, se conserva la compilación triangular de selección única:
+\begin{equation}
+E(x)=\sum_j(\widetilde L_j-A)x_j+2A\sum_{j<k}x_jx_k+A,\qquad A>\max_j\widetilde L_j.
+\end{equation}
+La constante distingue correctamente el conjunto vacío; la interacción aparece una sola vez por pareja. La máscara de alternativas prohibidas es una restricción nativa, no una penalización blanda. Una prueba independiente enumera las 64 configuraciones de seis variables y compara con el óptimo restringido. La positividad y la traza se verifican por separado. Este uso explícito de la región clásica evita forzar complejidad tensorial sin evidencia incremental.
+\section{Implementación y trazabilidad}
+captions.py añade align\_\allowbreak{}script y pronunciation\_\allowbreak{}review. voice\_\allowbreak{}languages.py mantiene idioma por frase y error local. El worker genera ASR después del ajuste temporal y los archivos SRT/VTT corresponden a la voz elegida. La cola de revisión muestra cobertura incompleta, lectura rápida y términos críticos. Ninguna función marca pronunciación humana como aprobada automáticamente.
+
+Módulos: \texttt{captions.py}, \texttt{voice\_\allowbreak{}languages.py}, \texttt{voice\_\allowbreak{}local.py}. Cada transformación conserva archivos de entrada, parámetros y hashes. No se sustituye una capacidad ausente por una declaración de disponibilidad.
+\subsection{Controles que pueden refutar la implementación}
+\begin{flushleft}\small test\_\allowbreak{}measured\_\allowbreak{}caption\_\allowbreak{}anchors\_\allowbreak{}and\_\allowbreak{}revision\_\allowbreak{}queue\\ test\_\allowbreak{}missing\_\allowbreak{}foreign\_\allowbreak{}term\_\allowbreak{}remains\_\allowbreak{}a\_\allowbreak{}listening\_\allowbreak{}issue\\ test\_\allowbreak{}omitted\_\allowbreak{}foreign\_\allowbreak{}phrase\_\allowbreak{}is\_\allowbreak{}not\_\allowbreak{}hidden\_\allowbreak{}by\_\allowbreak{}low\_\allowbreak{}global\_\allowbreak{}error.\end{flushleft}
+
+La batería combina invariantes algebraicos, casos adversos y render pequeño con decodificación. El conjunto de tests es un piso de reproducibilidad: aprobar una identidad de bytes no acredita veracidad de contenido, y una ecuación correcta no acredita preferencia artística.
+\section{Resultados computacionales observados}
+El reconocimiento del audio final produjo 6 ediciones sobre 123 palabras. Se generaron 14 subtítulos, con máximo de 24.58 CPS. Permanecen 3 avisos para revisión. El error ASR incluye posibles fallos del reconocedor y no es una nota de acento.
+
+La suite ejecutada contiene 72 pruebas aprobadas. Son contratos de software e integración, no 72 observaciones independientes de calidad artística. Los datos completos se registran en el informe de versión.
+
+El archivo \texttt{docs/validation/robustness-v0.4.json} conserva medidas y hashes de entrega. El proyecto completo con voz se distribuye por separado del código público. No se publican notas originales, perfiles biométricos ni sus transcripciones privadas.
+\section{Protocolo de evaluación y ablación}
+Construir un banco por idioma, cifras, marca y cambio de código. Comparar agrupación por longitud, agrupación con CPS y ajuste manual ciego. Un panel bilingüe transcribe términos; otro evalúa identidad sin conocer el guion esperado. Publicar error por término, desacuerdo y abstenciones. Validar fronteras contra anotación humana y lectura sobre móviles reales. La pérdida ASR no será el resultado primario de autenticidad regional.
+
+La aceptación es jerárquica: primero se satisfacen las restricciones duras; después se optimiza calidad dentro del conjunto admisible. Se registrarán candidatos fallidos, tiempo y recursos, no solo la toma ganadora. El episodio, la persona y la familiaridad se controlan por separado. Repetir valoraciones de un único video no crea videos independientes. La muestra confirmatoria se calculará con variabilidad del piloto, sin inventar potencia o resultados.
+\section{Discusión, límites y propiedad intelectual}
+Los diez idiomas de la tarjeta del modelo describen soporte, no validación de esta referencia en cada idioma. No existe un modelo propio entrenado de fonética barranquillera. La corrección canónica de texto no repara una palabra mal pronunciada. Las advertencias se conservan para impedir una aprobación aparente.
+
+Los aportes de integración se preparan a nombre de Juan Manuel Goenaga Castro. Se conserva atribución de Antoni Bancells al antecedente técnico QAF y de los modelos, métodos y fuentes de terceros. No se reivindica entrenamiento propio de Qwen o Whisper. Una ampliación relacional deberá superar un comparador clásico con las mismas entradas y presupuesto; si no aporta valor, la solución sencilla continúa siendo válida.
+\section{Conclusión}
+La propuesta computacional descrita se encuentra en el código entregado y permite repetir sus controles. La calidad percibida, la autenticidad vocal y la eficacia comercial requieren sus propios datos; no se declaran resueltas por completar una exportación.
+\begin{thebibliography}{9}
+\bibitem{qaf} Goenaga Castro, J. M. (2025--2026). Quantum Analysis Frameworks y serie QAF audiovisual I--V, documentos aportados. Bancells, A. (2026). Dinámica operacional, MPS/TDVP y compilación QUBO, antecedente técnico aportado. Atribuciones conservadas; sus bancos completos no se repitieron en esta ampliación.
+\bibitem{qwen} Qwen Team (2026). Qwen3-TTS, tarjeta del modelo 12Hz-0.6B-Base. Modelo preentrenado de terceros. \url{https://huggingface.co/Qwen/Qwen3-TTS-12Hz-0.6B-Base}.
+\bibitem{ffmpeg} FFmpeg. Documentación primaria de filtros atempo, loudnorm, sidechaincompress y scale. Consulta 22/10/2026. \url{https://ffmpeg.org/ffmpeg-filters.html}.
+\end{thebibliography}
+\end{document}

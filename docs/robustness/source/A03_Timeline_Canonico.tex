@@ -1,0 +1,67 @@
+\def\paperid{A03}
+\documentclass[10pt,a4paper]{article}
+\usepackage[margin=23mm,top=24mm,bottom=24mm]{geometry}
+\usepackage{fontspec,polyglossia,amsmath,amssymb,booktabs,array,enumitem,xcolor,fancyhdr,xurl,hyperref,microtype}
+\setdefaultlanguage{spanish}\setmainfont{Latin Modern Roman}\setsansfont{DejaVu Sans}
+\definecolor{ink}{HTML}{17375C}\definecolor{mint}{HTML}{0F8F86}
+\hypersetup{colorlinks=true,urlcolor=mint,linkcolor=ink,pdfauthor={Juan Manuel Goenaga Castro}}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}\linespread{1.05}\emergencystretch=2em
+\setlength{\headheight}{15pt}\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\sffamily\footnotesize GoToGym / Quantum Coach}\fancyhead[R]{\sffamily\footnotesize Robustecimiento QAF / \paperid}
+\fancyfoot[L]{\scriptsize Prepublicación metodológica / 22 de octubre de 2026}\fancyfoot[R]{\small\thepage}
+\setlist{nosep,leftmargin=1.5em}
+\begin{document}
+\begin{center}{\sffamily\small\textcolor{mint}{SERIE DE ROBUSTECIMIENTO / A03}}\par\vspace{10pt}{\sffamily\LARGE\bfseries\textcolor{ink}{Sincronía audiovisual desde una secuencia canónica}}\par\vspace{7pt}{\large Contratos de cuadros, muestras, afirmaciones y montaje}\par\vspace{12pt}\textbf{Juan Manuel Goenaga Castro}\par GoToGym Quantum Research\par 22 de octubre de 2026 / versión 1.1\end{center}\colorbox{ink!6}{\parbox{.96\linewidth}{\small\textbf{Estado.} Prepublicación metodológica sin revisión por pares. Propuesta computacional implementada; evaluación perceptual y estudio con participantes pendientes.}}\begin{abstract}Se propone y ejecuta una única secuencia que gobierna tiempos, layout, medios, subtítulos y afirmaciones. CLI, storyboard y estudio consumen la misma representación. QAF coordina restricciones y dependencias observables; no se necesita asignar una fase sin datos que la identifiquen. La estructura de venta distingue problema natural, obstáculo táctico y continuidad del propósito, como interpretación editorial del documento aportado. Se presenta el problema observado, una formalización con unidades y restricciones, el código correspondiente y sus controles. Se distingue la verificación de ingeniería de calidad percibida, identidad regional y efecto comercial. El uso QAF corresponde a la región clásica identificable y conserva un comparador con los mismos recursos.\end{abstract}
+\section{Diagnóstico y pregunta de investigación}
+El primer proyecto contenía un manifiesto descriptivo mientras el renderer ejecutaba otra lista SHOTS incrustada en código. Cambiar el manifiesto no cambiaba necesariamente la película. Voz, texto, mecanismo visual y referencias podían evolucionar por separado. El ajuste de audio a cortes predefinidos subordinaba la interpretación a una plantilla temporal.
+
+Se propone y ejecuta una única secuencia que gobierna tiempos, layout, medios, subtítulos y afirmaciones. CLI, storyboard y estudio consumen la misma representación. QAF coordina restricciones y dependencias observables; no se necesita asignar una fase sin datos que la identifiquen. La estructura de venta distingue problema natural, obstáculo táctico y continuidad del propósito, como interpretación editorial del documento aportado.
+\section{Modelo matemático y restricciones}
+T es la duración del episodio; fr su frecuencia de cuadros; ai y bi los límites del plano i; fs la frecuencia de audio. Cada plano también posee tipo de representación y vínculos de evidencia. El formato actual usa cortes sin solapes; el coste de una futura transición solapada debe descontarse expresamente.
+\begin{equation}F=Tf_r,\quad a_1=0,\quad b_i=a_{i+1},\quad b_n=T,\quad a_if_r,b_if_r\in\mathbb Z.\end{equation}
+
+\begin{equation}n(f)=\operatorname{round}(ff_s/f_r),\qquad f_r=30,\ f_s=48000\Rightarrow n(f)=1600f.\end{equation}
+
+\begin{equation}G_{\rm plan}=\bigwedge_iG_{\rm tiempo,i}\land\bigwedge_{c\in C_i}G_{\rm evidencia,c}\land G_{\rm hash,voz}.\end{equation}
+La contigüidad implica el presupuesto exacto de cuadros; la suma de duraciones nominales no bastaría con transiciones superpuestas. En este perfil cada cuadro corresponde exactamente a 1.600 muestras, evitando deriva aritmética. Eso no elimina errores semánticos de edición. La compuerta entre afirmación y evidencia es dura; una ventaja estética no puede compensar su ausencia. Un cambio del audio invalida la alineación. Los gráficos conceptuales y la captura de producto conservan funciones distintas.
+\subsection{Región identificable QAF y comparador}
+La integración usa el caso diagonal del formalismo, con base fija de candidatos y compuerta de factibilidad g:
+\begin{equation}
+p_j=\frac{g_j\exp[-(L_j-L_{\min})/\tau]}{\sum_k g_k\exp[-(L_k-L_{\min})/\tau]},\quad\rho=\operatorname{diag}(p),\quad\rho\succeq0,\quad\operatorname{Tr}\rho=1.
+\end{equation}
+Estos pesos describen decisión, no satisfacción del público. No se aprende ni asigna fase sin observaciones que la identifiquen. La enumeración nativa selecciona el mínimo factible; el comparador clásico recibe exactamente los mismos candidatos y coincide por construcción. No se reclama ventaja cuántica. MPS y TDVP siguen disponibles como referencias matemáticas anteriores, pero no intervienen en la síntesis de voz, el transporte de luz o una supuesta dinámica cerebral.
+
+Con pérdidas desplazadas no negativas, se conserva la compilación triangular de selección única:
+\begin{equation}
+E(x)=\sum_j(\widetilde L_j-A)x_j+2A\sum_{j<k}x_jx_k+A,\qquad A>\max_j\widetilde L_j.
+\end{equation}
+La constante distingue correctamente el conjunto vacío; la interacción aparece una sola vez por pareja. La máscara de alternativas prohibidas es una restricción nativa, no una penalización blanda. Una prueba independiente enumera las 64 configuraciones de seis variables y compara con el óptimo restringido. La positividad y la traza se verifican por separado. Este uso explícito de la región clásica evita forzar complejidad tensorial sin evidencia incremental.
+\section{Implementación y trazabilidad}
+cinema\_\allowbreak{}project.py verifica los intervalos y dependencias. cinema.py consume shots directamente; desaparece la segunda lista de episodio. cinema\_\allowbreak{}pipeline.py comparte la secuencia entre storyboard y película. server.py reconoce el esquema cinematográfico sin perder token, comprobación de origen, confinamiento de archivos ni cola de un trabajador. El migrador produce un proyecto de trece planos editables.
+
+Módulos: \texttt{cinema\_\allowbreak{}project.py}, \texttt{cinema.py}, \texttt{cinema\_\allowbreak{}pipeline.py}, \texttt{server.py}. Cada transformación conserva archivos de entrada, parámetros y hashes. No se sustituye una capacidad ausente por una declaración de disponibilidad.
+\subsection{Controles que pueden refutar la implementación}
+\begin{flushleft}\small test\_\allowbreak{}gap\_\allowbreak{}and\_\allowbreak{}unbound\_\allowbreak{}mechanism\_\allowbreak{}are\_\allowbreak{}rejected\\ test\_\allowbreak{}caption\_\allowbreak{}hash\_\allowbreak{}and\_\allowbreak{}unreviewed\_\allowbreak{}final\_\allowbreak{}are\_\allowbreak{}rejected\\ test\_\allowbreak{}both\_\allowbreak{}aspects\_\allowbreak{}single\_\allowbreak{}encode\_\allowbreak{}full\_\allowbreak{}decode\_\allowbreak{}and\_\allowbreak{}verified\_\allowbreak{}cache.\end{flushleft}
+
+La batería combina invariantes algebraicos, casos adversos y render pequeño con decodificación. El conjunto de tests es un piso de reproducibilidad: aprobar una identidad de bytes no acredita veracidad de contenido, y una ecuación correcta no acredita preferencia artística.
+\section{Resultados computacionales observados}
+La secuencia contiene trece planos contiguos. Las dos exportaciones completas tienen 1.800 cuadros, 30 fps y sesenta segundos. El mismo proyecto gobierna ambas. Los casos de producto comprueban caminata, caminar/trotar y revisión profesional bajo tres fixtures completos; no se probó aquí el servicio en producción.
+
+La suite ejecutada contiene 72 pruebas aprobadas. Son contratos de software e integración, no 72 observaciones independientes de calidad artística. Los datos completos se registran en el informe de versión.
+
+El archivo \texttt{docs/validation/robustness-v0.4.json} conserva medidas y hashes de entrega. El proyecto completo con voz se distribuye por separado del código público. No se publican notas originales, perfiles biométricos ni sus transcripciones privadas.
+\section{Protocolo de evaluación y ablación}
+Sembrar cambios de tiempo, voz, recurso, afirmación y fuente; medir rechazos e invalidaciones. Para sincronía de significado, anotadores deben identificar cuándo una imagen comienza a explicar cada frase. Comparar secuencia canónica, plantilla rígida y montaje manual con los mismos recursos. Medir desfase y desacuerdo; un archivo de duración correcta no prueba que una explicación aparezca en el momento adecuado.
+
+La aceptación es jerárquica: primero se satisfacen las restricciones duras; después se optimiza calidad dentro del conjunto admisible. Se registrarán candidatos fallidos, tiempo y recursos, no solo la toma ganadora. El episodio, la persona y la familiaridad se controlan por separado. Repetir valoraciones de un único video no crea videos independientes. La muestra confirmatoria se calculará con variabilidad del piloto, sin inventar potencia o resultados.
+\section{Discusión, límites y propiedad intelectual}
+El motor cinematográfico usa fotogramas y gráficos animados. El motor estándar mantiene soporte de clips reales, pero esta película no genera movimiento humano. El esquema no implementa toda la semántica de un formato de intercambio profesional. El contrato temporal garantiza consistencia formal, no una historia óptima.
+
+Los aportes de integración se preparan a nombre de Juan Manuel Goenaga Castro. Se conserva atribución de Antoni Bancells al antecedente técnico QAF y de los modelos, métodos y fuentes de terceros. No se reivindica entrenamiento propio de Qwen o Whisper. Una ampliación relacional deberá superar un comparador clásico con las mismas entradas y presupuesto; si no aporta valor, la solución sencilla continúa siendo válida.
+\section{Conclusión}
+La propuesta computacional descrita se encuentra en el código entregado y permite repetir sus controles. La calidad percibida, la autenticidad vocal y la eficacia comercial requieren sus propios datos; no se declaran resueltas por completar una exportación.
+\begin{thebibliography}{9}
+\bibitem{qaf} Goenaga Castro, J. M. (2025--2026). Quantum Analysis Frameworks y serie QAF audiovisual I--V, documentos aportados. Bancells, A. (2026). Dinámica operacional, MPS/TDVP y compilación QUBO, antecedente técnico aportado. Atribuciones conservadas; sus bancos completos no se repitieron en esta ampliación.
+\bibitem{ffmpeg} FFmpeg. Documentación primaria de filtros atempo, loudnorm, sidechaincompress y scale. Consulta 22/10/2026. \url{https://ffmpeg.org/ffmpeg-filters.html}.
+\end{thebibliography}
+\end{document}

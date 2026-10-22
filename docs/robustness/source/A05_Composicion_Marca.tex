@@ -1,0 +1,68 @@
+\def\paperid{A05}
+\documentclass[10pt,a4paper]{article}
+\usepackage[margin=23mm,top=24mm,bottom=24mm]{geometry}
+\usepackage{fontspec,polyglossia,amsmath,amssymb,booktabs,array,enumitem,xcolor,fancyhdr,xurl,hyperref,microtype}
+\setdefaultlanguage{spanish}\setmainfont{Latin Modern Roman}\setsansfont{DejaVu Sans}
+\definecolor{ink}{HTML}{17375C}\definecolor{mint}{HTML}{0F8F86}
+\hypersetup{colorlinks=true,urlcolor=mint,linkcolor=ink,pdfauthor={Juan Manuel Goenaga Castro}}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}\linespread{1.05}\emergencystretch=2em
+\setlength{\headheight}{15pt}\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\sffamily\footnotesize GoToGym / Quantum Coach}\fancyhead[R]{\sffamily\footnotesize Robustecimiento QAF / \paperid}
+\fancyfoot[L]{\scriptsize Prepublicación metodológica / 22 de octubre de 2026}\fancyfoot[R]{\small\thepage}
+\setlist{nosep,leftmargin=1.5em}
+\begin{document}
+\begin{center}{\sffamily\small\textcolor{mint}{SERIE DE ROBUSTECIMIENTO / A05}}\par\vspace{10pt}{\sffamily\LARGE\bfseries\textcolor{ink}{Composición, movimiento y legibilidad de marca}}\par\vspace{7pt}{\large Restricciones de encuadre y color para dos formatos}\par\vspace{12pt}\textbf{Juan Manuel Goenaga Castro}\par GoToGym Quantum Research\par 22 de octubre de 2026 / versión 1.1\end{center}\colorbox{ink!6}{\parbox{.96\linewidth}{\small\textbf{Estado.} Prepublicación metodológica sin revisión por pares. Propuesta computacional implementada; evaluación perceptual y estudio con participantes pendientes.}}\begin{abstract}Se implementan contratos de caja tipográfica, reencuadres distintos, agrupación vertical de tarjetas, titulares envueltos y separación entre apariencia fotográfica y marca exacta. El movimiento de cámara digital utiliza mínimo jerk; se declara el pipeline SDR de matriz y rango. QAF organiza candidatos factibles, mientras el storyboard y los cuadros decodificados siguen sujetos a inspección. Se presenta el problema observado, una formalización con unidades y restricciones, el código correspondiente y sus controles. Se distingue la verificación de ingeniería de calidad percibida, identidad regional y efecto comercial. El uso QAF corresponde a la región clásica identificable y conserva un comparador con los mismos recursos.\end{abstract}
+\section{Diagnóstico y pregunta de investigación}
+Tres tarjetas en una fila vertical dejaban etiquetas de unos siete píxeles al reducir a 360 de ancho. Un contenedor correcto seguía siendo difícil de leer. También existían titulares fuera de ancho, decisiones repetidas por formato y una declaración de color insuficientemente explícita. El acabado fotográfico podía confundirse con movimiento corporal generado o render PBR.
+
+Se implementan contratos de caja tipográfica, reencuadres distintos, agrupación vertical de tarjetas, titulares envueltos y separación entre apariencia fotográfica y marca exacta. El movimiento de cámara digital utiliza mínimo jerk; se declara el pipeline SDR de matriz y rango. QAF organiza candidatos factibles, mientras el storyboard y los cuadros decodificados siguen sujetos a inspección.
+\section{Modelo matemático y restricciones}
+u es tiempo normalizado; z0 y z1 los extremos de zoom; font px el tamaño de fuente en salida; W la anchura de salida y Wm la del dispositivo de referencia. Las cajas se calculan con la fuente utilizada. Los tokens de color conservan estado de propuesta de campaña frente a aprobación de marca.
+\begin{equation}s(u)=10u^3-15u^4+6u^5,\qquad z(u)=z_0+(z_1-z_0)s(u).\end{equation}
+
+\begin{equation}f_{\rm movil}=f_{\rm salida}W_{\rm movil}/W_{\rm salida},\quad 0\leq x,y,\ x+w\leq W,\ y+h\leq H.\end{equation}
+
+\begin{equation}C=(L_{\max}+0.05)/(L_{\min}+0.05),\quad L=0.2126R_{\rm lin}+0.7152G_{\rm lin}+0.0722B_{\rm lin}.\end{equation}
+El polinomio tiene velocidad y aceleración nulas en los extremos del movimiento. No produce paralaje de una escena tridimensional ni suaviza un corte deliberado. Convertir el tamaño a escala móvil hace explícita la condición de diseño: 36 píxeles de 1.080 equivalen a doce en 360. El contraste de parches exige linealizar sRGB. Los umbrales de W3C dependen del texto y su tamaño; aprobar un par de tokens no certifica una película con fondos cambiantes. La salida declara gráficos sRGB y matriz BT.709 con rango limitado, sin anunciar ACES ni HDR.
+\subsection{Región identificable QAF y comparador}
+La integración usa el caso diagonal del formalismo, con base fija de candidatos y compuerta de factibilidad g:
+\begin{equation}
+p_j=\frac{g_j\exp[-(L_j-L_{\min})/\tau]}{\sum_k g_k\exp[-(L_k-L_{\min})/\tau]},\quad\rho=\operatorname{diag}(p),\quad\rho\succeq0,\quad\operatorname{Tr}\rho=1.
+\end{equation}
+Estos pesos describen decisión, no satisfacción del público. No se aprende ni asigna fase sin observaciones que la identifiquen. La enumeración nativa selecciona el mínimo factible; el comparador clásico recibe exactamente los mismos candidatos y coincide por construcción. No se reclama ventaja cuántica. MPS y TDVP siguen disponibles como referencias matemáticas anteriores, pero no intervienen en la síntesis de voz, el transporte de luz o una supuesta dinámica cerebral.
+
+Con pérdidas desplazadas no negativas, se conserva la compilación triangular de selección única:
+\begin{equation}
+E(x)=\sum_j(\widetilde L_j-A)x_j+2A\sum_{j<k}x_jx_k+A,\qquad A>\max_j\widetilde L_j.
+\end{equation}
+La constante distingue correctamente el conjunto vacío; la interacción aparece una sola vez por pareja. La máscara de alternativas prohibidas es una restricción nativa, no una penalización blanda. Una prueba independiente enumera las 64 configuraciones de seis variables y compara con el óptimo restringido. La positividad y la traza se verifican por separado. Este uso explícito de la región clásica evita forzar complejidad tensorial sin evidencia incremental.
+\section{Implementación y trazabilidad}
+quality.py calcula contraste y contrato de tamaño. cinema.py incrementa las etiquetas verticales a 36 píxeles, apila tarjetas y envuelve titulares. layout\_\allowbreak{}audit registra cajas realmente dibujadas en el punto medio de cada plano. Se inspecciona además una reducción de 360 por 640. El logo original y la captura permanecen fuera de la corrección creativa aplicada a las fotografías.
+
+Módulos: \texttt{quality.py}, \texttt{cinema.py}, \texttt{cinema\_\allowbreak{}pipeline.py}. Cada transformación conserva archivos de entrada, parámetros y hashes. No se sustituye una capacidad ausente por una declaración de disponibilidad.
+\subsection{Controles que pueden refutar la implementación}
+\begin{flushleft}\small test\_\allowbreak{}contrast\_\allowbreak{}and\_\allowbreak{}mobile\_\allowbreak{}bounds\\ auditoría de trece planos por formato\\ test\_\allowbreak{}both\_\allowbreak{}aspects\_\allowbreak{}single\_\allowbreak{}encode\_\allowbreak{}full\_\allowbreak{}decode\_\allowbreak{}and\_\allowbreak{}verified\_\allowbreak{}cache.\end{flushleft}
+
+La batería combina invariantes algebraicos, casos adversos y render pequeño con decodificación. El conjunto de tests es un piso de reproducibilidad: aprobar una identidad de bytes no acredita veracidad de contenido, y una ecuación correcta no acredita preferencia artística.
+\section{Resultados computacionales observados}
+Las cajas dibujadas en los trece puntos medios de cada formato quedaron dentro del lienzo. Las etiquetas verticales pasaron de 22 a 36 píxeles. Se inspeccionó una versión de 360 por 640 y storyboards. Esto no certifica todos los instantes, solapes ni accesibilidad de toda la película.
+
+La suite ejecutada contiene 72 pruebas aprobadas. Son contratos de software e integración, no 72 observaciones independientes de calidad artística. Los datos completos se registran en el informe de versión.
+
+El archivo \texttt{docs/validation/robustness-v0.4.json} conserva medidas y hashes de entrega. El proyecto completo con voz se distribuye por separado del código público. No se publican notas originales, perfiles biométricos ni sus transcripciones privadas.
+\section{Protocolo de evaluación y ablación}
+Comparar tres tamaños de fuente y dos densidades, manteniendo texto, duración y voz. Medir lectura correcta, tiempo, recuerdo y confusión de capacidad en móviles distintos. Comparar cámara estática, lineal y mínimo jerk con igual contenido. Registrar máscaras de rostro, mano, producto y subtítulo como ampliación futura: el actual control de lienzo no detecta todos los solapes.
+
+La aceptación es jerárquica: primero se satisfacen las restricciones duras; después se optimiza calidad dentro del conjunto admisible. Se registrarán candidatos fallidos, tiempo y recursos, no solo la toma ganadora. El episodio, la persona y la familiaridad se controlan por separado. Repetir valoraciones de un único video no crea videos independientes. La muestra confirmatoria se calculará con variabilidad del piloto, sin inventar potencia o resultados.
+\section{Discusión, límites y propiedad intelectual}
+No se ha realizado una certificación completa de accesibilidad ni calibración de todas las pantallas. Pillow realiza composición editorial SDR, no transporte físico de luz. La inspección en puntos medios no cubre cada instante; se añaden cuadros decodificados de entrada y salida. El episodio continúa siendo un animatic fotográfico.
+
+Los aportes de integración se preparan a nombre de Juan Manuel Goenaga Castro. Se conserva atribución de Antoni Bancells al antecedente técnico QAF y de los modelos, métodos y fuentes de terceros. No se reivindica entrenamiento propio de Qwen o Whisper. Una ampliación relacional deberá superar un comparador clásico con las mismas entradas y presupuesto; si no aporta valor, la solución sencilla continúa siendo válida.
+\section{Conclusión}
+La propuesta computacional descrita se encuentra en el código entregado y permite repetir sus controles. La calidad percibida, la autenticidad vocal y la eficacia comercial requieren sus propios datos; no se declaran resueltas por completar una exportación.
+\begin{thebibliography}{9}
+\bibitem{qaf} Goenaga Castro, J. M. (2025--2026). Quantum Analysis Frameworks y serie QAF audiovisual I--V, documentos aportados. Bancells, A. (2026). Dinámica operacional, MPS/TDVP y compilación QUBO, antecedente técnico aportado. Atribuciones conservadas; sus bancos completos no se repitieron en esta ampliación.
+\bibitem{wcag} W3C. Understanding SC 1.4.3, WCAG 2.2: Contrast (Minimum). Consulta 22/10/2026. \url{https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html}.
+\bibitem{ffmpeg} FFmpeg. Documentación primaria de filtros atempo, loudnorm, sidechaincompress y scale. Consulta 22/10/2026. \url{https://ffmpeg.org/ffmpeg-filters.html}.
+\end{thebibliography}
+\end{document}

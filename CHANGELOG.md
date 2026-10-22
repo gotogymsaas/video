@@ -26,3 +26,7 @@
 - DAG confinado, caché por contenido, exportación atómica y controles de entrega.
 - Pruebas numéricas, integración de audio/video, servidor local y CI en Python 3.11/3.12.
 - Cinco manuscritos PDF, fuentes editables, catálogo de 56 perfiles y guía de producción.
+
+## 0.4.0 - Robustecimiento cinematográfico
+
+Ocho propuestas y manuscritos vinculados con código y pruebas; voz continua y ASR posterior; subtítulos anclados y cola de revisión; secuencia canónica; pantalla original dentro de teléfono; composición específica para dos formatos; mezcla adaptativa; una generación de video; caché verificada y salida atómica; lanzadores y bloqueo de referencias privadas en inventario público.

@@ -1,0 +1,68 @@
+\def\paperid{A06}
+\documentclass[10pt,a4paper]{article}
+\usepackage[margin=23mm,top=24mm,bottom=24mm]{geometry}
+\usepackage{fontspec,polyglossia,amsmath,amssymb,booktabs,array,enumitem,xcolor,fancyhdr,xurl,hyperref,microtype}
+\setdefaultlanguage{spanish}\setmainfont{Latin Modern Roman}\setsansfont{DejaVu Sans}
+\definecolor{ink}{HTML}{17375C}\definecolor{mint}{HTML}{0F8F86}
+\hypersetup{colorlinks=true,urlcolor=mint,linkcolor=ink,pdfauthor={Juan Manuel Goenaga Castro}}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}\linespread{1.05}\emergencystretch=2em
+\setlength{\headheight}{15pt}\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\sffamily\footnotesize GoToGym / Quantum Coach}\fancyhead[R]{\sffamily\footnotesize Robustecimiento QAF / \paperid}
+\fancyfoot[L]{\scriptsize Prepublicación metodológica / 22 de octubre de 2026}\fancyfoot[R]{\small\thepage}
+\setlist{nosep,leftmargin=1.5em}
+\begin{document}
+\begin{center}{\sffamily\small\textcolor{mint}{SERIE DE ROBUSTECIMIENTO / A06}}\par\vspace{10pt}{\sffamily\LARGE\bfseries\textcolor{ink}{Mezcla adaptativa y control después del códec}}\par\vspace{7pt}{\large Balance de diálogo, ducking y sonoridad verificable}\par\vspace{12pt}\textbf{Juan Manuel Goenaga Castro}\par GoToGym Quantum Research\par 22 de octubre de 2026 / versión 1.1\end{center}\colorbox{ink!6}{\parbox{.96\linewidth}{\small\textbf{Estado.} Prepublicación metodológica sin revisión por pares. Propuesta computacional implementada; evaluación perceptual y estudio con participantes pendientes.}}\begin{abstract}Se selecciona una ganancia musical entre alternativas con un proxy energético explícito y se conserva ducking de voz. Se retiran efectos sin ancla visual y se verifica el archivo codificado. QAF se limita a la selección restringida y su trazabilidad; la energía de stems no se anuncia como inteligibilidad o calidad musical validadas. Se presenta el problema observado, una formalización con unidades y restricciones, el código correspondiente y sus controles. Se distingue la verificación de ingeniería de calidad percibida, identidad regional y efecto comercial. El uso QAF corresponde a la región clásica identificable y conserva un comparador con los mismos recursos.\end{abstract}
+\section{Diagnóstico y pregunta de investigación}
+Las ganancias heredadas eran fijas y los pasos sintetizados no tenían una marcha temporal observada en los fotogramas. Una mezcla con LUFS correctos todavía puede ocultar consonantes, bombear con las pausas o sugerir acciones ausentes. Medir únicamente el WAV no controla los cambios de pico introducidos al codificar AAC.
+
+Se selecciona una ganancia musical entre alternativas con un proxy energético explícito y se conserva ducking de voz. Se retiran efectos sin ancla visual y se verifica el archivo codificado. QAF se limita a la selección restringida y su trazabilidad; la energía de stems no se anuncia como inteligibilidad o calidad musical validadas.
+\section{Modelo matemático y restricciones}
+Las señales se decodifican a mono y 16 kHz solo para calcular el proxy. La entrega usa estéreo de 48 kHz. Se calcula RMS en ventanas de cuarenta milisegundos; una máscara de actividad excluye casi silencio vocal. Los márgenes objetivo y las ganancias son parámetros editoriales.
+\begin{equation}m_k(g)=20\log_{10}\frac{\operatorname{RMS}(v_k)+\epsilon}{g\operatorname{RMS}(b_k)+\epsilon},\quad\widetilde m(g)=\operatorname{mediana}_{k\in V}m_k(g).\end{equation}
+
+\begin{equation}L_g=[(\widetilde m(g)-16)/16]^2,\quad g\in\{0.08,0.10,0.14,0.18,0.22\},\quad\widetilde m(g)\geq8.\end{equation}
+
+\begin{equation}G_{\rm AAC}=\mathbf1[|I+14|\leq1]\,\mathbf1[TP\leq-1]\,\mathbf1[f_s=48000]\,\mathbf1[N_{\rm canales}=2].\end{equation}
+Duplicar ganancia musical reduce el margen energético unos 6,0206 dB, una propiedad independiente usada como prueba. El margen previo al ducking no incluye ambiente ni un modelo de enmascaramiento. El percentil bajo identifica pasajes que requieren escucha. La normalización en dos pasadas utiliza audio real y el pico real se mide después de AAC. Menos catorce LUFS es un objetivo editorial de esta producción; BS.1770 define medición y no ese objetivo universal de marketing.
+\subsection{Región identificable QAF y comparador}
+La integración usa el caso diagonal del formalismo, con base fija de candidatos y compuerta de factibilidad g:
+\begin{equation}
+p_j=\frac{g_j\exp[-(L_j-L_{\min})/\tau]}{\sum_k g_k\exp[-(L_k-L_{\min})/\tau]},\quad\rho=\operatorname{diag}(p),\quad\rho\succeq0,\quad\operatorname{Tr}\rho=1.
+\end{equation}
+Estos pesos describen decisión, no satisfacción del público. No se aprende ni asigna fase sin observaciones que la identifiquen. La enumeración nativa selecciona el mínimo factible; el comparador clásico recibe exactamente los mismos candidatos y coincide por construcción. No se reclama ventaja cuántica. MPS y TDVP siguen disponibles como referencias matemáticas anteriores, pero no intervienen en la síntesis de voz, el transporte de luz o una supuesta dinámica cerebral.
+
+Con pérdidas desplazadas no negativas, se conserva la compilación triangular de selección única:
+\begin{equation}
+E(x)=\sum_j(\widetilde L_j-A)x_j+2A\sum_{j<k}x_jx_k+A,\qquad A>\max_j\widetilde L_j.
+\end{equation}
+La constante distingue correctamente el conjunto vacío; la interacción aparece una sola vez por pareja. La máscara de alternativas prohibidas es una restricción nativa, no una penalización blanda. Una prueba independiente enumera las 64 configuraciones de seis variables y compara con el óptimo restringido. La positividad y la traza se verifican por separado. Este uso explícito de la región clásica evita forzar complejidad tensorial sin evidencia incremental.
+\section{Implementación y trazabilidad}
+audio\_\allowbreak{}scene.py calcula margen y selecciona ganancia. audio.py acepta perfiles validados, registra ganancias y usa liberación de ducking de 450 milisegundos. cinema\_\allowbreak{}pipeline.py vuelve a medir sonoridad y pico después del códec. El episodio conserva voz, música original y ambiente; omite el stem de pasos sin correspondencia con movimiento observado.
+
+Módulos: \texttt{audio\_\allowbreak{}scene.py}, \texttt{audio.py}, \texttt{cinema\_\allowbreak{}pipeline.py}. Cada transformación conserva archivos de entrada, parámetros y hashes. No se sustituye una capacidad ausente por una declaración de disponibilidad.
+\subsection{Controles que pueden refutar la implementación}
+\begin{flushleft}\small test\_\allowbreak{}dialogue\_\allowbreak{}margin\_\allowbreak{}changes\_\allowbreak{}with\_\allowbreak{}music\_\allowbreak{}gain\\ controles existentes de mezcla y pico\\ medida AAC de las dos exportaciones completas.\end{flushleft}
+
+La batería combina invariantes algebraicos, casos adversos y render pequeño con decodificación. El conjunto de tests es un piso de reproducibilidad: aprobar una identidad de bytes no acredita veracidad de contenido, y una ecuación correcta no acredita preferencia artística.
+\section{Resultados computacionales observados}
+La selección eligió ganancia musical 0.22. El margen mediano previo al ducking fue 17.055 dB y su percentil diez 5.615 dB. El WAV midió -14.03 LUFS. Se midieron también los dos AAC finales por separado.
+
+La suite ejecutada contiene 72 pruebas aprobadas. Son contratos de software e integración, no 72 observaciones independientes de calidad artística. Los datos completos se registran en el informe de versión.
+
+El archivo \texttt{docs/validation/robustness-v0.4.json} conserva medidas y hashes de entrega. El proyecto completo con voz se distribuye por separado del código público. No se publican notas originales, perfiles biométricos ni sus transcripciones privadas.
+\section{Protocolo de evaluación y ablación}
+Comparar ganancias fijas, selección por proxy y mezcla profesional manual, igualando sonoridad global y recursos. Medir palabras reconocidas en altavoz móvil, preferencia de balance y bombeo percibido. Incluir voces suaves, música densa y ambientes distintos. Un score energético favorable que empeore reconocimiento refuta utilidad. Registrar intentos descartados y coste de revisión.
+
+La aceptación es jerárquica: primero se satisfacen las restricciones duras; después se optimiza calidad dentro del conjunto admisible. Se registrarán candidatos fallidos, tiempo y recursos, no solo la toma ganadora. El episodio, la persona y la familiaridad se controlan por separado. Repetir valoraciones de un único video no crea videos independientes. La muestra confirmatoria se calculará con variabilidad del piloto, sin inventar potencia o resultados.
+\section{Discusión, límites y propiedad intelectual}
+RMS no es SNR real, STOI, inteligibilidad humana ni medida BS.1770. El margen no constituye una recomendación clínica. Normalización y limitación no reparan pronunciación o síntesis defectuosa. No se dispone de evaluación musical ni prueba sobre todos los dispositivos.
+
+Los aportes de integración se preparan a nombre de Juan Manuel Goenaga Castro. Se conserva atribución de Antoni Bancells al antecedente técnico QAF y de los modelos, métodos y fuentes de terceros. No se reivindica entrenamiento propio de Qwen o Whisper. Una ampliación relacional deberá superar un comparador clásico con las mismas entradas y presupuesto; si no aporta valor, la solución sencilla continúa siendo válida.
+\section{Conclusión}
+La propuesta computacional descrita se encuentra en el código entregado y permite repetir sus controles. La calidad percibida, la autenticidad vocal y la eficacia comercial requieren sus propios datos; no se declaran resueltas por completar una exportación.
+\begin{thebibliography}{9}
+\bibitem{qaf} Goenaga Castro, J. M. (2025--2026). Quantum Analysis Frameworks y serie QAF audiovisual I--V, documentos aportados. Bancells, A. (2026). Dinámica operacional, MPS/TDVP y compilación QUBO, antecedente técnico aportado. Atribuciones conservadas; sus bancos completos no se repitieron en esta ampliación.
+\bibitem{itu} ITU-R (2023). BS.1770-5: Algorithms to measure audio programme loudness and true-peak audio level. \url{https://www.itu.int/rec/R-REC-BS.1770-5-202311-I/en}.
+\bibitem{ffmpeg} FFmpeg. Documentación primaria de filtros atempo, loudnorm, sidechaincompress y scale. Consulta 22/10/2026. \url{https://ffmpeg.org/ffmpeg-filters.html}.
+\end{thebibliography}
+\end{document}

@@ -113,3 +113,20 @@ El planificador aplica una referencia clásica exacta a alternativas editoriales
 - No publica videos ni contacta personas automáticamente. No incorpora el código privado de la app GoToGym.
 
 Ver [docs/VALIDACION.md](docs/VALIDACION.md), [CHANGELOG.md](CHANGELOG.md) y [NOTICE.md](NOTICE.md). Código y manuscritos: todos los derechos reservados al titular correspondiente; las tipografías mantienen su licencia propia.
+
+## Estudio 0.4: cine, voz continua y pantalla móvil
+
+Descomprime el paquete de plataforma y ejecuta `python iniciar_estudio.py` o su lanzador. Necesita Python 3.11+, FFmpeg y FFprobe. Abre `http://127.0.0.1:8765` y selecciona `running-v2/project.json` en el paquete privado de esta entrega. El repositorio contiene código y artículos; el paquete descargable incluye medios y voz del episodio.
+
+La pestaña **Cine y pantalla móvil** permite seleccionar la captura original, auditar composición y generar el formato elegido. La voz continua admite una tasa objetivo de 175 palabras/minuto; no se obliga a llenar sesenta segundos de habla. Para generar guiones nuevos, instala el motor local por separado con `python scripts/setup_local_voice.py`. Reproducir, componer y renderizar el episodio entregado no requiere descargar esos modelos.
+
+```bash
+python -m qaf_video cinema-audit projects/running-v2/project.json --profile vertical
+python -m qaf_video cinema-storyboard projects/running-v2/project.json --out outputs/storyboard.jpg
+python -m qaf_video cinema-render projects/running-v2/project.json --profile vertical --out outputs/running.mp4
+python -m qaf_video cinema-render projects/running-v2/project.json --profile horizontal --out outputs/running-horizontal.mp4
+```
+
+`cinema-render --no-cc` genera una versión limpia; SRT y VTT se conservan por separado. Las exportaciones de revisión funcionan sin inventar aprobaciones; `--final` exige revisiones humanas registradas.
+
+Consulta [la auditoría y las ocho mejoras](docs/robustness/AUDITORIA.md), [los resultados ejecutados](docs/validation/robustness-v0.4.json) y [los artículos](docs/robustness/papers). Son prepublicaciones con propuestas computacionales implementadas y estudios perceptuales pendientes. QAF usa su región clásica identificable, sin reclamar ventaja cuántica.

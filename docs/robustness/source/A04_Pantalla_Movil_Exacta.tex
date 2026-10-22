@@ -1,0 +1,67 @@
+\def\paperid{A04}
+\documentclass[10pt,a4paper]{article}
+\usepackage[margin=23mm,top=24mm,bottom=24mm]{geometry}
+\usepackage{fontspec,polyglossia,amsmath,amssymb,booktabs,array,enumitem,xcolor,fancyhdr,xurl,hyperref,microtype}
+\setdefaultlanguage{spanish}\setmainfont{Latin Modern Roman}\setsansfont{DejaVu Sans}
+\definecolor{ink}{HTML}{17375C}\definecolor{mint}{HTML}{0F8F86}
+\hypersetup{colorlinks=true,urlcolor=mint,linkcolor=ink,pdfauthor={Juan Manuel Goenaga Castro}}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}\linespread{1.05}\emergencystretch=2em
+\setlength{\headheight}{15pt}\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\sffamily\footnotesize GoToGym / Quantum Coach}\fancyhead[R]{\sffamily\footnotesize Robustecimiento QAF / \paperid}
+\fancyfoot[L]{\scriptsize Prepublicación metodológica / 22 de octubre de 2026}\fancyfoot[R]{\small\thepage}
+\setlist{nosep,leftmargin=1.5em}
+\begin{document}
+\begin{center}{\sffamily\small\textcolor{mint}{SERIE DE ROBUSTECIMIENTO / A04}}\par\vspace{10pt}{\sffamily\LARGE\bfseries\textcolor{ink}{Fidelidad de producto en un teléfono proyectivo}}\par\vspace{7pt}{\large Geometría verificable de la pantalla original de GoToGym}\par\vspace{12pt}\textbf{Juan Manuel Goenaga Castro}\par GoToGym Quantum Research\par 22 de octubre de 2026 / versión 1.1\end{center}\colorbox{ink!6}{\parbox{.96\linewidth}{\small\textbf{Estado.} Prepublicación metodológica sin revisión por pares. Propuesta computacional implementada; evaluación perceptual y estudio con participantes pendientes.}}\begin{abstract}Se conserva la captura aportada como una textura completa dentro de un dispositivo geométrico. Se implementan ajuste sin recorte, homografía reversible, rechazo de geometría degenerada y hash de origen. Los candidatos QAF solo son admisibles cuando conservan el activo exacto. La imagen representa la bienvenida de la aplicación y no una navegación funcional autenticada. Se presenta el problema observado, una formalización con unidades y restricciones, el código correspondiente y sus controles. Se distingue la verificación de ingeniería de calidad percibida, identidad regional y efecto comercial. El uso QAF corresponde a la región clásica identificable y conserva un comparador con los mismos recursos.\end{abstract}
+\section{Diagnóstico y pregunta de investigación}
+Los teléfonos del primer episodio tenían pantalla vacía y tarjetas editoriales externas. La ausencia de una captura real dificultaba reconocer el producto y podía confundir un gráfico conceptual con su interfaz. Regenerar esa pantalla mediante una red de imagen crearía otro riesgo: texto, botones y logo alterados.
+
+Se conserva la captura aportada como una textura completa dentro de un dispositivo geométrico. Se implementan ajuste sin recorte, homografía reversible, rechazo de geometría degenerada y hash de origen. Los candidatos QAF solo son admisibles cuando conservan el activo exacto. La imagen representa la bienvenida de la aplicación y no una navegación funcional autenticada.
+\section{Modelo matemático y restricciones}
+Se registran dimensiones de captura, dimensiones de textura, margen, cuatro correspondencias entre coordenadas y la transformación H. El hash corresponde al archivo original. Reescalar y codificar modifica píxeles: identidad documental y equivalencia de bytes del render no son la misma propiedad.
+\begin{equation}\lambda(u,v,1)^T=H(x,y,1)^T,\qquad H\in\mathbb R^{3\times3},\quad H_{33}=1.\end{equation}
+
+\begin{equation}Ah=b,\quad\operatorname{rank}(A)=8,\qquad\epsilon_{\rm reproj}=\max_i\|\pi(Hp_i)-q_i\|_2.\end{equation}
+
+\begin{equation}\epsilon_{\rm aspecto}=|W_s/H_s-W_0/H_0|,\quad G_{\rm pantalla}=\mathbf1[H_{\rm archivo}=H_{\rm registrado}]G_{\rm convexidad}.\end{equation}
+Cada esquina aporta dos ecuaciones para ocho incógnitas libres. Cuatro correspondencias no degeneradas determinan una transformación plana. El muestreo inverso evita agujeros del mapeo directo. Se comprueban rango y convexidad para impedir una placa cruzada. La textura conserva toda la altura y anchura; únicamente las esquinas redondeadas enmascaran bordes. La perspectiva cambia apariencia geométrica sin volver a escribir la interfaz. La formulación no modela curvatura de cristal, reflexión óptica u oclusión por dedos.
+\subsection{Región identificable QAF y comparador}
+La integración usa el caso diagonal del formalismo, con base fija de candidatos y compuerta de factibilidad g:
+\begin{equation}
+p_j=\frac{g_j\exp[-(L_j-L_{\min})/\tau]}{\sum_k g_k\exp[-(L_k-L_{\min})/\tau]},\quad\rho=\operatorname{diag}(p),\quad\rho\succeq0,\quad\operatorname{Tr}\rho=1.
+\end{equation}
+Estos pesos describen decisión, no satisfacción del público. No se aprende ni asigna fase sin observaciones que la identifiquen. La enumeración nativa selecciona el mínimo factible; el comparador clásico recibe exactamente los mismos candidatos y coincide por construcción. No se reclama ventaja cuántica. MPS y TDVP siguen disponibles como referencias matemáticas anteriores, pero no intervienen en la síntesis de voz, el transporte de luz o una supuesta dinámica cerebral.
+
+Con pérdidas desplazadas no negativas, se conserva la compilación triangular de selección única:
+\begin{equation}
+E(x)=\sum_j(\widetilde L_j-A)x_j+2A\sum_{j<k}x_jx_k+A,\qquad A>\max_j\widetilde L_j.
+\end{equation}
+La constante distingue correctamente el conjunto vacío; la interacción aparece una sola vez por pareja. La máscara de alternativas prohibidas es una restricción nativa, no una penalización blanda. Una prueba independiente enumera las 64 configuraciones de seis variables y compara con el óptimo restringido. La positividad y la traza se verifican por separado. Este uso explícito de la región clásica evita forzar complejidad tensorial sin evidencia incremental.
+\section{Implementación y trazabilidad}
+phone.py construye bisel, textura y proyección. El layout phone existe en vertical y horizontal; la pantalla se elige entre activos importados desde el estudio. El proyecto registra hash, origen y derechos declarados. La captura de bienvenida suministrada se copia íntegra; su logo y botones no son una recreación generativa. Cambiarla invalida dependencias y caché.
+
+Módulos: \texttt{phone.py}, \texttt{cinema.py}, \texttt{cinema\_\allowbreak{}project.py}. Cada transformación conserva archivos de entrada, parámetros y hashes. No se sustituye una capacidad ausente por una declaración de disponibilidad.
+\subsection{Controles que pueden refutar la implementación}
+\begin{flushleft}\small test\_\allowbreak{}projective\_\allowbreak{}corner\_\allowbreak{}reprojection\_\allowbreak{}and\_\allowbreak{}inverse\\ test\_\allowbreak{}full\_\allowbreak{}screen\_\allowbreak{}keeps\_\allowbreak{}bottom\_\allowbreak{}and\_\allowbreak{}aspect\\ test\_\allowbreak{}degenerate\_\allowbreak{}and\_\allowbreak{}crossed\_\allowbreak{}quad\_\allowbreak{}rejected\\ test\_\allowbreak{}source\_\allowbreak{}change\_\allowbreak{}invalidates\_\allowbreak{}project.\end{flushleft}
+
+La batería combina invariantes algebraicos, casos adversos y render pequeño con decodificación. El conjunto de tests es un piso de reproducibilidad: aprobar una identidad de bytes no acredita veracidad de contenido, y una ecuación correcta no acredita preferencia artística.
+\section{Resultados computacionales observados}
+La captura de origen mide 992 por 1722 píxeles. La placa usa 826 por 1434 píxeles de textura. El error absoluto de aspecto previo a la proyección es 0.00006317. Las pruebas de esquina e inversa usan tolerancia de 1e-8 píxeles en una instancia construida.
+
+La suite ejecutada contiene 72 pruebas aprobadas. Son contratos de software e integración, no 72 observaciones independientes de calidad artística. Los datos completos se registran en el informe de versión.
+
+El archivo \texttt{docs/validation/robustness-v0.4.json} conserva medidas y hashes de entrega. El proyecto completo con voz se distribuye por separado del código público. No se publican notas originales, perfiles biométricos ni sus transcripciones privadas.
+\section{Protocolo de evaluación y ablación}
+Comparar pantalla vacía, interfaz reconstruida y captura original sobre el mismo dispositivo. Medir reconocimiento de marca, identificación del siguiente paso y atribución de funciones. La parte geométrica usa coordenadas sintéticas conocidas y casos degenerados; la parte perceptual exige móviles reales. Mostrar una captura completa dentro de un teléfono puede reducir su legibilidad aun conservando correctamente el archivo.
+
+La aceptación es jerárquica: primero se satisfacen las restricciones duras; después se optimiza calidad dentro del conjunto admisible. Se registrarán candidatos fallidos, tiempo y recursos, no solo la toma ganadora. El episodio, la persona y la familiaridad se controlan por separado. Repetir valoraciones de un único video no crea videos independientes. La muestra confirmatoria se calculará con variabilidad del piloto, sin inventar potencia o resultados.
+\section{Discusión, límites y propiedad intelectual}
+La captura acredita apariencia de bienvenida, no sesión completada, historial personal ni eficacia del agente. El dispositivo es un gráfico con sombra, no un render físico de un modelo comercial. La fidelidad documental no garantiza que todos sus elementos sean legibles a cualquier escala.
+
+Los aportes de integración se preparan a nombre de Juan Manuel Goenaga Castro. Se conserva atribución de Antoni Bancells al antecedente técnico QAF y de los modelos, métodos y fuentes de terceros. No se reivindica entrenamiento propio de Qwen o Whisper. Una ampliación relacional deberá superar un comparador clásico con las mismas entradas y presupuesto; si no aporta valor, la solución sencilla continúa siendo válida.
+\section{Conclusión}
+La propuesta computacional descrita se encuentra en el código entregado y permite repetir sus controles. La calidad percibida, la autenticidad vocal y la eficacia comercial requieren sus propios datos; no se declaran resueltas por completar una exportación.
+\begin{thebibliography}{9}
+\bibitem{qaf} Goenaga Castro, J. M. (2025--2026). Quantum Analysis Frameworks y serie QAF audiovisual I--V, documentos aportados. Bancells, A. (2026). Dinámica operacional, MPS/TDVP y compilación QUBO, antecedente técnico aportado. Atribuciones conservadas; sus bancos completos no se repitieron en esta ampliación.
+\bibitem{wcag} W3C. Understanding SC 1.4.3, WCAG 2.2: Contrast (Minimum). Consulta 22/10/2026. \url{https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html}.
+\end{thebibliography}
+\end{document}
