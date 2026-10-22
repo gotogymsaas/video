@@ -40,3 +40,7 @@ class LocalServerTests(unittest.TestCase):
         m['shots'][0]['end']=1
         with self.assertRaises(HTTPError):self.post('save',{'path':'episode/project.json','project':m})
         self.assertEqual(json.loads((self.root/'episode/project.json').read_text())['shots'][0]['end'],2)
+    def test_voice_reference_endpoint_rejects_traversal(self):
+        (self.root/'episode').mkdir()
+        with self.assertRaises(HTTPError):
+            self.post('voice-prepare',{'path':'episode/project.json','assets':['../../outside.ogg']})

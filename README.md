@@ -54,6 +54,29 @@ La opción `--final` exige composición lineal, afirmaciones vinculadas y verifi
 
 ## Voz colombiana
 
+### Tu propia referencia regional · versión 0.2
+
+El estudio admite notas OGG de WhatsApp, compara variantes de procesamiento con límites de preservación y prepara un perfil de voz local. En **Voz y recursos**, importa las muestras, selecciónalas en **Tu voz de marca** y pulsa **Preparar referencia**. Las comparaciones A/B usan el mismo objetivo de sonoridad.
+
+Para generar guiones nuevos con esa referencia, instala una vez el motor opcional (descarga aproximada de 3 GB de modelos):
+
+```bash
+python scripts/setup_local_voice.py
+```
+
+Reabre el estudio, elige el perfil, escribe el guion y pulsa **Generar con mi referencia**. También puedes usar la CLI:
+
+```bash
+python -m qaf_video voice-prepare muestras/uno.ogg muestras/dos.ogg --out projects/episodio-01/voice-profiles/barranquilla
+python -m qaf_video voice-clone --profile projects/episodio-01/voice-profiles/barranquilla/voice-profile.json --text-file projects/episodio-01/narration-es.txt --out projects/episodio-01/assets/voice.wav
+```
+
+La síntesis utiliza **Qwen3-TTS Base** preentrenado y transcripción local con **faster-whisper**; el módulo matemático selecciona procesamiento y referencia. No se afirma haber entrenado un vocoder QAF. La inferencia desactiva telemetría antes de importar los motores y usa pesos locales; en Linux un proceso aislado bloquea las llamadas de red. Las muestras y perfiles se conservan como recursos privados del proyecto y no forman parte del código público. Consulta [docs/VOZ.md](docs/VOZ.md).
+
+Los subtítulos provienen de tiempos de ASR, con revisión pendiente. Solo se vincula automáticamente una locución que cabe en el episodio y supera la comparación inicial con el guion. La semejanza, naturalidad, acento regional y pronunciación necesitan aprobación escuchando.
+
+### Alternativa de catálogo
+
 Puedes usar una locutora de Barranquilla y cargar la grabación. Para probar el adaptador en línea:
 
 ```bash
@@ -83,7 +106,7 @@ El planificador aplica una referencia clásica exacta a alternativas editoriales
 
 - El sistema exporta MP4 H.264/AAC SDR; conserva informes, hashes y mediciones. La composición de entrega es lineal entre capas sRGB de 8 bits, sin certificación ACES/HDR.
 - El render CPU es una referencia acotada: esferas, reflexión ideal y materiales difusos. No incluye piel, telas, pelo, volúmenes o geometría arbitraria. Blender amplía el flujo cuando se instala por separado.
-- No contiene un generador neuronal de video, un modelo de voz regional entrenado ni un benchmark que demuestre liderazgo mundial. La producción cinematográfica necesita material, dirección y revisión profesional.
+- No contiene un generador neuronal de video, un modelo regional entrenado desde cero ni un benchmark que demuestre liderazgo mundial. La síntesis opcional usa un modelo preentrenado condicionado por la referencia. La producción cinematográfica necesita material, dirección y revisión profesional.
 - El servidor escucha solo en `127.0.0.1`. Está diseñado para un equipo local, sin autenticación multiusuario ni despliegue público. Las escrituras exigen token y origen local; las rutas están confinadas al espacio de proyectos.
 - No publica videos ni contacta personas automáticamente. No incorpora el código privado de la app GoToGym.
 

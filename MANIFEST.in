@@ -4,3 +4,4 @@ recursive-include qaf_video/web *.html
 recursive-include docs *.md *.pdf *.tex *.json
 recursive-include examples *.json *.jpg
 recursive-include tests *.py
+recursive-include scripts *.py

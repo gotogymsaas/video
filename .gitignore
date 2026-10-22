@@ -12,3 +12,6 @@ projects/
 *.log
 *.out
 *.toc
+.voice-venv/
+voice_models/
+voice-profiles/

@@ -28,6 +28,15 @@ def parser():
     c.add_argument('--list',action='store_true');c.add_argument('--locale',default='es-CO')
     c.add_argument('--text-file',type=Path);c.add_argument('--out',type=Path)
     c.add_argument('--voice',default='es-CO-SalomeNeural');c.add_argument('--rate',default='+0%');c.add_argument('--pitch',default='+0Hz')
+    c=sub.add_parser('voice-prepare',help='Analyze and prepare local voice references (WAV/OGG/MP3)')
+    c.add_argument('files',type=Path,nargs='+');c.add_argument('--out',type=Path,required=True)
+    c.add_argument('--name',default='Voz de referencia · Barranquilla')
+    c=sub.add_parser('voice-clone',help='Generate a new script with a local reference-conditioned model')
+    c.add_argument('--profile',type=Path,required=True);c.add_argument('--text-file',type=Path,required=True)
+    c.add_argument('--out',type=Path,required=True);c.add_argument('--python',type=Path)
+    c.add_argument('--tts-model',type=Path);c.add_argument('--asr-model',type=Path)
+    c.add_argument('--device',choices=['cpu','cuda:0','mps'],default='cpu');c.add_argument('--seed',type=int,default=22)
+    c.add_argument('--seconds',type=float,help='Fit within bounded tempo and real pauses; reject unsuitable script lengths')
     c=sub.add_parser('attach-voice',help='Attach recording and real caption intervals to a project')
     c.add_argument('project',type=Path);c.add_argument('--asset',required=True)
     c.add_argument('--captions',type=Path,required=True,help='JSON list, or .voice.json containing subtitles')
@@ -42,9 +51,13 @@ def main(argv=None):
     p=parser();a=p.parse_args(argv)
     try:
         if a.command=='doctor':
+            from .voice_local import runtime_settings
+            try:
+                runtime_settings();reference_voice={'configured':True,'processing':'local, offline worker'}
+            except ValidationError as error:reference_voice={'configured':False,'setup':str(error)}
             result={'python':sys.version.split()[0],'ffmpeg':shutil.which('ffmpeg'),
                     'ffprobe':shutil.which('ffprobe'),'blender':shutil.which('blender'),
-                    'edge_tts_installed':bool(importlib.util.find_spec('edge_tts')),
+                    'edge_tts_installed':bool(importlib.util.find_spec('edge_tts')),'reference_voice':reference_voice,
                     'native_renderer':'CPU reference available','cloud_video_generation':'not integrated',
                     'voice_accent':'Barranquilla requires an audition; not certified by locale',
                     'core_ready':bool(shutil.which('ffmpeg') and shutil.which('ffprobe'))}
@@ -78,6 +91,16 @@ def main(argv=None):
             else:
                 if not a.text_file or not a.out:p.error('voice requires --text-file and --out (or --list)')
                 result=asyncio.run(synthesize(a.text_file.read_text(encoding='utf-8'),a.out,a.voice,a.rate,a.pitch))
+        elif a.command=='voice-prepare':
+            from .voice_lab import prepare_voice
+            profile=prepare_voice(a.files,a.out,a.name)
+            result={'profile':str(a.out/'voice-profile.json'),'samples':len(profile['samples']),
+                    'reference_seconds':profile['reference_selection']['end']-profile['reference_selection']['start'],
+                    'requires_listening_review':True}
+        elif a.command=='voice-clone':
+            from .voice_local import synthesize_local
+            result=synthesize_local(a.profile,a.text_file.read_text(encoding='utf-8'),a.out,a.python,
+                                    a.tts_model,a.asr_model,a.device,a.seed,a.seconds)
         elif a.command=='attach-voice':
             from .core import local_asset,sha256
             m=load(a.project);audio=local_asset(a.project.resolve().parent,a.asset)

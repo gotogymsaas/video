@@ -1,5 +1,13 @@
 # Validación de la entrega
 
+## Edición de voz 0.2.0
+
+La edición 0.2 pasó 48 pruebas locales, incluidas preservación de tono, reducción contra un fixture con señal limpia conocida, picos entre muestras, duración exacta, transcripción temporal y bloqueo de red del proceso de inferencia. Se ejecutó Qwen3-TTS Base en CPU con una referencia aportada; el guion nuevo contiene 137 palabras. La salida se ajustó a 60 s con tempo 0.87158, sin recortar palabras, y se volvió a transcribir. Las métricas agregadas están en `validation/voice-v0.2.json`.
+
+La locución de voz previa a mezcla mide -18.00 LUFS y -2.17 dBTP. El video de prueba de 60 s pasó frame count, duración, formato, fps, H.264/AAC y decodificación; después de AAC midió -14.02 LUFS y -1.49 dBTP. La tasa de edición respecto a la transcripción ASR fue 6/137 (4.38%): es una comparación automática que puede incluir errores del reconocedor, no una evaluación de naturalidad o de acento.
+
+Las notas originales, el perfil y la transcripción de referencia no se publican en GitHub. La aprobación de identidad, pronunciación y acento sigue pendiente de escucha del usuario. Las 37 pruebas citadas más abajo documentan la edición inicial 0.1.
+
 ## Pruebas reproducibles
 
 ```bash

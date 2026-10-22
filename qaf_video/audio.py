@@ -13,9 +13,9 @@ TARGET_I = -14.0
 TARGET_TP = -1.5  # Headroom for the subsequent AAC encode.
 
 
-def measure(path):
+def measure(path, target_i=TARGET_I, target_tp=TARGET_TP):
     result = run(['ffmpeg', '-hide_banner', '-nostats', '-i', path, '-vn',
-                  '-af', f'loudnorm=I={TARGET_I}:TP={TARGET_TP}:LRA=11:print_format=json',
+                  '-af', f'loudnorm=I={target_i}:TP={target_tp}:LRA=11:print_format=json',
                   '-f', 'null', '-'])
     records = re.findall(r'\{[^{}]*"input_i"[^{}]*\}', result.stderr, re.S)
     require(bool(records), 'FFmpeg did not return loudness measurements')

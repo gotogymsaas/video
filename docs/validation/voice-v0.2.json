@@ -1,0 +1,62 @@
+{
+  "version": "0.2.0",
+  "date": "2026-10-22",
+  "unit_integration_tests": {
+    "passed": 48,
+    "failed": 0
+  },
+  "recordings": {
+    "count": 6,
+    "total_decoded_seconds": 48.021,
+    "selected_presets": [
+      "neutral",
+      "neutral",
+      "studio",
+      "neutral",
+      "neutral",
+      "neutral"
+    ],
+    "max_observed_pitch_change_semitones": 0.21776816052311423
+  },
+  "synthesis": {
+    "executed": true,
+    "engine": "Qwen3-TTS-12Hz-0.6B-Base",
+    "device": "cpu",
+    "raw_seconds": 49.68,
+    "delivered_seconds": 60,
+    "tempo_factor": 0.871578947368421,
+    "script_words": 137,
+    "asr_word_error_rate": 0.043795620437956206,
+    "captions": 14,
+    "voice_lufs": "-18.00",
+    "voice_true_peak_dbtp": "-2.17",
+    "generation_wall_seconds": 487.79879160700057
+  },
+  "privacy": {
+    "telemetry_disabled_before_import": true,
+    "models": "local_files_only",
+    "network_guard": "linux_seccomp_denies_network_syscalls"
+  },
+  "human_review": {
+    "speaker_similarity": "pending",
+    "regional_accent": "pending",
+    "naturalness": "pending"
+  },
+  "sources_in_public_repo": "implementation and aggregate metrics only; no recordings, reference transcript or voice profile",
+  "video": {
+    "technical_passed": true,
+    "frames": 1800,
+    "seconds": 60,
+    "resolution": [
+      540,
+      960
+    ],
+    "lufs_after_aac": "-14.02",
+    "true_peak_after_aac": "-1.49"
+  },
+  "observed_failure": {
+    "case": "six-word greedy-generation stress test",
+    "outcome": "rejected by duration control",
+    "mitigation": "released-model sampling defaults and codec-token budget with explicit rejection"
+  }
+}

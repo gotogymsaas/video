@@ -73,14 +73,19 @@ def handler(studio):
                     with studio.lock: self.reply({'projects':projects,'jobs':list(studio.jobs.values())[-20:],'busy':studio.busy()})
                 elif u.path=='/api/project':
                     p=confined(studio.root,q.get('path',[''])[0]);m=json.loads(p.read_text(encoding='utf-8'))
+                    profiles=[]
+                    for a in (p.parent/'voice-profiles').glob('*/voice-profile.json'):
+                        if a.resolve().is_relative_to(p.parent):
+                            v=json.loads(a.read_text(encoding='utf-8'));profiles.append({'path':str(a.relative_to(p.parent)),'name':v.get('name',a.parent.name),
+                                'reference_audio':str((a.parent/v.get('reference_audio','reference.wav')).relative_to(p.parent))})
                     self.reply({'project':m,'assets':[str(a.relative_to(p.parent)) for a in (p.parent/'assets').glob('*')
-                                                    if a.is_file() and a.resolve().is_relative_to(p.parent)]})
+                                                    if a.is_file() and a.resolve().is_relative_to(p.parent)],'voice_profiles':profiles})
                 elif u.path.startswith('/media/'):
                     self.media(confined(studio.root,unquote(u.path[len('/media/'): ])))
                 else:self.reply({'error':'Not found'},404)
             except (ValidationError,ValueError,KeyError,OSError) as e:self.reply({'error':str(e)},400)
         def media(self,p):
-            require(p.is_file() and p.suffix.lower() in ['.mp4','.png','.jpg','.jpeg','.webp','.wav','.mp3','.json','.pdf'], 'Media file not available')
+            require(p.is_file() and p.suffix.lower() in ['.mp4','.png','.jpg','.jpeg','.webp','.wav','.mp3','.ogg','.json','.pdf'], 'Media file not available')
             size=p.stat().st_size;start=0;end=size-1;status=200
             range_header=self.headers.get('Range')
             if range_header:
@@ -122,6 +127,38 @@ def handler(studio):
                     elif action=='validate':result=validate(load(path),path.parent,final=data.get('final') is True)
                     elif action=='plan':
                         result=plan_project(path);atomic_json(path.parent/'outputs/plan.json',result)
+                    elif action=='voice-prepare':
+                        from .core import local_asset
+                        from .voice_lab import prepare_voice
+                        names=data.get('assets',[]);require(isinstance(names,list) and 1<=len(names)<=12,'Select 1–12 audio recordings')
+                        files=[local_asset(path.parent,n) for n in names]
+                        require(all(f.suffix.lower() in ['.ogg','.wav','.mp3','.m4a','.flac'] for f in files),'Select audio recordings')
+                        folder=path.parent/'voice-profiles'/('voice-'+secrets.token_hex(4))
+                        def make_profile(progress):
+                            value=prepare_voice(files,folder,data.get('name','Voz de referencia'),progress)
+                            return {'voice_profile':str((folder/'voice-profile.json').relative_to(path.parent)),
+                                    'reference_audio':str((folder/'reference.wav').relative_to(studio.root)),
+                                    'samples':len(value['samples']),'requires_listening_review':True}
+                        result=studio.job(action,make_profile)
+                    elif action=='voice-synthesize':
+                        from .core import local_asset
+                        from .voice_local import synthesize_local,runtime_settings
+                        profile=local_asset(path.parent,data.get('profile',''));runtime_settings()
+                        script=data.get('text','');require(isinstance(script,str) and 1<=len(script.strip())<=5000,'Enter a script of 1–5000 characters')
+                        out=path.parent/'assets'/('voice-'+secrets.token_hex(4)+'.wav')
+                        def make_voice(progress):
+                            progress(.05);episode_seconds=load(path)['duration']
+                            value=synthesize_local(profile,script,out,target_seconds=episode_seconds if episode_seconds>=3 else None)
+                            progress(.95);m=load(path)
+                            attached=(value['word_error_rate']['rate']<=.25 and bool(value['subtitles']) and
+                                      value['seconds']<=m['duration'] and value['subtitles'][-1]['end']<=m['duration'])
+                            if attached:
+                                m.update(voice=str(out.relative_to(path.parent)),subtitles=value['subtitles'],caption_audio_sha256=sha256(out),
+                                         voice_synthesis={'report':str(out.with_suffix('.voice.json').relative_to(path.parent)),'human_approval':False})
+                                validate(m,path.parent);atomic_json(path,m)
+                            return {'audio':str(out.relative_to(studio.root)),'report':value,'attached':attached,
+                                    'requires_listening_review':True,'reason':None if attached else 'Check script, duration and ASR before attaching'}
+                        result=studio.job(action,make_voice)
                     elif action=='storyboard':
                         def make_board(progress):
                             out=storyboard(path,path.parent/'outputs/storyboard.jpg');return {'media':str(out.relative_to(studio.root))}
@@ -143,12 +180,12 @@ def handler(studio):
             if action=='attach-voice':
                 from .core import local_asset
                 m=load(path);name=data.get('asset');audio=local_asset(path.parent,name)
-                require(audio.suffix.lower() in ['.wav','.mp3','.m4a','.flac'],'Choose an audio recording')
+                require(audio.suffix.lower() in ['.wav','.mp3','.m4a','.flac','.ogg'],'Choose an audio recording')
                 m['voice']=name;m['subtitles']=data.get('subtitles',[])
                 m['caption_audio_sha256']=sha256(audio);validate(m,path.parent);atomic_json(path,m)
                 return {'attached':True,'caption_alignment_requires_review':True}
             name=data.get('name','');require(isinstance(name,str) and name==Path(name).name and name not in ['.','..'],'Invalid filename')
-            require(Path(name).suffix.lower() in ['.png','.jpg','.jpeg','.webp','.mp4','.mov','.wav','.mp3','.m4a','.flac'],'Unsupported asset extension')
+            require(Path(name).suffix.lower() in ['.png','.jpg','.jpeg','.webp','.mp4','.mov','.wav','.mp3','.m4a','.flac','.ogg'],'Unsupported asset extension')
             target=confined(path.parent,'assets/'+name);require(not target.exists(),'Asset already exists; use a new name')
             raw=base64.b64decode(data.get('base64',''),validate=True);require(0<len(raw)<=24*1024*1024,'Asset too large or empty')
             target.parent.mkdir(parents=True,exist_ok=True)

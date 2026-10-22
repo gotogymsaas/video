@@ -2,6 +2,8 @@
 
 Edición de referencia 0.1.0. Los manuscritos son documentos de diseño científico; no todas sus propuestas equivalen a un modelo entrenado o un experimento realizado. Esta matriz distingue código ejecutable, adaptadores y trabajo experimental pendiente.
 
+**Actualización 0.2.0:** la ruta de voz se amplió con referencias OGG, procesamiento restringido, comparaciones A/B, síntesis Qwen3-TTS local y transcripción temporal. Esa ruta se ejecutó con las muestras aportadas y un guion nuevo; ver [VOZ.md](VOZ.md) y [VALIDACION.md](VALIDACION.md). El adaptador Cycles sigue requiriendo instalación y validación externa.
+
 ## I · Fundamentos QAF audiovisuales
 
 | Componente | Código y verificación | Alcance |
