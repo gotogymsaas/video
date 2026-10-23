@@ -33,9 +33,9 @@ def load_spec(path):
   points=[event.get("center",[])] if event["type"]=="pulse" else event.get("points",[])
   require(1<=len(points)<=12 and all(len(pt)==2 and all(isinstance(x,(float,int)) and 0<=x<=1 for x in pt) for pt in points),"Event coordinates")
  return s,p.parent
-def frame(spec,root,t):
+def frame(spec,root,t,background=None):
  w,h=spec["width"],spec["height"]
- photo=Image.open(root/spec["background"]).convert("RGB").resize((w,h))
+ photo=(background.convert("RGB") if background is not None else Image.open(root/spec["background"]).convert("RGB")).resize((w,h))
  z0,z1=spec.get("camera",{}).get("zoom",[1,1.05])
  require(1<=z0<=1.2 and 1<=z1<=1.2,"Zoom invalid")
  z=z0+(z1-z0)*ease(t/spec["seconds"]);cw,ch=w/z,h/z
