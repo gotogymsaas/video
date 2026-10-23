@@ -6,7 +6,7 @@ media to the repository, invoke the trainer, or certify licenses.
 from __future__ import annotations
 import hashlib,json
 from pathlib import Path
-from ..core import require,sha256
+from ..core import require,sha256,probe
 from .training_readiness import validate_dataset
 
 def export_ltx25(manifest,output_dir,bucket="768x448x49",verify_media=True):
@@ -32,6 +32,11 @@ def export_ltx25(manifest,output_dir,bucket="768x448x49",verify_media=True):
                 "LTX clips use sampled 8n+1 frames")
         file=(root/row["video"]).resolve()
         require(file.is_relative_to(root) and file.is_file(),"Video outside private folder")
+        if verify_media:
+            duration=float(probe(file)["format"]["duration"])
+            needed=(int(row["training_frame_count"])-1)/int(row["fps"])
+            require(duration+0.05>=needed,
+                    "Source clip too short to supply declared training frames")
         # Absolute paths permitted by official preprocessor; all inputs remain local.
         export[row["split"]].append({"caption":row["prompt"],"video":str(file)})
         sources.append({"id":row["id"],"split":row["split"],"video_sha256":sha256(file)})

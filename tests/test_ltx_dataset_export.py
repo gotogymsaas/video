@@ -9,7 +9,7 @@ class TestLtxDatasetExport(unittest.TestCase):
   for i,split in enumerate(("train","val","test")):
    Image.new("RGB",(32,32),(20+i*40,0,30)).save(p/f"{i}.png")
    subprocess.run(["ffmpeg","-v","error","-y","-f","lavfi","-i",
-      f"testsrc=size=32x32:rate=12:duration={1+i}",
+      f"testsrc=size=32x32:rate=12:duration={5+i}",
       "-pix_fmt","yuv420p",str(p/f"{i}.mp4")],check=True)
    samples.append({"id":str(i),"split":split,"subject_id":str(i),
                    "garment_id":"g"+str(i),"prompt":"A geometric object moves",
@@ -28,6 +28,14 @@ class TestLtxDatasetExport(unittest.TestCase):
    self.assertEqual(set(row),{"video","caption"})
    self.assertTrue(Path(row["video"]).exists())
    self.assertFalse(result["training_run_executed"])
+ def test_reject_short_clip_with_exaggerated_frame_count(self):
+  with tempfile.TemporaryDirectory() as p:
+   root=Path(p);source=self.make(root)
+   data=json.loads(source.read_text())
+   data["samples"][0]["training_frame_count"]=97
+   source.write_text(json.dumps(data))
+   with self.assertRaisesRegex(ValueError,"too short"):
+    export_ltx25(source,root/"exp")
  def test_reject_incompatible_frame_bucket(self):
   with tempfile.TemporaryDirectory() as p:
    root=Path(p);source=self.make(root)
