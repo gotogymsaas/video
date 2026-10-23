@@ -1,0 +1,334 @@
+{
+  "schema": "qaf_cinema_project_v1",
+  "title": "Lo que sientes merece contexto / Osteoartritis / Episodio 03",
+  "duration": 60,
+  "fps": 30,
+  "mode": "conceptual",
+  "shots": [
+    {
+      "start": 0,
+      "end": 5.233333333333333,
+      "layout": "headline",
+      "title": "Hay días\nque se sienten\ndiferentes.",
+      "body": "",
+      "eyebrow": "OSTEOARTRITIS / EPISODIO 03",
+      "asset": "assets/staircase.png",
+      "focus": [
+        0.5,
+        0.45
+      ],
+      "zoom": [
+        1,
+        1.035
+      ]
+    },
+    {
+      "start": 5.233333333333333,
+      "end": 12.766666666666667,
+      "layout": "headline",
+      "title": "Lo que sientes\nmerece contexto.",
+      "body": "",
+      "eyebrow": "TU EXPERIENCIA CUENTA",
+      "asset": "assets/staircase.png",
+      "focus": [
+        0.5,
+        0.45
+      ],
+      "zoom": [
+        1,
+        1.035
+      ]
+    },
+    {
+      "start": 12.766666666666667,
+      "end": 19.133333333333333,
+      "layout": "inputs",
+      "title": "",
+      "body": "",
+      "eyebrow": "",
+      "asset": "assets/scene.png",
+      "focus": [
+        0.5,
+        0.45
+      ],
+      "zoom": [
+        1,
+        1.035
+      ],
+      "claim_ids": [
+        "support"
+      ]
+    },
+    {
+      "start": 19.133333333333333,
+      "end": 27.233333333333334,
+      "layout": "choice",
+      "title": "",
+      "body": "",
+      "eyebrow": "",
+      "asset": "assets/scene.png",
+      "focus": [
+        0.5,
+        0.45
+      ],
+      "zoom": [
+        1,
+        1.035
+      ],
+      "claim_ids": [
+        "support"
+      ]
+    },
+    {
+      "start": 27.233333333333334,
+      "end": 29.866666666666667,
+      "layout": "headline",
+      "title": "Más claridad\npara conversar.",
+      "body": "Comparte tus registros con tu profesional.",
+      "eyebrow": "TU HISTORIA, MEJOR CONTADA",
+      "asset": "assets/scene.png",
+      "focus": [
+        0.5,
+        0.45
+      ],
+      "zoom": [
+        1,
+        1.035
+      ],
+      "claim_ids": [
+        "support"
+      ]
+    },
+    {
+      "start": 29.866666666666667,
+      "end": 34.63333333333333,
+      "layout": "headline",
+      "title": "Primero,\nla valoración.",
+      "body": "Ante señales declaradas de alerta.",
+      "eyebrow": "EL CUIDADO GUÍA EL SIGUIENTE PASO",
+      "asset": "assets/scene.png",
+      "focus": [
+        0.5,
+        0.45
+      ],
+      "zoom": [
+        1,
+        1.035
+      ],
+      "claim_ids": [
+        "support"
+      ]
+    },
+    {
+      "start": 34.63333333333333,
+      "end": 36.6,
+      "layout": "headline",
+      "title": "Acompaña\ntu plan.",
+      "body": "Sin diagnóstico ni cambios de tratamiento.",
+      "eyebrow": "ACOMPAÑAMIENTO EDUCATIVO",
+      "asset": "assets/staircase.png",
+      "focus": [
+        0.5,
+        0.45
+      ],
+      "zoom": [
+        1,
+        1.035
+      ],
+      "claim_ids": [
+        "support"
+      ]
+    },
+    {
+      "start": 36.6,
+      "end": 44.266666666666666,
+      "layout": "diary",
+      "title": "Cómo estás\nimporta.",
+      "body": "",
+      "eyebrow": "REGISTRA TU EXPERIENCIA",
+      "asset": "assets/staircase.png",
+      "focus": [
+        0.5,
+        0.45
+      ],
+      "zoom": [
+        1,
+        1.035
+      ],
+      "labels": [
+        "Cómo te sentiste",
+        "Qué actividad declaraste",
+        "Cómo dormiste"
+      ],
+      "claim_ids": [
+        "support"
+      ]
+    },
+    {
+      "start": 44.266666666666666,
+      "end": 47.333333333333336,
+      "layout": "phone",
+      "title": "Dale contexto.",
+      "body": "Tu experiencia cuenta.",
+      "eyebrow": "GOTOGYM QUANTUM COACH",
+      "focus": [
+        0.5,
+        0.45
+      ],
+      "zoom": [
+        1,
+        1.035
+      ]
+    },
+    {
+      "start": 47.333333333333336,
+      "end": 60,
+      "layout": "outro",
+      "title": "",
+      "body": "",
+      "eyebrow": "",
+      "focus": [
+        0.5,
+        0.45
+      ],
+      "zoom": [
+        1,
+        1.035
+      ]
+    }
+  ],
+  "claims": {
+    "support": {
+      "source": "https://github.com/gotogymsaas/appdesplegada/blob/6d2e95d031c2e3c2b83c8c1e442fd6315ef95d62/backend/api/qaf_osteoarthritis/engine.py",
+      "scope": "Local execution of pinned source with fictional self-report. No production verification, diagnosis, exercise prescription or cure.",
+      "status": "verified_local",
+      "evidence_asset": "evidence/osteo-example.json"
+    }
+  },
+  "logo": "assets/logo-gotogym.png",
+  "phone_screen": "assets/pantalla-inicio.png",
+  "fonts": {
+    "regular": "assets/fonts/NimbusSans-Regular.otf",
+    "bold": "assets/fonts/NimbusSans-Bold.otf",
+    "serif": "assets/fonts/NimbusRoman-Italic.otf"
+  },
+  "context_eyebrow": "OSTEOARTRITIS / TUS REGISTROS",
+  "context_heading": "Tu experiencia, en contexto.",
+  "choice_heading": "Una conversación más clara.",
+  "result_card": {
+    "label": "ACOMPAÑAMIENTO EDUCATIVO",
+    "value": "Tu plan",
+    "body": "Sigue los límites profesionales"
+  },
+  "context_footer": "Datos declarados · ejemplo ficticio",
+  "input_cards": [
+    {
+      "label": "DOLOR DECLARADO",
+      "value": "5 de 10"
+    },
+    {
+      "label": "DESCANSO DECLARADO",
+      "value": "7 horas"
+    },
+    {
+      "label": "ACTIVIDAD DECLARADA",
+      "value": "20 minutos"
+    }
+  ],
+  "comparison_cards": [
+    {
+      "label": "REGISTRO ANTERIOR",
+      "value": "4 de 10"
+    },
+    {
+      "label": "REGISTRO ACTUAL",
+      "value": "5 de 10"
+    },
+    {
+      "label": "DIFERENCIA DESCRIPTIVA",
+      "value": "+1 punto · sin inferir causa"
+    }
+  ],
+  "campaign": {
+    "cta": "Escribe «Activa osteoartritis»",
+    "slogan_vertical": "Tu experiencia cuenta.\nDale contexto.",
+    "slogan_horizontal": "Tu experiencia cuenta."
+  },
+  "subtitles": [],
+  "reviews": {},
+  "assets": {
+    "assets/pantalla-inicio.png": {
+      "sha256": "b5a0091189d7c0775348f69e5f94742927d3a5821cfa11fdd094d6792c622bdc",
+      "origin": "original GoToGym production asset reused from Running",
+      "rights": "GoToGym commissioned production; original font licenses retained",
+      "privacy": "public"
+    },
+    "assets/scene.png": {
+      "sha256": "26df9ac2affe9f33ebe302b88be75cc4b195165f8f1e8d4c6c8f3737d21d0c46",
+      "origin": "Generated fictional image",
+      "rights": "Commissioned production; bundled font licenses retained",
+      "privacy": "public"
+    },
+    "assets/logo-gotogym.png": {
+      "sha256": "5f997e994a394d4354e7d87498b49ce0b9ac1e685d4833d7f25b1f9d98585121",
+      "origin": "original GoToGym production asset reused from Running",
+      "rights": "GoToGym commissioned production; original font licenses retained",
+      "privacy": "public"
+    },
+    "assets/fonts/NimbusSans-Regular.otf": {
+      "sha256": "7c25be4d78155523080ab85b10277150657ff7dabbcad7037bdd536c9b6d0d08",
+      "origin": "original GoToGym production asset reused from Running",
+      "rights": "GoToGym commissioned production; original font licenses retained",
+      "privacy": "public"
+    },
+    "assets/fonts/NimbusSans-Bold.otf": {
+      "sha256": "7f33328e6b4d4cd21b45fa625791928c9407dc702db6780e56b09ca9a3ecaa67",
+      "origin": "original GoToGym production asset reused from Running",
+      "rights": "GoToGym commissioned production; original font licenses retained",
+      "privacy": "public"
+    },
+    "assets/fonts/NimbusRoman-Italic.otf": {
+      "sha256": "b7c424e6cb79baddfcdcd9a9d87f9fc4fdd06f0e5160066e2b2e47bcd647c7b9",
+      "origin": "original GoToGym production asset reused from Running",
+      "rights": "GoToGym commissioned production; original font licenses retained",
+      "privacy": "public"
+    },
+    "assets/fonts/DejaVuSans.ttf": {
+      "sha256": "6fe3a5a51bd583f1628e1b0b8094c047e52fe1929bb85c94e57f84d8da3ccd45",
+      "origin": "GoToGym original asset or fictional source fixture",
+      "rights": "Commissioned production; bundled font licenses retained",
+      "privacy": "public"
+    },
+    "assets/fonts/LICENSE-URW.txt": {
+      "sha256": "1315a62758a603a3e6e87a79b8389563789c59c1740b9db8bc2b20e2e2145458",
+      "origin": "GoToGym original asset or fictional source fixture",
+      "rights": "Commissioned production; bundled font licenses retained",
+      "privacy": "public"
+    },
+    "assets/fonts/LICENSE-DejaVu.txt": {
+      "sha256": "e81d9dced49fea2a7d576cbea283873de58563c5d488f954deb282843c3ea79c",
+      "origin": "GoToGym original asset or fictional source fixture",
+      "rights": "Commissioned production; bundled font licenses retained",
+      "privacy": "public"
+    },
+    "evidence/osteo-example.json": {
+      "sha256": "f1f1c482266e80c015efd0a3f1c8663d0f827c3c1a2cb5843c072a77171c866f",
+      "origin": "GoToGym original asset or fictional source fixture",
+      "rights": "Commissioned production; bundled font licenses retained",
+      "privacy": "public"
+    },
+    "assets/staircase.png": {
+      "sha256": "b792f04253157928add8f9eabc323cf0d7739f7981adfc79b4e44b41e4b92ed7",
+      "origin": "GoToGym original asset or fictional source fixture",
+      "rights": "Commissioned production; bundled font licenses retained",
+      "privacy": "public"
+    }
+  },
+  "sales_structure": {
+    "human_goal": "Contar mejor mi experiencia",
+    "obstacle": "Registros aislados",
+    "demonstration": "Organizar lo declarado y acompañar el plan profesional",
+    "cta": "Activa osteoartritis"
+  },
+  "treatment": "Photographic cinematic animatic; generated still with reframing, exact conceptual graphics, not filmed motion."
+}

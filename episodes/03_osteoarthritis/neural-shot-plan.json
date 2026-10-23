@@ -1,0 +1,22 @@
+{
+  "schema": "gotogym_neural_shot_plan_v1",
+  "status": "planned_not_executed",
+  "runtime_available": false,
+  "intended_model_family": "LTX-2.5 image-to-video",
+  "frames": 97,
+  "fps": 24,
+  "requirements": ["Verified licensed model weights and compatible GPU", "ComfyUI official API workflow with real node bindings", "Human review of rights and model license", "Anatomy and temporal continuity review before ingest", "If using external Weave instead: linked Figma/Weave account and per-run cost approval"],
+  "shots": [
+    {
+      "reference": "assets/staircase.png",
+      "intent": "Opening: an ordinary moment beside a staircase",
+      "prompt": "Preserve the exact fictional woman's face, age, teal blouse, beige trousers, house and dawn lighting. A subtle natural breath and slight shift of gaze toward the window; her right hand remains resting on the banister. Very slow stabilized camera push, plausible anatomy, no change in health or gait implied. No walking up stairs, no medical overlays, no text, no logos, no new people."
+    },
+    {
+      "reference": "assets/scene.png",
+      "intent": "Personal records: calm reflective journaling",
+      "prompt": "Preserve the exact fictional woman's face, clothing, table objects, notebook and courtyard. Tiny natural head movement and one small pen stroke, stable hand anatomy and consistent pen contact with paper. Slow lateral camera drift with subtle depth, no object morphing. Keep the smartphone face down. No invented interface, no diagnosis, no transformation or cure, no text and no logos."
+    }
+  ],
+  "acceptance": ["No identity drift", "No extra or fused fingers", "Stable stairs, banister, notebook and phone", "No implied improvement in pain or mobility", "No accidental pseudo-medical measurements", "Complete provenance and human review remain required"]
+}

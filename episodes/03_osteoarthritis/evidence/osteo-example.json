@@ -1,0 +1,186 @@
+{
+  "fictional": true,
+  "source_commit": "6d2e95d031c2e3c2b83c8c1e442fd6315ef95d62",
+  "support": {
+    "experience_id": "exp-019_osteoarthritis",
+    "schema_version": "osteoarthritis_result_v1",
+    "model_version": "qaf_osteo_rules_v1",
+    "assessment_status": "continue_coaching",
+    "goal": "Registrar mi experiencia para conversar con mi profesional",
+    "priority_focus": "Seguridad, dolor y movimiento en tu vida diaria",
+    "check_in": {
+      "goal": "Registrar mi experiencia para conversar con mi profesional",
+      "joint": "rodilla",
+      "pain_0_10": 5.0,
+      "pain_duration_days": 180.0,
+      "morning_stiffness_minutes": 15.0,
+      "sleep_hours": 7.0,
+      "activity_minutes": 20.0,
+      "trigger_note": "Registro personal",
+      "professional_plan_note": "Seguir los límites del plan de mi fisioterapeuta",
+      "diagnosis_confirmed": true,
+      "hot_swollen_joint": false,
+      "fever_or_unwell": false,
+      "unable_to_bear_weight": false,
+      "recent_injury": false,
+      "new_numbness": false,
+      "worsening": false,
+      "daily_life_affected": false
+    },
+    "reading": "Registro de dolor y actividad con orientación según las señales que declaraste.",
+    "algorithms": {
+      "QAF-OSTEO-RR": {
+        "route": "continue_coaching",
+        "risk_flags": [],
+        "source_refs": [
+          "https://www.nhs.uk/symptoms/joint-pain/"
+        ]
+      },
+      "QAF-MOB": {
+        "status": "support_existing_plan",
+        "exercise_prescribed": false,
+        "action": "Sigue los límites de tu plan profesional. Registra actividad y síntomas; consulta antes de cambiarlo.",
+        "source_refs": [
+          "https://www.nhs.uk/conditions/osteoarthritis/treatment/"
+        ]
+      },
+      "QAF-ANTI": {
+        "status": "refer_to_primary_nutrition_service",
+        "new_diet_or_supplements": false,
+        "action": "Si quieres revisar tu alimentación, usa tu plan nutricional y el servicio de nutrición; este registro no prescribe suplementos ni una dieta para tratar artrosis."
+      },
+      "QAF-PAIN-MAP": {
+        "status": "descriptive_only",
+        "previous_records": 1,
+        "pain_change_since_previous": 1.0,
+        "causal_trigger": null,
+        "flare_prediction": null,
+        "note": "Las coincidencias declaradas no demuestran causas ni predicen brotes."
+      },
+      "QAF-CCC": {
+        "status": "evidence_only",
+        "semantic_writer": "existing_svmca_reducer",
+        "action": "Ofrecer estos registros al Coach; no escribir estado conversacional ni enviar recordatorios."
+      }
+    },
+    "selected_agents": [
+      "QAF-OSTEO-RR",
+      "QAF-MOB",
+      "QAF-ANTI",
+      "QAF-PAIN-MAP",
+      "QAF-CCC"
+    ],
+    "session_plan": null,
+    "plan_patch": null,
+    "risk_flags": [],
+    "next_best_action": "Sigue los límites de tu plan profesional. Registra actividad y síntomas; consulta antes de cambiarlo.",
+    "limitations": [
+      "Acompañamiento educativo y registro autoinformado; no confirma artrosis ni sustituye evaluación médica.",
+      "Sin cambios de medicación, suplementos, diagnóstico, predicción de brotes ni programa automático de rehabilitación.",
+      "La escala de dolor es numérica autoinformada; no es WOMAC, KOOS ni una medida de daño articular.",
+      "Los límites numéricos de seguridad son reglas prudentes del producto, no un clasificador clínico validado."
+    ],
+    "data_quality": {
+      "source": "self_report",
+      "diagnosis_inferred": false,
+      "prediction_basis": "not_performed"
+    },
+    "evidence_refs": [
+      "https://www.nhs.uk/symptoms/joint-pain/",
+      "https://www.nhs.uk/conditions/osteoarthritis/treatment/"
+    ]
+  },
+  "safety": {
+    "experience_id": "exp-019_osteoarthritis",
+    "schema_version": "osteoarthritis_result_v1",
+    "model_version": "qaf_osteo_rules_v1",
+    "assessment_status": "urgent_medical_attention",
+    "goal": "Registrar mi experiencia para conversar con mi profesional",
+    "priority_focus": "Seguridad, dolor y movimiento en tu vida diaria",
+    "check_in": {
+      "goal": "Registrar mi experiencia para conversar con mi profesional",
+      "joint": "rodilla",
+      "pain_0_10": 5.0,
+      "pain_duration_days": 180.0,
+      "morning_stiffness_minutes": 15.0,
+      "sleep_hours": 7.0,
+      "activity_minutes": 20.0,
+      "trigger_note": "Registro personal",
+      "professional_plan_note": "Seguir los límites del plan de mi fisioterapeuta",
+      "diagnosis_confirmed": true,
+      "hot_swollen_joint": false,
+      "fever_or_unwell": false,
+      "unable_to_bear_weight": true,
+      "recent_injury": false,
+      "new_numbness": false,
+      "worsening": false,
+      "daily_life_affected": false
+    },
+    "reading": "Registro de dolor y actividad con orientación según las señales que declaraste.",
+    "algorithms": {
+      "QAF-OSTEO-RR": {
+        "route": "urgent_medical_attention",
+        "risk_flags": [
+          "unable_to_bear_weight_or_severe_injury"
+        ],
+        "source_refs": [
+          "https://www.nhs.uk/symptoms/joint-pain/"
+        ]
+      },
+      "QAF-MOB": {
+        "status": "withheld",
+        "exercise_prescribed": false,
+        "action": "No inicies ni aumentes ejercicios con estas señales; primero solicita valoración profesional.",
+        "source_refs": [
+          "https://www.nhs.uk/conditions/osteoarthritis/treatment/"
+        ]
+      },
+      "QAF-ANTI": {
+        "status": "refer_to_primary_nutrition_service",
+        "new_diet_or_supplements": false,
+        "action": "Si quieres revisar tu alimentación, usa tu plan nutricional y el servicio de nutrición; este registro no prescribe suplementos ni una dieta para tratar artrosis."
+      },
+      "QAF-PAIN-MAP": {
+        "status": "descriptive_only",
+        "previous_records": 0,
+        "pain_change_since_previous": null,
+        "causal_trigger": null,
+        "flare_prediction": null,
+        "note": "Las coincidencias declaradas no demuestran causas ni predicen brotes."
+      },
+      "QAF-CCC": {
+        "status": "evidence_only",
+        "semantic_writer": "existing_svmca_reducer",
+        "action": "Ofrecer estos registros al Coach; no escribir estado conversacional ni enviar recordatorios."
+      }
+    },
+    "selected_agents": [
+      "QAF-OSTEO-RR",
+      "QAF-MOB",
+      "QAF-ANTI",
+      "QAF-PAIN-MAP",
+      "QAF-CCC"
+    ],
+    "session_plan": null,
+    "plan_patch": null,
+    "risk_flags": [
+      "unable_to_bear_weight_or_severe_injury"
+    ],
+    "next_best_action": "Busca atención médica urgente. Si no puedes apoyar la articulación, hubo una lesión grave o pierdes sensibilidad, acude a urgencias.",
+    "limitations": [
+      "Acompañamiento educativo y registro autoinformado; no confirma artrosis ni sustituye evaluación médica.",
+      "Sin cambios de medicación, suplementos, diagnóstico, predicción de brotes ni programa automático de rehabilitación.",
+      "La escala de dolor es numérica autoinformada; no es WOMAC, KOOS ni una medida de daño articular.",
+      "Los límites numéricos de seguridad son reglas prudentes del producto, no un clasificador clínico validado."
+    ],
+    "data_quality": {
+      "source": "self_report",
+      "diagnosis_inferred": false,
+      "prediction_basis": "not_performed"
+    },
+    "evidence_refs": [
+      "https://www.nhs.uk/symptoms/joint-pain/",
+      "https://www.nhs.uk/conditions/osteoarthritis/treatment/"
+    ]
+  }
+}

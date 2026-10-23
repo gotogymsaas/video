@@ -1,0 +1,722 @@
+{
+  "episode": 3,
+  "treatment": "photographic cinematic animatic with generative images and local generative reference-conditioned voice",
+  "human_playback_approval": false,
+  "production_session_verified": false,
+  "reports": [
+    {
+      "output_sha256": "b90947dbfef6cc97aac1246bfdf537f9bf3154b2f8985489a051d866b80facd3",
+      "seconds": 60,
+      "frames": 1800,
+      "fps": 30,
+      "profile": "horizontal",
+      "resolution": [
+        1920,
+        1080
+      ],
+      "captions_burned": true,
+      "technical": {
+        "technical_passed": true,
+        "checks": {
+          "frames": true,
+          "duration": true,
+          "size": true,
+          "fps": true,
+          "codec": true,
+          "decode": true,
+          "audio": true
+        },
+        "audio_present": true,
+        "editorial_quality": "requires human playback review"
+      },
+      "audio_encoded": {
+        "input_i": "-14.03",
+        "input_tp": "-1.47",
+        "input_lra": "15.30",
+        "input_thresh": "-25.15",
+        "output_i": "-14.34",
+        "output_tp": "-1.50",
+        "output_lra": "12.00",
+        "output_thresh": "-24.99",
+        "normalization_type": "dynamic",
+        "target_offset": "0.34"
+      },
+      "layout": {
+        "profile": "horizontal",
+        "shots": [
+          {
+            "shot": 1,
+            "layout": "headline",
+            "text_count": 6,
+            "clipped_text": [],
+            "passed": true
+          },
+          {
+            "shot": 2,
+            "layout": "headline",
+            "text_count": 5,
+            "clipped_text": [],
+            "passed": true
+          },
+          {
+            "shot": 3,
+            "layout": "inputs",
+            "text_count": 15,
+            "clipped_text": [],
+            "passed": true
+          },
+          {
+            "shot": 4,
+            "layout": "choice",
+            "text_count": 15,
+            "clipped_text": [],
+            "passed": true
+          },
+          {
+            "shot": 5,
+            "layout": "headline",
+            "text_count": 7,
+            "clipped_text": [],
+            "passed": true
+          },
+          {
+            "shot": 6,
+            "layout": "headline",
+            "text_count": 7,
+            "clipped_text": [],
+            "passed": true
+          },
+          {
+            "shot": 7,
+            "layout": "headline",
+            "text_count": 7,
+            "clipped_text": [],
+            "passed": true
+          },
+          {
+            "shot": 8,
+            "layout": "diary",
+            "text_count": 9,
+            "clipped_text": [],
+            "passed": true
+          },
+          {
+            "shot": 9,
+            "layout": "phone",
+            "text_count": 4,
+            "clipped_text": [],
+            "passed": true
+          },
+          {
+            "shot": 10,
+            "layout": "outro",
+            "text_count": 6,
+            "clipped_text": [],
+            "passed": true
+          }
+        ],
+        "passed": true,
+        "phone": [
+          {
+            "screen_box": [
+              33,
+              33,
+              826,
+              1434
+            ],
+            "source_size": [
+              992,
+              1722
+            ],
+            "screen_size": [
+              826,
+              1434
+            ],
+            "aspect_error": 6.31745707774245e-05,
+            "method": "full original screenshot; rounded corners only",
+            "homography": [
+              [
+                0.48484848484848503,
+                -0.00533689126084056,
+                307.2
+              ],
+              [
+                0.0134680134680135,
+                0.5323549032688459,
+                129.6
+              ],
+              [
+                1.5984853788668427e-19,
+                1.7595069213677726e-21,
+                1.0
+              ]
+            ],
+            "quad": [
+              [
+                307.2,
+                129.6
+              ],
+              [
+                739.2,
+                141.6
+              ],
+              [
+                731.2,
+                939.6
+              ],
+              [
+                299.2,
+                927.6
+              ]
+            ]
+          }
+        ],
+        "scope": "text canvas bounds at shot midpoints; aesthetic/overlap review remains human"
+      },
+      "state": "rendered_pending_human_playback"
+    },
+    {
+      "output_sha256": "db411f02ad6d2fe603d28058a6b4c7689a51b1487e06b62cc27d9a9b64b5e9f9",
+      "seconds": 60,
+      "frames": 1800,
+      "fps": 30,
+      "profile": "horizontal",
+      "resolution": [
+        1920,
+        1080
+      ],
+      "captions_burned": false,
+      "technical": {
+        "technical_passed": true,
+        "checks": {
+          "frames": true,
+          "duration": true,
+          "size": true,
+          "fps": true,
+          "codec": true,
+          "decode": true,
+          "audio": true
+        },
+        "audio_present": true,
+        "editorial_quality": "requires human playback review"
+      },
+      "audio_encoded": {
+        "input_i": "-14.03",
+        "input_tp": "-1.47",
+        "input_lra": "15.30",
+        "input_thresh": "-25.15",
+        "output_i": "-14.34",
+        "output_tp": "-1.50",
+        "output_lra": "12.00",
+        "output_thresh": "-24.99",
+        "normalization_type": "dynamic",
+        "target_offset": "0.34"
+      },
+      "layout": {
+        "profile": "horizontal",
+        "shots": [
+          {
+            "shot": 1,
+            "layout": "headline",
+            "text_count": 6,
+            "clipped_text": [],
+            "passed": true
+          },
+          {
+            "shot": 2,
+            "layout": "headline",
+            "text_count": 5,
+            "clipped_text": [],
+            "passed": true
+          },
+          {
+            "shot": 3,
+            "layout": "inputs",
+            "text_count": 15,
+            "clipped_text": [],
+            "passed": true
+          },
+          {
+            "shot": 4,
+            "layout": "choice",
+            "text_count": 15,
+            "clipped_text": [],
+            "passed": true
+          },
+          {
+            "shot": 5,
+            "layout": "headline",
+            "text_count": 7,
+            "clipped_text": [],
+            "passed": true
+          },
+          {
+            "shot": 6,
+            "layout": "headline",
+            "text_count": 7,
+            "clipped_text": [],
+            "passed": true
+          },
+          {
+            "shot": 7,
+            "layout": "headline",
+            "text_count": 7,
+            "clipped_text": [],
+            "passed": true
+          },
+          {
+            "shot": 8,
+            "layout": "diary",
+            "text_count": 9,
+            "clipped_text": [],
+            "passed": true
+          },
+          {
+            "shot": 9,
+            "layout": "phone",
+            "text_count": 4,
+            "clipped_text": [],
+            "passed": true
+          },
+          {
+            "shot": 10,
+            "layout": "outro",
+            "text_count": 6,
+            "clipped_text": [],
+            "passed": true
+          }
+        ],
+        "passed": true,
+        "phone": [
+          {
+            "screen_box": [
+              33,
+              33,
+              826,
+              1434
+            ],
+            "source_size": [
+              992,
+              1722
+            ],
+            "screen_size": [
+              826,
+              1434
+            ],
+            "aspect_error": 6.31745707774245e-05,
+            "method": "full original screenshot; rounded corners only",
+            "homography": [
+              [
+                0.48484848484848503,
+                -0.00533689126084056,
+                307.2
+              ],
+              [
+                0.0134680134680135,
+                0.5323549032688459,
+                129.6
+              ],
+              [
+                1.5984853788668427e-19,
+                1.7595069213677726e-21,
+                1.0
+              ]
+            ],
+            "quad": [
+              [
+                307.2,
+                129.6
+              ],
+              [
+                739.2,
+                141.6
+              ],
+              [
+                731.2,
+                939.6
+              ],
+              [
+                299.2,
+                927.6
+              ]
+            ]
+          }
+        ],
+        "scope": "text canvas bounds at shot midpoints; aesthetic/overlap review remains human"
+      },
+      "state": "rendered_pending_human_playback"
+    },
+    {
+      "output_sha256": "777349912c6ce8d30becd3cdedb0bdb360c0a120af75fa328d9c783a38817fcb",
+      "seconds": 60,
+      "frames": 1800,
+      "fps": 30,
+      "profile": "vertical",
+      "resolution": [
+        1080,
+        1920
+      ],
+      "captions_burned": true,
+      "technical": {
+        "technical_passed": true,
+        "checks": {
+          "frames": true,
+          "duration": true,
+          "size": true,
+          "fps": true,
+          "codec": true,
+          "decode": true,
+          "audio": true
+        },
+        "audio_present": true,
+        "editorial_quality": "requires human playback review"
+      },
+      "audio_encoded": {
+        "input_i": "-14.03",
+        "input_tp": "-1.47",
+        "input_lra": "15.30",
+        "input_thresh": "-25.15",
+        "output_i": "-14.34",
+        "output_tp": "-1.50",
+        "output_lra": "12.00",
+        "output_thresh": "-24.99",
+        "normalization_type": "dynamic",
+        "target_offset": "0.34"
+      },
+      "layout": {
+        "profile": "vertical",
+        "shots": [
+          {
+            "shot": 1,
+            "layout": "headline",
+            "text_count": 6,
+            "clipped_text": [],
+            "passed": true
+          },
+          {
+            "shot": 2,
+            "layout": "headline",
+            "text_count": 6,
+            "clipped_text": [],
+            "passed": true
+          },
+          {
+            "shot": 3,
+            "layout": "inputs",
+            "text_count": 16,
+            "clipped_text": [],
+            "passed": true
+          },
+          {
+            "shot": 4,
+            "layout": "choice",
+            "text_count": 16,
+            "clipped_text": [],
+            "passed": true
+          },
+          {
+            "shot": 5,
+            "layout": "headline",
+            "text_count": 7,
+            "clipped_text": [],
+            "passed": true
+          },
+          {
+            "shot": 6,
+            "layout": "headline",
+            "text_count": 8,
+            "clipped_text": [],
+            "passed": true
+          },
+          {
+            "shot": 7,
+            "layout": "headline",
+            "text_count": 7,
+            "clipped_text": [],
+            "passed": true
+          },
+          {
+            "shot": 8,
+            "layout": "diary",
+            "text_count": 10,
+            "clipped_text": [],
+            "passed": true
+          },
+          {
+            "shot": 9,
+            "layout": "phone",
+            "text_count": 4,
+            "clipped_text": [],
+            "passed": true
+          },
+          {
+            "shot": 10,
+            "layout": "outro",
+            "text_count": 7,
+            "clipped_text": [],
+            "passed": true
+          }
+        ],
+        "passed": true,
+        "phone": [
+          {
+            "screen_box": [
+              33,
+              33,
+              826,
+              1434
+            ],
+            "source_size": [
+              992,
+              1722
+            ],
+            "screen_size": [
+              826,
+              1434
+            ],
+            "aspect_error": 6.31745707774245e-05,
+            "method": "full original screenshot; rounded corners only",
+            "homography": [
+              [
+                0.6787878787878789,
+                -0.00533689126084056,
+                237.6
+              ],
+              [
+                0.013468013468013532,
+                0.7092728485657105,
+                384.0
+              ],
+              [
+                1.1999210756640504e-19,
+                9.434240802657406e-22,
+                1.0
+              ]
+            ],
+            "quad": [
+              [
+                237.6,
+                384.0
+              ],
+              [
+                842.4000000000001,
+                396.0
+              ],
+              [
+                834.4000000000001,
+                1459.2
+              ],
+              [
+                229.6,
+                1447.2
+              ]
+            ]
+          }
+        ],
+        "scope": "text canvas bounds at shot midpoints; aesthetic/overlap review remains human"
+      },
+      "state": "rendered_pending_human_playback"
+    },
+    {
+      "output_sha256": "e22e52a6ab6417449cdc728108d97e6554a12a33072f5df6450c4ad9c3ee817f",
+      "seconds": 60,
+      "frames": 1800,
+      "fps": 30,
+      "profile": "vertical",
+      "resolution": [
+        1080,
+        1920
+      ],
+      "captions_burned": false,
+      "technical": {
+        "technical_passed": true,
+        "checks": {
+          "frames": true,
+          "duration": true,
+          "size": true,
+          "fps": true,
+          "codec": true,
+          "decode": true,
+          "audio": true
+        },
+        "audio_present": true,
+        "editorial_quality": "requires human playback review"
+      },
+      "audio_encoded": {
+        "input_i": "-14.03",
+        "input_tp": "-1.47",
+        "input_lra": "15.30",
+        "input_thresh": "-25.15",
+        "output_i": "-14.34",
+        "output_tp": "-1.50",
+        "output_lra": "12.00",
+        "output_thresh": "-24.99",
+        "normalization_type": "dynamic",
+        "target_offset": "0.34"
+      },
+      "layout": {
+        "profile": "vertical",
+        "shots": [
+          {
+            "shot": 1,
+            "layout": "headline",
+            "text_count": 6,
+            "clipped_text": [],
+            "passed": true
+          },
+          {
+            "shot": 2,
+            "layout": "headline",
+            "text_count": 6,
+            "clipped_text": [],
+            "passed": true
+          },
+          {
+            "shot": 3,
+            "layout": "inputs",
+            "text_count": 16,
+            "clipped_text": [],
+            "passed": true
+          },
+          {
+            "shot": 4,
+            "layout": "choice",
+            "text_count": 16,
+            "clipped_text": [],
+            "passed": true
+          },
+          {
+            "shot": 5,
+            "layout": "headline",
+            "text_count": 7,
+            "clipped_text": [],
+            "passed": true
+          },
+          {
+            "shot": 6,
+            "layout": "headline",
+            "text_count": 8,
+            "clipped_text": [],
+            "passed": true
+          },
+          {
+            "shot": 7,
+            "layout": "headline",
+            "text_count": 7,
+            "clipped_text": [],
+            "passed": true
+          },
+          {
+            "shot": 8,
+            "layout": "diary",
+            "text_count": 10,
+            "clipped_text": [],
+            "passed": true
+          },
+          {
+            "shot": 9,
+            "layout": "phone",
+            "text_count": 4,
+            "clipped_text": [],
+            "passed": true
+          },
+          {
+            "shot": 10,
+            "layout": "outro",
+            "text_count": 7,
+            "clipped_text": [],
+            "passed": true
+          }
+        ],
+        "passed": true,
+        "phone": [
+          {
+            "screen_box": [
+              33,
+              33,
+              826,
+              1434
+            ],
+            "source_size": [
+              992,
+              1722
+            ],
+            "screen_size": [
+              826,
+              1434
+            ],
+            "aspect_error": 6.31745707774245e-05,
+            "method": "full original screenshot; rounded corners only",
+            "homography": [
+              [
+                0.6787878787878789,
+                -0.00533689126084056,
+                237.6
+              ],
+              [
+                0.013468013468013532,
+                0.7092728485657105,
+                384.0
+              ],
+              [
+                1.1999210756640504e-19,
+                9.434240802657406e-22,
+                1.0
+              ]
+            ],
+            "quad": [
+              [
+                237.6,
+                384.0
+              ],
+              [
+                842.4000000000001,
+                396.0
+              ],
+              [
+                834.4000000000001,
+                1459.2
+              ],
+              [
+                229.6,
+                1447.2
+              ]
+            ]
+          }
+        ],
+        "scope": "text canvas bounds at shot midpoints; aesthetic/overlap review remains human"
+      },
+      "state": "rendered_pending_human_playback"
+    }
+  ],
+  "voice": {
+    "provider": "Qwen3-TTS local reference-conditioned synthesis",
+    "synthetic": true,
+    "model": "qwen-base",
+    "precision": "bfloat16",
+    "device": "cpu",
+    "seconds": 50.18395833333334,
+    "seed": 23,
+    "word_error_rate": {
+      "rate": 0.12903225806451613,
+      "edits": 16,
+      "expected_words": 124,
+      "note": "ASR-based script comparison; recognizer errors can inflate this value."
+    },
+    "pronunciation_human_review": "pending",
+    "regional_accent_approved": false,
+    "estimated_spoken_wpm": 150.0,
+    "added_pauses": 0
+  },
+  "captions": {
+    "cues": 16,
+    "max_characters_per_second": 22.69,
+    "alignment_review_warnings": 2,
+    "scope": "Script-corrected measured ASR anchors, not certified phonetic review"
+  },
+  "neural_video": {
+    "executed": false,
+    "local_comfy_runtime_available": false,
+    "external_service": "Weave account linking required; no run or spend"
+  }
+}
