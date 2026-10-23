@@ -222,9 +222,9 @@
     {
       "id": "P101",
       "type": "technology",
-      "related_module": "core.py",
-      "implementation": "partial_reference_only",
-      "blocker": "scientific data provenance to typed graphics",
+      "related_module": "generative_research/scientific_overlay.py",
+      "implementation": "executable_component_without_empirical_validation",
+      "blocker": "authenticated data connectors, time-coded video integration and independent paired validation",
       "verified": false
     },
     {
