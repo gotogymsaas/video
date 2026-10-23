@@ -1,0 +1,4 @@
+# Optional experimental CPU/GPU training: install separately from production.
+# Resolve a supported PyTorch build and CUDA runtime for the target accelerator.
+torch>=2.3,<3
+numpy>=2,<3
