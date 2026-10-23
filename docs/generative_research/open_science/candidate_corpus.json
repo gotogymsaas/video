@@ -1,0 +1,67 @@
+{
+  "schema": "qaf_cinematic_open_footage_candidates_v1",
+  "updated": "2026-10-22",
+  "intent": "Sources for research/visual tests, not pre-cleared commercial training material",
+  "sources": [
+    {
+      "id": "blender_sprite_fright",
+      "purpose": "open-film motion, cuts, CGI objects, color continuity",
+      "file_page": "https://commons.wikimedia.org/wiki/File:Sprite_Fright_-_Open_Movie_by_Blender_Studio.webm",
+      "rights_page": "https://studio.blender.org/projects/sprite-fright/pages/about/",
+      "declared_license": "CC BY 4.0 on individual Commons file",
+      "creator": "Blender Studio",
+      "contains_identifiable_people": "animated fictional characters",
+      "commercial_training_status": "PENDING_PER_FILE_AND_COMPONENT_REVIEW",
+      "must_check": [
+        "attribution",
+        "excluded_logo_and_trademarks",
+        "component_exceptions",
+        "model_training_scope",
+        "no implied Blender endorsement"
+      ],
+      "automatically_allowed": false
+    },
+    {
+      "id": "cameroon_mountain_race",
+      "purpose": "real runners moving uphill and race biomechanics; candidate for held-out evaluation",
+      "file_page": "https://commons.wikimedia.org/wiki/File:Cameroon_Mountain_Race.webm",
+      "declared_license": "CC BY-SA 4.0",
+      "creator": "Eyongblaise (Commons uploader)",
+      "contains_identifiable_people": "yes",
+      "commercial_training_status": "BLOCKED_PENDING_SHAREALIKE_AND_PARTICIPANT_RELEASE_REVIEW",
+      "must_check": [
+        "share_alike_implications_on_outputs_and_derivatives",
+        "identity_privacy",
+        "participant_model_releases",
+        "background_music_and_sponsors",
+        "attribution"
+      ],
+      "automatically_allowed": false
+    },
+    {
+      "id": "athletics_100m_hurdles",
+      "purpose": "fast human sports movement candidate, camera and motion baseline",
+      "file_page": "https://commons.wikimedia.org/wiki/File:100_metres_hurdles.webm",
+      "declared_license": "CC BY 3.0 per Commons page; original YouTube license should be confirmed",
+      "creator": "See exact Wikimedia file source and uploaded attribution",
+      "contains_identifiable_people": "yes",
+      "commercial_training_status": "BLOCKED_PENDING_PEOPLE_AND_LICENSE_REVIEW",
+      "must_check": [
+        "rights_of_faces_athletes",
+        "marks_and_sponsors",
+        "original_upload_license",
+        "attribution",
+        "commercial_model_training_permission"
+      ],
+      "automatically_allowed": false
+    }
+  ],
+  "required_next_steps": [
+    "review_each_file_with_license_professional",
+    "download_with_source_and_hash",
+    "extract_subclips_in_private_workspace",
+    "keep_attribution_and_derivative_record",
+    "separate_train_val_test_by_source_and_identity",
+    "never_auto_publish_model_or_output"
+  ]
+}
