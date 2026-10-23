@@ -81,7 +81,10 @@ def audit_program(repository_root, evidence_file=None):
         "empirical_validated_papers_claimed":observed,
         "software_gates":system,
         "evidence_checks":evidence_checks,
-        "program_100_percent_verified":False if (missing or reasons or observed<24) else True,
+        "documented_complete":not missing,
+        "claimed_evidence_record_complete":bool(not reasons and observed==24 and all(evidence_checks.values())),
+        "program_100_percent_verified":False,
+        "independent_verification_required":True,
         "limitations":"This is an integrity audit, not independent certification of video quality",
         "blocked_reasons":reasons if reasons else ([] if observed==24 else ["Fewer than 24 paper-specific validations recorded"]),
     }
