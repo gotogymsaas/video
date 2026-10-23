@@ -143,6 +143,10 @@ class Film:
         self.layout_boxes=[]
         index=min(len(self.shots)-1,max(0,bisect.bisect_right([s['start'] for s in self.shots],t)-1));shot=self.shots[index]
         local=t-shot['start'];u=local/(shot['end']-shot['start']);layout=shot['layout'];im=self.photo(shot,u).convert('RGBA')
+        if shot.get('vfx'):
+            from .generative_research.hybrid_vfx import frame as effect_frame
+            im,_=effect_frame({'width':self.w,'height':self.h,'seconds':1,'camera':{'zoom':[1,1]},'phone_overlay':False,'events':shot['vfx']['events']},self.base,u,background=im)
+            im=im.convert('RGBA')
         if layout in ['inputs','choice']:im=Image.alpha_composite(im,Image.new('RGBA',im.size,(0,7,11,225)))
         elif layout=='diary':im=Image.alpha_composite(im,Image.new('RGBA',im.size,(0,0,0,110)))
         if layout not in ['outro','phone']:
@@ -156,7 +160,7 @@ class Film:
         else:self.outro(d,local)
         if layout not in ['outro','phone']:
             self.text(d,'GOTOGYM / QUANTUM COACH',(self.w*.08,self.h*.055),36 if self.vertical else 30,WHITE,True)
-            if shot.get('claim_ids'):self.text(d,'EJEMPLO FICTICIO',(self.w*.08,self.h*.088),36 if self.vertical else 30,SILVER)
+            if shot.get('claim_ids'):self.text(d,'EJEMPLO FICTICIO / VFX CONCEPTUAL' if shot.get('vfx') else 'EJEMPLO FICTICIO',(self.w*.08,self.h*.088),36 if self.vertical else 30,SILVER)
         alpha=ease(local/.35)*ease((shot['end']-t)/.15);layer.putalpha(layer.getchannel('A').point(lambda v:round(v*alpha)))
         im=Image.alpha_composite(im,layer)
         if subtitles:self.caption(im,t)

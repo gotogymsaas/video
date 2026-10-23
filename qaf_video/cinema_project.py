@@ -22,6 +22,10 @@ def validate_cinema(m,base,final=False):
         z=s.get('zoom',[1,1]);f=s.get('focus',[.5,.5]);require(len(z)==2 and all(finite(v) and 1<=v<=1.7 for v in z),'Invalid zoom')
         require(len(f)==2 and all(finite(v) and 0<=v<=1 for v in f),'Invalid focus')
         require(s.get('kind','image')=='image','Cinema keyframe renderer accepts stills; standard renderer accepts video')
+        if s.get('vfx') is not None:
+            from .generative_research.hybrid_vfx import validate_events
+            require(isinstance(s['vfx'],dict) and s['vfx'].get('purpose')=='conceptual','Declare VFX conceptual')
+            validate_events(s['vfx'].get('events'),1.)
         if s.get('asset'):asset(s['asset'])
         for cid in s.get('claim_ids',[]):
             c=m.get('claims',{}).get(cid,{});require(c.get('source') and c.get('scope') and c.get('status') in ['verified_local','illustrative','documented'],'Unbound claim')

@@ -6,6 +6,24 @@ from PIL import Image,ImageDraw,ImageFilter
 from ..core import require,sha256
 from ..phone import place_phone
 COLORS={"emerald":(0,200,118),"gold":(212,180,106),"mint":(15,191,176)}
+def validate_events(events,seconds=1.):
+ require(isinstance(events,list) and len(events)<=40,'Bad VFX count')
+ for e in events:
+  require(isinstance(e,dict) and e.get('type') in ('pulse','link','trace') and e.get('color','emerald') in COLORS,'Unsupported VFX')
+  a,z=e.get('start'),e.get('end')
+  require(all(isinstance(x,(int,float)) and not isinstance(x,bool) and math.isfinite(x) for x in (a,z)) and 0<=a<z<=seconds,'Event bounds')
+  pts=[e.get('center',[])] if e['type']=='pulse' else e.get('points',[])
+  require(isinstance(pts,list) and (len(pts)==1 if e['type']=='pulse' else 2<=len(pts)<=12),'Event coordinates')
+  require(all(isinstance(p,(list,tuple)) and len(p)==2 and all(isinstance(x,(int,float)) and not isinstance(x,bool) and math.isfinite(x) and 0<=x<=1 for x in p) for p in pts),'Event coordinates')
+ return events
+def path_point(points,u):
+ p=np.asarray(points,dtype=float);lengths=np.linalg.norm(np.diff(p,axis=0),axis=1);total=float(lengths.sum())
+ if not total:return tuple(p[0])
+ target=float(np.clip(u,0,1))*total;previous=0.
+ for i,length in enumerate(lengths):
+  if length and target<=previous+length:return tuple(p[i]+(p[i+1]-p[i])*(target-previous)/length)
+  previous+=length
+ return tuple(p[-1])
 def ease(t):
  t=float(np.clip(t,0,1));return t**3*(10-15*t+6*t*t)
 def load_spec(path):
@@ -25,13 +43,7 @@ def load_spec(path):
   require(mask.is_relative_to(p.parent) and mask.is_file(),"Unsafe mask")
   with Image.open(mask) as image:image.verify()
  q=s.get("phone_quad");require(isinstance(q,list) and len(q)==4 and all(len(a)==2 and all(isinstance(x,(float,int)) and math.isfinite(x) for x in a) for a in q),"Four corners required")
- events=s.get("events",[]);require(isinstance(events,list) and len(events)<=40,"Bad VFX count")
- for event in events:
-  require(event.get("type") in ("pulse","link") and event.get("color","emerald") in COLORS,"Unsupported VFX")
-  a,b=event.get("start"),event.get("end")
-  require(isinstance(a,(int,float)) and isinstance(b,(int,float)) and 0<=a<b<=sec,"Event bounds")
-  points=[event.get("center",[])] if event["type"]=="pulse" else event.get("points",[])
-  require(1<=len(points)<=12 and all(len(pt)==2 and all(isinstance(x,(float,int)) and 0<=x<=1 for x in pt) for pt in points),"Event coordinates")
+ validate_events(s.get('events',[]),sec)
  return s,p.parent
 def frame(spec,root,t,background=None,foreground_mask=None):
  w,h=spec["width"],spec["height"]
@@ -48,7 +60,11 @@ def frame(spec,root,t,background=None,foreground_mask=None):
   if e["type"]=="pulse":
    x,y=e["center"];x*=w;y*=h;r=(.05+.18*ease(progress))*min(w,h)
    draw.ellipse((x-r,y-r,x+r,y+r),outline=color,width=max(2,w//320))
-  else:draw.line([(round(x*w),round(y*h)) for x,y in e["points"]],fill=color,width=max(2,w//320))
+  elif e['type']=='link':draw.line([(round(x*w),round(y*h)) for x,y in e['points']],fill=color,width=max(2,w//320))
+  else:
+   for j in range(18):
+    x,y=path_point(e['points'],max(0,ease(progress)-(17-j)*.008));x*=w;y*=h;r=max(2,min(w,h)*(.0015+j*.00015))
+    draw.ellipse((x-r,y-r,x+r,y+r),fill=color[:3]+(round(color[3]*(j+1)/18),))
  glow=layer.filter(ImageFilter.GaussianBlur(max(3,w//80)))
  source=np.asarray(photo,dtype=np.float32);lit=np.asarray(glow.convert("RGB"),dtype=np.float32)
  alpha=np.asarray(glow.getchannel("A"),dtype=np.float32)[...,None]/255
@@ -57,9 +73,11 @@ def frame(spec,root,t,background=None,foreground_mask=None):
  if foreground_mask is not None or spec.get("subject_mask"):
   mask=(foreground_mask.convert("L") if foreground_mask is not None
         else Image.open(root/spec["subject_mask"]).convert("L")).resize((w,h))
+  mask=mask.resize((w,h),Image.Resampling.BICUBIC,box=((w-cw)/2,(h-ch)/2,(w+cw)/2,(h+ch)/2))
   foreground=Image.new("RGBA",(w,h));foreground.paste(photo.convert("RGBA"),(0,0),mask)
   canvas=Image.alpha_composite(canvas,foreground)
- canvas,report=place_phone(canvas,Image.open(root/spec["phone_screen"]).convert("RGB"),spec["phone_quad"])
+ report={}
+ if spec.get('phone_overlay',True):canvas,report=place_phone(canvas,Image.open(root/spec["phone_screen"]).convert("RGB"),spec["phone_quad"])
  return canvas.convert("RGB"),report
 def render(project,output):
  project=Path(project).resolve();spec,root=load_spec(project)
@@ -71,7 +89,7 @@ def render(project,output):
  try:
   for i in range(frames):
    im,_=frame(spec,root,i/spec["fps"]);proc.stdin.write(im.tobytes())
-  proc.stdin.close();error=proc.stderr.read().decode(errors="replace")
+  proc.stdin.close();error=proc.stderr.read().decode(errors="replace");proc.stderr.close()
   require(proc.wait(timeout=180)==0,"FFmpeg failed: "+error[-500:])
  finally:
   if proc.poll() is None:proc.kill();proc.wait()

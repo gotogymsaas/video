@@ -1,0 +1,322 @@
+{
+  "fictional": true,
+  "source_commit": "6d2e95d031c2e3c2b83c8c1e442fd6315ef95d62",
+  "input": {
+    "message": "Me bloqueo por presión al perder un punto. Quiero volver al presente.",
+    "player_profile": {
+      "level": "intermedio",
+      "goal": "jugar con más claridad",
+      "surface": "dura",
+      "competition_mode": "singles"
+    },
+    "mental": {
+      "frustration_pct": 70,
+      "anxiety_pct": 65
+    },
+    "skills": {
+      "drive": 70,
+      "reves": 65,
+      "volea": 60,
+      "saque": 65,
+      "movilidad": 65
+    }
+  },
+  "result": {
+    "contract_version": "tennis_intelligence_v1",
+    "experience_id": "exp-014_tennis_intelligence",
+    "service": "tennis_intelligence",
+    "domain": "training",
+    "orchestrator": {
+      "agent": "Tennis Coach Orchestrator",
+      "status": "active",
+      "focus": "control emocional bajo presión",
+      "confidence": 0.77,
+      "recommendation": "Coordinar el plan alrededor del foco de mayor impacto y validar datos faltantes antes de elevar complejidad.",
+      "evidence": {
+        "primary_agent": "mental",
+        "secondary_agents": [
+          "learning",
+          "qaf_prediction",
+          "physical_performance"
+        ]
+      }
+    },
+    "agents": {
+      "biomechanics": {
+        "agent": "Tennis Biomechanics Agent",
+        "status": "active",
+        "focus": "técnica base",
+        "confidence": 0.55,
+        "recommendation": "Registrar 20 segundos de golpe principal para medir postura, pies y transferencia.",
+        "evidence": {
+          "serve_elbow_angle_deg": 95.0,
+          "hip_rotation": 0.58,
+          "weight_transfer": 0.56
+        }
+      },
+      "tactical": {
+        "agent": "Tennis Tactical Agent",
+        "status": "active",
+        "focus": "plan táctico base",
+        "confidence": 0.58,
+        "recommendation": "Medir primer saque, errores y puntos ganados por zona para detectar patrón dominante.",
+        "evidence": {
+          "first_serve": 0.58,
+          "backhand_target_win": 0.55,
+          "unforced_errors": 14.0
+        }
+      },
+      "match_intelligence": {
+        "agent": "Tennis Match Intelligence Agent",
+        "status": "active",
+        "focus": "scouting competitivo",
+        "confidence": 0.57,
+        "recommendation": "Construir scouting por rival: dirección de saque, bola débil y patrón bajo presión.",
+        "evidence": {
+          "break_points_won": 0.45,
+          "second_serve_points_won": 0.48
+        }
+      },
+      "physical_performance": {
+        "agent": "Tennis Physical Performance Agent",
+        "status": "active",
+        "focus": "potencia específica",
+        "confidence": 0.59,
+        "recommendation": "Mantener microdosis de fuerza unilateral, core rotacional y aceleraciones de 5 metros.",
+        "evidence": {
+          "lateral_speed": 0.62,
+          "training_load": 0.62
+        }
+      },
+      "recovery": {
+        "agent": "Tennis Recovery Agent",
+        "status": "active",
+        "focus": "recuperación suficiente",
+        "confidence": 0.58,
+        "recommendation": "Mantener rutina nocturna y recuperación activa post-entrenamiento.",
+        "evidence": {
+          "recovery_risk": 0.3698,
+          "sleep_score": 0.64,
+          "hrv_score": 0.6,
+          "soreness": 0.35
+        }
+      },
+      "nutrition": {
+        "agent": "Tennis Nutrition Agent",
+        "status": "active",
+        "focus": "nutrición estable",
+        "confidence": 0.56,
+        "recommendation": "Mantener timing nutricional y registrar sensaciones durante tercer set o sesiones largas.",
+        "evidence": {
+          "hydration": 0.62,
+          "carb_timing": 0.58
+        }
+      },
+      "mental": {
+        "agent": "Tennis Mental Agent",
+        "status": "active",
+        "focus": "control emocional bajo presión",
+        "confidence": 0.77,
+        "recommendation": "Usar rutina de 12 segundos: respirar, elegir objetivo grande y aceptar margen antes del siguiente punto.",
+        "evidence": {
+          "pressure_signal": 0.7
+        }
+      },
+      "learning": {
+        "agent": "Tennis Learning Agent",
+        "status": "active",
+        "focus": "aprendizaje: volea",
+        "confidence": 0.692,
+        "recommendation": "Crear bloque deliberado de 15 minutos para volea: una métrica, una consigna y feedback inmediato.",
+        "evidence": {
+          "skill_map": {
+            "drive": 0.7,
+            "reves": 0.65,
+            "volea": 0.6,
+            "saque": 0.65,
+            "movilidad": 0.65
+          },
+          "lowest_skill": "volea"
+        }
+      },
+      "asa_memory": {
+        "agent": "ASA Memory Agent",
+        "status": "active",
+        "focus": "memoria deportiva ASA",
+        "confidence": 0.58,
+        "recommendation": "Guardar objetivo, lesión, golpe prioritario y próximos torneos para continuidad del coach.",
+        "evidence": {
+          "previous_issue_match": "",
+          "known_issues": []
+        }
+      },
+      "qaf_entanglement": {
+        "agent": "QAF Entanglement Agent",
+        "status": "active",
+        "focus": "correlaciones QAF estables",
+        "confidence": 0.58,
+        "recommendation": "Seguir acumulando datos para relacionar sueño, nutrición, mentalidad y resultado.",
+        "evidence": {
+          "entanglement_score": 0.5521
+        }
+      },
+      "qaf_prediction": {
+        "agent": "QAF Prediction Agent",
+        "status": "active",
+        "focus": "predicción rendimiento-riesgo",
+        "confidence": 0.0,
+        "recommendation": "Faltan señales actuales para estimar preparación y riesgo. La propuesta es una guía inicial.",
+        "evidence": {
+          "injury_risk": null,
+          "readiness": null
+        },
+        "evidence_status": "insufficient_evidence",
+        "missing_inputs": [
+          "wellness.sleep_score",
+          "wellness.hrv_score",
+          "wellness.soreness_pct",
+          "wellness.training_load_pct",
+          "match_stats.first_serve_pct",
+          "match_stats.backhand_target_win_pct",
+          "match_stats.unforced_errors"
+        ]
+      }
+    },
+    "priority_focus": "control emocional bajo presión",
+    "next_best_action": "Usar rutina de 12 segundos: respirar, elegir objetivo grande y aceptar margen antes del siguiente punto.",
+    "risk_flags": [
+      "competitive_pressure_high"
+    ],
+    "microcycle": [
+      {
+        "day": "Día 1",
+        "focus": "control emocional bajo presión",
+        "block": "Usar rutina de 12 segundos: respirar, elegir objetivo grande y aceptar margen antes del siguiente punto.",
+        "drill": "Rutina de 12 segundos entre puntos"
+      },
+      {
+        "day": "Día 2",
+        "focus": "aprendizaje: volea",
+        "block": "Crear bloque deliberado de 15 minutos para volea: una métrica, una consigna y feedback inmediato.",
+        "drill": "Bloque deliberado de habilidad débil"
+      },
+      {
+        "day": "Día 3",
+        "focus": "plan táctico base",
+        "block": "Medir primer saque, errores y puntos ganados por zona para detectar patrón dominante.",
+        "drill": "Punto condicionado táctico"
+      }
+    ],
+    "session_plan": {
+      "total_minutes": 60.0,
+      "intensity": "moderada",
+      "blocks": [
+        {
+          "name": "Warm-up tenis específico",
+          "minutes": 10,
+          "goal": "movilidad dinámica, activación y progresión de baja a media intensidad"
+        },
+        {
+          "name": "Bloque técnico prioritario",
+          "minutes": 20,
+          "goal": "Usar rutina de 12 segundos: respirar, elegir objetivo grande y aceptar margen antes del siguiente punto."
+        },
+        {
+          "name": "Bloque táctico/aplicación",
+          "minutes": 20,
+          "goal": "Medir primer saque, errores y puntos ganados por zona para detectar patrón dominante."
+        },
+        {
+          "name": "Cool-down + registro",
+          "minutes": 10,
+          "goal": "bajar pulsaciones, movilidad suave y registrar métrica clave"
+        }
+      ],
+      "progression_rule": "subir complejidad solo si la métrica de éxito supera 70% y no aumenta dolor/fatiga",
+      "deload_rule": "si aparece dolor >3/10, sueño bajo o HRV bajo, reducir volumen 20-40% y priorizar técnica sin fatiga",
+      "primary_agent": "mental"
+    },
+    "recommended_drills": [
+      {
+        "name": "Rutina de 12 segundos entre puntos",
+        "duration_minutes": 8,
+        "sets": 2,
+        "reps": "10 puntos simulados",
+        "intensity": "competitiva",
+        "success_metric": "usar respiración + objetivo antes de cada punto",
+        "coaching_cue": "atención en proceso, no en resultado"
+      },
+      {
+        "name": "Punto condicionado para intermedio",
+        "duration_minutes": 12,
+        "sets": 3,
+        "reps": "6 puntos",
+        "intensity": "competitiva",
+        "success_metric": "ejecutar el patrón elegido en 4/6 puntos",
+        "coaching_cue": "plan A claro y ajuste si el rival neutraliza"
+      }
+    ],
+    "technical_gaps": [],
+    "injury_precautions": [],
+    "metrics_to_track": [
+      "first_serve_pct",
+      "unforced_errors",
+      "rally_length",
+      "readiness",
+      "pain_0_10",
+      "drill_success_pct"
+    ],
+    "coach_questions": [
+      "¿Cuál es tu golpe prioritario y qué métrica quieres mejorar esta semana?",
+      "¿Hay dolor en hombro, codo, muñeca, rodilla o Aquiles durante/después de jugar?",
+      "¿Juegas más singles o dobles y en qué superficie compites?"
+    ],
+    "player_level": "intermedio",
+    "player_context": {
+      "level": "intermedio",
+      "style": "all-court",
+      "goal": "jugar con mas claridad",
+      "surface": "dura",
+      "competition_mode": "singles",
+      "dominant_hand": "no especificada",
+      "backhand_type": "no especificado",
+      "is_beginner": false,
+      "is_competitive": false
+    },
+    "source_architecture": "QAF Tennis Intelligence Team v2",
+    "data_quality": {
+      "prediction_basis": "insufficient_evidence",
+      "missing_prediction_inputs": [
+        "wellness.sleep_score",
+        "wellness.hrv_score",
+        "wellness.soreness_pct",
+        "wellness.training_load_pct",
+        "match_stats.first_serve_pct",
+        "match_stats.backhand_target_win_pct",
+        "match_stats.unforced_errors"
+      ],
+      "provided_inputs": {
+        "player_profile": [
+          "competition_mode",
+          "goal",
+          "level",
+          "surface"
+        ],
+        "mental": [
+          "anxiety_pct",
+          "frustration_pct"
+        ],
+        "skills": [
+          "drive",
+          "movilidad",
+          "reves",
+          "saque",
+          "volea"
+        ]
+      },
+      "defaults_are_measurements": false,
+      "guidance_kind": "initial_guidance"
+    }
+  },
+  "scope": "Pure engine execution; no production chat verification"
+}
