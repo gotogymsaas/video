@@ -62,7 +62,7 @@ def _worker(request,python):
             result=subprocess.run([str(python),'-m','qaf_video.local_voice_worker',str(tmp/'request.json')],
                                   capture_output=True,text=True,env=env,timeout=1800)
         except subprocess.TimeoutExpired as e:raise ValidationError('Local voice generation exceeded 30 minutes; use a shorter script or a faster device') from e
-        require(result.returncode==0,'Local voice worker failed: '+result.stderr[-2000:])
+        require(result.returncode==0,f'Local voice worker failed (exit {result.returncode}): '+result.stderr[-2000:])
         return json.loads((tmp/'result.json').read_text(encoding='utf-8'))
 
 
@@ -76,10 +76,12 @@ def transcribe_local(audio,python=None,asr_model=None,tts_model=None,language='S
 
 
 def synthesize_local(profile,text,output,python=None,tts_model=None,asr_model=None,device='cpu',seed=22,target_seconds=None,
-                     language='Spanish',segments=None,rhythm=None):
+                     language='Spanish',segments=None,rhythm=None,precision=None):
     plan=speech_plan(text,language,segments)
     for part in plan:codec_token_budget(part['text'],target_seconds)
     require(device in ['cpu','cuda:0','mps'],'Unsupported inference device')
+    require(precision in [None,'float32','float16','bfloat16'],'Unsupported inference precision')
+    require(device!='cpu' or precision!='float16','Use float32 or bfloat16 for CPU inference')
     if rhythm is not None:
         require(isinstance(rhythm,dict) and target_seconds is None,'Choose continuous rhythm or legacy timing')
         require(all(p['language'] not in ['Chinese','Japanese','Korean'] for p in plan),'Use native phrase pacing for languages without comparable word counts')
@@ -92,4 +94,5 @@ def synthesize_local(profile,text,output,python=None,tts_model=None,asr_model=No
     executable,tts,asr=runtime_settings(python,tts_model,asr_model)
     return _worker({'operation':'synthesize','profile':str(path),'text':text,'output':str(output),
                     'tts_model':str(tts),'asr_model':str(asr),'device':device,'seed':seed,
-                    'target_seconds':target_seconds,'language':normalize_language(language),'segments':segments,'rhythm':rhythm},executable)
+                    'target_seconds':target_seconds,'language':normalize_language(language),'segments':segments,'rhythm':rhythm,
+                    **({'precision':precision} if precision else {})},executable)

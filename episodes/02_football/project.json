@@ -1,0 +1,357 @@
+{
+  "schema": "qaf_cinema_project_v1",
+  "title": "Comprende tu juego / Fútbol / Episodio 02",
+  "duration": 60,
+  "fps": 30,
+  "mode": "conceptual",
+  "shots": [
+    {
+      "start": 0,
+      "end": 4.5,
+      "layout": "headline",
+      "title": "Un segundo.\nUna decisión.",
+      "body": "Comprende tu juego / Episodio 02",
+      "eyebrow": "FÚTBOL",
+      "asset": "assets/01_pitch.jpg",
+      "focus": [
+        0.36,
+        0.48
+      ],
+      "zoom": [
+        1.0,
+        1.035
+      ]
+    },
+    {
+      "start": 4.5,
+      "end": 9,
+      "layout": "headline",
+      "title": "La jugada empieza\nantes del partido.",
+      "body": "",
+      "eyebrow": "LEE EL JUEGO",
+      "asset": "assets/01_pitch.jpg",
+      "focus": [
+        0.33,
+        0.32
+      ],
+      "zoom": [
+        1.4,
+        1.47
+      ]
+    },
+    {
+      "start": 9,
+      "end": 13,
+      "layout": "headline",
+      "title": "¿Cierras dentro\no vas a la banda?",
+      "body": "",
+      "eyebrow": "ERES LATERAL",
+      "asset": "assets/02_notebook.jpg",
+      "focus": [
+        0.43,
+        0.52
+      ],
+      "zoom": [
+        1.0,
+        1.035
+      ]
+    },
+    {
+      "start": 13,
+      "end": 18,
+      "layout": "inputs",
+      "title": "",
+      "body": "",
+      "eyebrow": "",
+      "asset": "assets/01_pitch.jpg",
+      "focus": [
+        0.4,
+        0.5
+      ],
+      "zoom": [
+        1.0,
+        1.035
+      ],
+      "claim_ids": [
+        "capture"
+      ]
+    },
+    {
+      "start": 18,
+      "end": 24,
+      "layout": "choice",
+      "title": "",
+      "body": "",
+      "eyebrow": "",
+      "asset": "assets/02_notebook.jpg",
+      "focus": [
+        0.42,
+        0.51
+      ],
+      "zoom": [
+        1.0,
+        1.035
+      ],
+      "claim_ids": [
+        "plan"
+      ]
+    },
+    {
+      "start": 24,
+      "end": 29,
+      "layout": "headline",
+      "title": "Comprende\nla cobertura.",
+      "body": "Qué compañero compensa tu decisión.",
+      "eyebrow": "UN OBJETIVO CONCRETO",
+      "asset": "assets/02_notebook.jpg",
+      "focus": [
+        0.47,
+        0.62
+      ],
+      "zoom": [
+        1.18,
+        1.24
+      ],
+      "claim_ids": [
+        "plan"
+      ]
+    },
+    {
+      "start": 29,
+      "end": 34,
+      "layout": "headline",
+      "title": "Aprende.\nRevisa. Decide.",
+      "body": "Propuesta educativa / sin carga física",
+      "eyebrow": "TÚ CONSERVAS EL CONTROL",
+      "asset": "assets/02_notebook.jpg",
+      "focus": [
+        0.43,
+        0.48
+      ],
+      "zoom": [
+        1.0,
+        1.035
+      ],
+      "claim_ids": [
+        "limits"
+      ]
+    },
+    {
+      "start": 34,
+      "end": 41,
+      "layout": "diary",
+      "title": "Tu experiencia\ncuenta.",
+      "body": "",
+      "eyebrow": "CONTINÚA LA CONVERSACIÓN",
+      "asset": "assets/02_notebook.jpg",
+      "focus": [
+        0.39,
+        0.45
+      ],
+      "zoom": [
+        1.0,
+        1.035
+      ],
+      "labels": [
+        "Qué comprendiste",
+        "Qué necesitas revisar",
+        "Qué quieres ajustar"
+      ],
+      "claim_ids": [
+        "continuity"
+      ]
+    },
+    {
+      "start": 41,
+      "end": 46,
+      "layout": "headline",
+      "title": "Comprende\ntu juego.",
+      "body": "Tú decides qué aceptar, adaptar o pausar.",
+      "eyebrow": "MÁS CLARIDAD PARA ELEGIR",
+      "asset": "assets/03_ready.jpg",
+      "focus": [
+        0.43,
+        0.5
+      ],
+      "zoom": [
+        1.0,
+        1.035
+      ],
+      "claim_ids": [
+        "limits"
+      ]
+    },
+    {
+      "start": 46,
+      "end": 54,
+      "layout": "phone",
+      "title": "Tu próximo paso.",
+      "body": "Aprendizaje que puedes revisar.",
+      "eyebrow": "GOTOGYM QUANTUM COACH",
+      "focus": [
+        0.5,
+        0.5
+      ],
+      "zoom": [
+        1.0,
+        1.035
+      ]
+    },
+    {
+      "start": 54,
+      "end": 60,
+      "layout": "outro",
+      "title": "",
+      "body": "",
+      "eyebrow": "",
+      "focus": [
+        0.5,
+        0.5
+      ],
+      "zoom": [
+        1.0,
+        1.035
+      ]
+    }
+  ],
+  "claims": {
+    "capture": {
+      "source": "https://github.com/gotogymsaas/appdesplegada/blob/6d2e95d031c2e3c2b83c8c1e442fd6315ef95d62/backend/api/qaf_football_intelligence/contracts.py",
+      "scope": "Explicit role, goal, level and available minutes; local source execution, not current production",
+      "status": "verified_local",
+      "evidence_asset": "evidence/football-example.json"
+    },
+    "plan": {
+      "source": "https://github.com/gotogymsaas/appdesplegada/blob/6d2e95d031c2e3c2b83c8c1e442fd6315ef95d62/backend/api/qaf_football_intelligence/engine.py",
+      "scope": "15-minute educational plan, primary role present; graphics illustrate a result, not actual product UI",
+      "status": "verified_local",
+      "evidence_asset": "evidence/football-example.json"
+    },
+    "limits": {
+      "source": "https://github.com/gotogymsaas/appdesplegada/blob/6d2e95d031c2e3c2b83c8c1e442fd6315ef95d62/backend/api/qaf_football_intelligence/engine.py",
+      "scope": "Educational proposal only; no physical prescription, tracking, match prediction or performance promise",
+      "status": "verified_local",
+      "evidence_asset": "evidence/football-example.json"
+    },
+    "continuity": {
+      "source": "https://github.com/gotogymsaas/appdesplegada/blob/6d2e95d031c2e3c2b83c8c1e442fd6315ef95d62/backend/api/qaf_football_intelligence/engine.py",
+      "scope": "Previous result read by pure engine; dialogue persistence documented in registry but production not exercised",
+      "status": "verified_local",
+      "evidence_asset": "evidence/football-example.json"
+    }
+  },
+  "logo": "assets/logo-gotogym.png",
+  "phone_screen": "assets/pantalla-inicio.png",
+  "fonts": {
+    "regular": "assets/fonts/NimbusSans-Regular.otf",
+    "bold": "assets/fonts/NimbusSans-Bold.otf",
+    "serif": "assets/fonts/NimbusRoman-Italic.otf"
+  },
+  "context_eyebrow": "FÚTBOL / CONTEXTO DECLARADO",
+  "context_heading": "Tu objetivo, primero.",
+  "choice_heading": "Un plan con sentido.",
+  "result_card": {
+    "label": "PROPUESTA EDUCATIVA",
+    "value": "15 min",
+    "body": "Comprender y revisar"
+  },
+  "context_footer": "Caso ficticio · visualización conceptual",
+  "input_cards": [
+    {
+      "label": "ESPECIALIDAD",
+      "value": "Lateral"
+    },
+    {
+      "label": "OBJETIVO",
+      "value": "Cobertura interior"
+    },
+    {
+      "label": "TIEMPO DISPONIBLE",
+      "value": "15 min de aprendizaje"
+    }
+  ],
+  "comparison_cards": [
+    {
+      "label": "COMPRENDER",
+      "value": "5 min · cobertura"
+    },
+    {
+      "label": "REVISAR",
+      "value": "5 min · alternativas"
+    },
+    {
+      "label": "REFLEXIONAR",
+      "value": "5 min · tu experiencia"
+    }
+  ],
+  "campaign": {
+    "cta": "Escribe «Activa fútbol»",
+    "slogan_vertical": "Comprende\ntu juego.",
+    "slogan_horizontal": "Comprende tu juego."
+  },
+  "subtitles": [],
+  "reviews": {},
+  "assets": {
+    "assets/01_pitch.jpg": {
+      "sha256": "cadb329b384c31622325614ef2efc5dac3a278ca6c2329673678b62931d5582c",
+      "origin": "generated fictional photographic keyframe",
+      "rights": "GoToGym commissioned production; original font licenses retained",
+      "privacy": "public"
+    },
+    "assets/logo-gotogym.png": {
+      "sha256": "5f997e994a394d4354e7d87498b49ce0b9ac1e685d4833d7f25b1f9d98585121",
+      "origin": "original GoToGym production asset reused from Running",
+      "rights": "GoToGym commissioned production; original font licenses retained",
+      "privacy": "public"
+    },
+    "assets/02_notebook.jpg": {
+      "sha256": "0fb5da0540ac3e444a046e402b12044161582adfa00bf80e2d57fc7b2800ef31",
+      "origin": "generated fictional photographic keyframe",
+      "rights": "GoToGym commissioned production; original font licenses retained",
+      "privacy": "public"
+    },
+    "assets/pantalla-inicio.png": {
+      "sha256": "b5a0091189d7c0775348f69e5f94742927d3a5821cfa11fdd094d6792c622bdc",
+      "origin": "original GoToGym production asset reused from Running",
+      "rights": "GoToGym commissioned production; original font licenses retained",
+      "privacy": "public"
+    },
+    "assets/03_ready.jpg": {
+      "sha256": "ed30e6c9492c3fa4a2becc80a6a50b145915519da03e67a952c6bb64cd06eba8",
+      "origin": "generated fictional photographic keyframe",
+      "rights": "GoToGym commissioned production; original font licenses retained",
+      "privacy": "public"
+    },
+    "assets/fonts/NimbusRoman-Italic.otf": {
+      "sha256": "b7c424e6cb79baddfcdcd9a9d87f9fc4fdd06f0e5160066e2b2e47bcd647c7b9",
+      "origin": "original GoToGym production asset reused from Running",
+      "rights": "GoToGym commissioned production; original font licenses retained",
+      "privacy": "public"
+    },
+    "assets/fonts/NimbusSans-Bold.otf": {
+      "sha256": "7f33328e6b4d4cd21b45fa625791928c9407dc702db6780e56b09ca9a3ecaa67",
+      "origin": "original GoToGym production asset reused from Running",
+      "rights": "GoToGym commissioned production; original font licenses retained",
+      "privacy": "public"
+    },
+    "assets/fonts/NimbusSans-Regular.otf": {
+      "sha256": "7c25be4d78155523080ab85b10277150657ff7dabbcad7037bdd536c9b6d0d08",
+      "origin": "original GoToGym production asset reused from Running",
+      "rights": "GoToGym commissioned production; original font licenses retained",
+      "privacy": "public"
+    },
+    "evidence/football-example.json": {
+      "sha256": "d45200b07731416fbc52e5d0df087b0b4006e4259e664a29188320740f1368dd",
+      "origin": "local execution of pinned product source",
+      "rights": "GoToGym source; fictional context",
+      "privacy": "public"
+    }
+  },
+  "sales_structure": {
+    "human_goal": "Comprender mejor las decisiones como lateral",
+    "obstacle": "No saber cuándo cerrar dentro ni quién cubre",
+    "demonstration": "Especialidad + objetivo + tiempo -> propuesta educativa; revisión y continuidad",
+    "cta": "Activa fútbol"
+  },
+  "treatment": "photographic cinematic animatic, three generated stills with motion/reframing and exact vector graphics; no generated human motion"
+}

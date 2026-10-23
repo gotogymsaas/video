@@ -135,6 +135,13 @@ def handler(studio):
                     elif action=='cinema-audit':
                         from .cinema_pipeline import layout_audit
                         result=layout_audit(path,data.get('profile','vertical'))
+                    elif action=='music-produce':
+                        from .music_production import produce_music
+                        def make_music(progress):
+                            value=produce_music(path,data.get('preset','run_club'),data.get('seed',22),progress=progress)
+                            return {**value,'audio':str((path.parent/value['mix']).relative_to(studio.root)),
+                                    'project_path':str(path.relative_to(studio.root))}
+                        result=studio.job(action,make_music)
                     elif action=='plan':
                         result=plan_project(path);atomic_json(path.parent/'outputs/plan.json',result)
                     elif action=='voice-prepare':
@@ -161,7 +168,7 @@ def handler(studio):
                         def make_voice(progress):
                             progress(.05);episode_seconds=read_any(path)['duration']
                             use_rhythm=data.get('natural_rhythm',True) and language not in ['Chinese','Japanese','Korean'] and not segments
-                            value=synthesize_local(profile,script,out,target_seconds=None,language=language,segments=segments,
+                            value=synthesize_local(profile,script,out,target_seconds=None,language=language,segments=segments,precision=data.get('precision'),
                                 rhythm={'episode_seconds':episode_seconds,'target_wpm':float(data.get('wpm',175))} if use_rhythm and episode_seconds>=3 else None)
                             progress(.95);m=read_any(path)
                             attached=(value['script_comparison']['rate']<=.25 and bool(value['subtitles']) and

@@ -71,7 +71,10 @@ def main():
         from qwen_tts import Qwen3TTSModel
         torch.set_num_threads(4);torch.manual_seed(request.get('seed',22))
         device=request.get('device','cpu')
-        dtype=torch.float32 if device=='cpu' else torch.float16
+        precision=request.get('precision','float32' if device=='cpu' else 'float16')
+        require(precision in ['float32','bfloat16','float16'],'Unsupported inference precision')
+        require(device!='cpu' or precision!='float16','CPU speech requires float32 or bfloat16')
+        dtype={'float32':torch.float32,'bfloat16':torch.bfloat16,'float16':torch.float16}[precision]
         model=Qwen3TTSModel.from_pretrained(request['tts_model'],local_files_only=True,
                   trust_remote_code=False,device_map=device,dtype=dtype,attn_implementation='eager')
         output=Path(request['output']).resolve();output.parent.mkdir(parents=True,exist_ok=True)
@@ -130,7 +133,7 @@ def main():
         from .voice import write_captions
         write_captions(output,captions)
         result={'provider':'Qwen3-TTS local reference-conditioned synthesis','synthetic':True,
-                'model':Path(request['tts_model']).name,'reference_sha256':sha256(reference),
+                'model':Path(request['tts_model']).name,'precision':precision,'device':device,'reference_sha256':sha256(reference),
                 'reference_text_status':profile.get('reference_text_status','user_supplied_unreviewed'),
                 'text':spoken,'audio_sha256':sha256(output),'seconds':len(combined)/sr if timing is None else timing['target_seconds'],
                 'sample_rate':48000,'loudness':loudness if timing is None else timing['loudness'],'transcript':transcript,

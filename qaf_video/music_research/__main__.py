@@ -11,6 +11,7 @@ def main(argv=None):
  p=argparse.ArgumentParser(prog='python -m qaf_video.music_research')
  s=p.add_subparsers(dest='cmd',required=True)
  a=s.add_parser('sketch');a.add_argument('--out',required=True);a.add_argument('--preset',choices=PRESETS,default='run_club');a.add_argument('--seconds',type=float,default=60);a.add_argument('--seed',type=int,default=22);a.add_argument('--plan',help='JSON result from align; bpm and duration must match')
+ a=s.add_parser('produce');a.add_argument('project');a.add_argument('--preset',choices=PRESETS,default='run_club');a.add_argument('--seed',type=int,default=22)
  a=s.add_parser('align');a.add_argument('--bpm',type=float,default=124);a.add_argument('--seconds',type=float,default=60);a.add_argument('--cues',nargs=3,type=float,default=[13,29,50]);a.add_argument('--tolerance',type=float,default=.25)
  a=s.add_parser('select');a.add_argument('brief')
  a=s.add_parser('mix');a.add_argument('--voice',required=True);a.add_argument('--music',required=True);a.add_argument('--out',required=True);a.add_argument('--seconds',type=float,default=60);a.add_argument('--bpm',type=float,default=124)
@@ -18,7 +19,10 @@ def main(argv=None):
  a=s.add_parser('rights');a.add_argument('asset');a.add_argument('manifest');a.add_argument('--as-of',required=True)
  args=p.parse_args(argv)
  def read(path):return json.loads(Path(path).read_text(encoding='utf-8'))
- if args.cmd=='sketch':
+ if args.cmd=='produce':
+  from ..music_production import produce_music
+  result=produce_music(args.project,args.preset,args.seed)
+ elif args.cmd=='sketch':
   cues=None
   if args.plan:
    plan=read(args.plan)

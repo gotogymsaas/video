@@ -30,7 +30,7 @@ def validate_cinema(m,base,final=False):
         if s['layout'] in ['inputs','choice','diary']:require(s.get('claim_ids'),'Product mechanism needs evidence binding')
         end=b
     require(abs(end-duration)<1e-6,'Timeline must cover the entire film')
-    for key in ['voice','mix','logo','phone_screen']:
+    for key in ['voice','mix','music','logo','phone_screen']:
         if m.get(key):asset(m[key])
     for name in m.get('fonts',{}).values():asset(name)
     if any(s['layout']=='phone' for s in shots):require(m.get('phone_screen'),'Phone shot requires screen')
@@ -39,8 +39,11 @@ def validate_cinema(m,base,final=False):
     for c in m.get('subtitles',[]):
         require(finite(c.get('start')) and finite(c.get('end')) and last<=c['start']<c['end']<=duration,'Invalid captions')
         require(isinstance(c.get('text'),str) and 0<len(c['text'])<=90,'Invalid caption text');last=c['end']
+    if final and m.get('music_production'):
+        require(m['music_production'].get('voice_sha256')==dependencies.get(m.get('voice')),'Voice changed; regenerate the music mix')
+        require(m.get('reviews',{}).get('audio',{}).get('asset_sha256')==dependencies.get(m.get('mix')),'Audio review must bind the current mix hash')
     if final:
-        for key in ['voice','brand','claims','rights','picture','accessibility']:
+        for key in ['voice','brand','claims','rights','picture','accessibility']+(['audio'] if m.get('music_production') else []):
             r=m.get('reviews',{}).get(key,{});require(r.get('approved') is True and r.get('reviewer') and r.get('at'),'Missing human review: '+key)
     return {'valid':True,'frames':round(duration*fps),'dependencies':dependencies,'claim_bindings':bindings,'final_documentary_checks':final,'human_playback_review':not final}
 

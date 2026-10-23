@@ -39,6 +39,7 @@ def parser():
     c.add_argument('--language',type=normalize_language,choices=list(LANGUAGES),default='Spanish',help='Target language name or ISO code; reference language remains independent')
     c.add_argument('--out',type=Path,required=True);c.add_argument('--python',type=Path)
     c.add_argument('--tts-model',type=Path);c.add_argument('--asr-model',type=Path)
+    c.add_argument('--precision',choices=['float32','bfloat16','float16'],help='Explicit inference precision; float16 is not supported on CPU')
     c.add_argument('--device',choices=['cpu','cuda:0','mps'],default='cpu');c.add_argument('--seed',type=int,default=22)
     c.add_argument('--seconds',type=float,help='Fit within bounded tempo and real pauses; reject unsuitable script lengths')
     c=sub.add_parser('attach-voice',help='Attach recording and real caption intervals to a project')
@@ -113,7 +114,7 @@ def main(argv=None):
             text=a.text_file.read_text(encoding='utf-8') if a.text_file else ''
             segments=json.loads(a.segments_file.read_text(encoding='utf-8')) if a.segments_file else None
             result=synthesize_local(a.profile,text,a.out,a.python,a.tts_model,a.asr_model,a.device,a.seed,a.seconds,
-                                    language=a.language,segments=segments)
+                                    language=a.language,segments=segments,precision=a.precision)
         elif a.command=='attach-voice':
             from .core import local_asset,sha256
             m=load(a.project);audio=local_asset(a.project.resolve().parent,a.asset)

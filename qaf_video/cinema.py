@@ -81,8 +81,8 @@ class Film:
         self.text(d,value,(x+22*self.s,y+64*self.s),39 if self.vertical else 35,WHITE if active else '#8C9A97',True,width=w-44*self.s)
     def context_graph(self,d,local,choose=False):
         x=self.w*.08;y=self.h*.18
-        self.small(d,'RUNNING / CONTEXTO DECLARADO',x,y)
-        self.text(d,'Compara opciones.' if choose else 'Tu día, conectado.',(x,y+60*self.s),69,WHITE,True)
+        self.small(d,self.manifest.get('context_eyebrow','RUNNING / CONTEXTO DECLARADO'),x,y)
+        self.text(d,self.manifest.get('choice_heading' if choose else 'context_heading','Compara opciones.' if choose else 'Tu día, conectado.'),(x,y+60*self.s),69,WHITE,True)
         if self.vertical:
             boxes=[(x,self.h*(.33+i*.087),self.w*.84,140*self.s) for i in range(3)];target=(x,self.h*.64,self.w*.84,235*self.s)
         else:
@@ -91,17 +91,19 @@ class Film:
         for i,(box,entry) in enumerate(zip(boxes,values)):
             if local>i*.23:self.card(d,box,entry['label'],entry['value'],entry.get('active',True))
         tx,ty,tw,th=target;d.rounded_rectangle((tx,ty,tx+tw,ty+th),radius=20*self.s,fill=(7,31,29,248),outline=GOLD,width=max(1,round(2*self.s)))
-        self.text(d,'PROPUESTA PARA REVISAR',(tx+24*self.s,ty+23*self.s),36 if self.vertical else 29,GOLD,True)
-        self.text(d,'15 min',(tx+24*self.s,ty+72*self.s),76,WHITE,True)
-        self.text(d,'Caminata cómoda',(tx+24*self.s,ty+164*self.s),39 if self.vertical else 35,WHITE)
-        self.text(d,'Datos declarados · caso ficticio',(x,self.h*.80 if self.vertical else self.h*.84),36 if self.vertical else 30,SILVER)
+        result=self.manifest.get('result_card',{})
+        self.text(d,result.get('label','PROPUESTA PARA REVISAR'),(tx+24*self.s,ty+23*self.s),36 if self.vertical else 29,GOLD,True)
+        self.text(d,result.get('value','15 min'),(tx+24*self.s,ty+72*self.s),76,WHITE,True)
+        self.text(d,result.get('body','Caminata cómoda'),(tx+24*self.s,ty+164*self.s),39 if self.vertical else 35,WHITE)
+        self.text(d,self.manifest.get('context_footer','Datos declarados · caso ficticio'),(x,self.h*.80 if self.vertical else self.h*.84),36 if self.vertical else 30,SILVER)
     def diary(self,d,local,continuity=False,shot=None):
         if self.vertical:x,y,w=self.w*.08,self.h*.18,self.w*.84
         else:x,y,w=self.w*.62,self.h*.24,self.w*.31
-        self.small(d,'DESPUÉS DE LA SESIÓN',x,y);y+=44*self.s
+        self.small(d,(shot or {}).get('eyebrow','DESPUÉS DE LA SESIÓN'),x,y);y+=44*self.s
         self.text(d,(shot or {}).get('title','Tu historia\ncuenta.' if continuity else 'Lo que\nrealmente hiciste.'),(x,y),70 if self.vertical else 62,WHITE,True,width=w)
         y+=180*self.s if not self.vertical else 210*self.s
         labels=['Tiempo realizado','Esfuerzo percibido','Cómo te sentiste'] if not continuity else ['Tu objetivo','Tu experiencia','Tu siguiente conversación']
+        labels=(shot or {}).get('labels',labels)
         for i,label in enumerate(labels):
             if local>i*.45:
                 yy=y+i*70*self.s
@@ -118,11 +120,13 @@ class Film:
         y+=112*self.s
         self.text(d,'QUANTUM COACH',(cx,y),30,GOLD,True,anchor='mt')
         y+=74*self.s
-        self.text(d,'Tu próximo paso\nempieza hoy.' if self.vertical else 'Tu próximo paso empieza hoy.',(cx,y),56,WHITE,True,anchor='mt')
+        campaign=self.manifest.get('campaign',{})
+        slogan=campaign.get('slogan_vertical' if self.vertical else 'slogan_horizontal','Tu próximo paso\nempieza hoy.' if self.vertical else 'Tu próximo paso empieza hoy.')
+        self.text(d,slogan,(cx,y),56,WHITE,True,anchor='mt')
         y+=174*self.s if self.vertical else 106*self.s
         w=self.w*.76 if self.vertical else 650*self.s
         d.rounded_rectangle((cx-w/2,y,cx+w/2,y+86*self.s),radius=15*self.s,fill='#103B34',outline=MINT,width=2)
-        self.text(d,'Escribe «Activa running»',(cx,y+27*self.s),32,WHITE,True,anchor='mt')
+        self.text(d,campaign.get('cta','Escribe «Activa running»'),(cx,y+27*self.s),32,WHITE,True,anchor='mt')
         self.text(d,'app.gotogym.store',(cx,y+120*self.s),28,SILVER,anchor='mt')
         self.text(d,'ANIMATIC CINEMATOGRÁFICO',(cx,self.h*.95),18,'#84918F',anchor='mt')
     def phone(self,im,local,shot):

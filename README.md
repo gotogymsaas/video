@@ -138,3 +138,7 @@ Cinco nuevas propuestas científicas de Juan Manuel Goenaga Castro y prototipos 
 `python -m qaf_video.music_research sketch --preset run_club --out outputs/run-club`
 
 Los bocetos son síntesis digital original; el modelo neuronal es una propuesta futura sin entrenamiento ejecutado. Actualidad y preferencia requieren audición. La ampliación no sustituye automáticamente la banda sonora del video aceptado.
+
+## Producción musical integrada y Fútbol
+
+El estudio permite **componer y mezclar música con la voz** desde «Cine y pantalla móvil». Nuevo comando: `python -m qaf_video.music_research produce projects/episodio/project.json --preset coastal_pulse`. Genera cuatro stems, actualiza la mezcla con mediciones reales e invalida su aprobación auditiva. [Uso y límites](docs/MUSIC_PRODUCTION.md). El segundo episodio, Fútbol, dispone de [receta, fuentes y guion](episodes/02_football/README.md).

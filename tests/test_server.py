@@ -61,3 +61,15 @@ class LocalServerTests(unittest.TestCase):
         result=self.studio.jobs[job]
         self.assertEqual(result['state'],'completed');self.assertFalse(result['result']['attached'])
         self.assertNotIn('voice',json.loads((root/'project.json').read_text()))
+
+    def test_music_job_is_wired_to_project_and_preview(self):
+        root=self.root/'episode';root.mkdir();(root/'project.json').write_text('{}')
+        def produce(path,preset,seed,progress):
+            self.assertEqual(preset,'coastal_pulse');self.assertEqual(seed,22)
+            progress(1);return {'mix':'assets/music/mix.wav','project_updated':True}
+        with patch('qaf_video.music_production.produce_music',side_effect=produce):
+            with self.post('music-produce',{'path':'episode/project.json','preset':'coastal_pulse'}) as r:
+                job=json.load(r)['job_id']
+            self.studio.worker.shutdown(wait=True)
+        self.assertEqual(self.studio.jobs[job]['state'],'completed')
+        self.assertEqual(self.studio.jobs[job]['result']['audio'],'episode/assets/music/mix.wav')
