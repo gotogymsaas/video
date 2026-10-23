@@ -1,6 +1,6 @@
 # VBench / VBench-2.0 — evaluador externo de videos generados
 
-Las métricas simples FFmpeg disponibles en `paired_benchmark.py` no constituyen evaluación perceptual completa. Este adaptador ejecuta opcionalmente **VBench original** (si está instalado por el usuario) para consistencia de sujeto, movimiento, acciones humanas y flicker; lo hace como procesos locales con argumentos permitidos.
+Las métricas simples FFmpeg disponibles en `paired_benchmark.py` no constituyen evaluación perceptual completa. Este adaptador ejecuta opcionalmente **VBench original** (si está instalado por el usuario) para consistencia de sujeto, movimiento, grado de dinamismo y calidad visual para clips propios; lo hace como procesos locales con argumentos permitidos.
 
 Fuente oficial: https://github.com/Vchitect/VBench . VBench-2.0 (https://github.com/Vchitect/VBench/tree/master/VBench-2.0) cubre errores más avanzados de física, anatomía y composición. Por ser un proyecto con comandos y pesos particulares, ejecutar VBench-2.0 mediante su propio README, no mediante supuestos de compatibilidad con VBench v1.
 
@@ -15,3 +15,7 @@ python -m qaf_video.generative_research.vbench_external \
 Cada comparación debe usar los mismos fotogramas iniciales, prompts, semilla, duración, pesos base y costo computacional. El resultado de VBench requiere revisión humana ciega y métricas de identidad/ropa/logos y derechos de uso.
 
 **No hay puntuaciones VBench reales registradas aún.** Es una interfaz opcional para ejecutar el benchmark cuando se disponga de videos finales y entorno GPU.
+
+## Corrección de compatibilidad con el README oficial
+
+VBench requiere `--mode=custom_input` al evaluar videos arbitrarios que no proceden del prompt-suite estandarizado. En este modo el README oficial admite solo `subject_consistency`, `background_consistency`, `motion_smoothness`, `dynamic_degree`, `aesthetic_quality` e `imaging_quality`. Las dimensiones `human_action` y `temporal_flickering` se reservan en VBench v1 al modo estándar de benchmark, no se aplican automáticamente a videos propios. Para anatomía y física utilizar el protocolo independiente VBench-2.0 y evaluación humana. Referencia: https://github.com/Vchitect/VBench/blob/master/README.md
