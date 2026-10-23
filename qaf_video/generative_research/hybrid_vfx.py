@@ -33,7 +33,7 @@ def load_spec(path):
   points=[event.get("center",[])] if event["type"]=="pulse" else event.get("points",[])
   require(1<=len(points)<=12 and all(len(pt)==2 and all(isinstance(x,(float,int)) and 0<=x<=1 for x in pt) for pt in points),"Event coordinates")
  return s,p.parent
-def frame(spec,root,t,background=None):
+def frame(spec,root,t,background=None,foreground_mask=None):
  w,h=spec["width"],spec["height"]
  photo=(background.convert("RGB") if background is not None else Image.open(root/spec["background"]).convert("RGB")).resize((w,h))
  z0,z1=spec.get("camera",{}).get("zoom",[1,1.05])
@@ -54,8 +54,9 @@ def frame(spec,root,t,background=None):
  alpha=np.asarray(glow.getchannel("A"),dtype=np.float32)[...,None]/255
  canvas=Image.fromarray(np.uint8(np.clip(source+(lit-source)*alpha*.45,0,255))).convert("RGBA")
  canvas=Image.alpha_composite(Image.alpha_composite(canvas,glow),layer)
- if spec.get("subject_mask"):
-  mask=Image.open(root/spec["subject_mask"]).convert("L").resize((w,h))
+ if foreground_mask is not None or spec.get("subject_mask"):
+  mask=(foreground_mask.convert("L") if foreground_mask is not None
+        else Image.open(root/spec["subject_mask"]).convert("L")).resize((w,h))
   foreground=Image.new("RGBA",(w,h));foreground.paste(photo.convert("RGBA"),(0,0),mask)
   canvas=Image.alpha_composite(canvas,foreground)
  canvas,report=place_phone(canvas,Image.open(root/spec["phone_screen"]).convert("RGB"),spec["phone_quad"])
