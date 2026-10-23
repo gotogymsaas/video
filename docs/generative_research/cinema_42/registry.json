@@ -1,0 +1,344 @@
+{
+  "schema": "qaf_cinema_42_implementation_registry_v1",
+  "source": "QAF_Cinema_Programa_Integral_42_Manuscritos.pdf",
+  "purpose": "bienestar para todos",
+  "studies": [
+    {
+      "id": "P011",
+      "type": "technology",
+      "related_module": "generative_research/cinema_neural.py",
+      "implementation": "partial_reference_only",
+      "blocker": "real human action I2V fine-tuning",
+      "verified": false
+    },
+    {
+      "id": "P012",
+      "type": "technology",
+      "related_module": "generative_research/vision_evidence.py",
+      "implementation": "partial_reference_only",
+      "blocker": "validated hand-object contact",
+      "verified": false
+    },
+    {
+      "id": "P013",
+      "type": "technology",
+      "related_module": "generative_research/m01_pose_motion.py",
+      "implementation": "partial_reference_only",
+      "blocker": "full mathematical code, licensed real video evaluation, matched baseline and independent replication",
+      "verified": false
+    },
+    {
+      "id": "P021",
+      "type": "technology",
+      "related_module": "generative_research/m07_identity_update.py",
+      "implementation": "partial_reference_only",
+      "blocker": "multiview identity preservation",
+      "verified": false
+    },
+    {
+      "id": "P022",
+      "type": "technology",
+      "related_module": "generative_research/m07_identity_update.py",
+      "implementation": "partial_reference_only",
+      "blocker": "garment reference database",
+      "verified": false
+    },
+    {
+      "id": "P023",
+      "type": "technology",
+      "related_module": "generative_research/m08_continuity_plan.py",
+      "implementation": "partial_reference_only",
+      "blocker": "full mathematical code, licensed real video evaluation, matched baseline and independent replication",
+      "verified": false
+    },
+    {
+      "id": "P031",
+      "type": "technology",
+      "related_module": "cinema.py",
+      "implementation": "partial_reference_only",
+      "blocker": "real 6DoF calibrated camera",
+      "verified": false
+    },
+    {
+      "id": "P032",
+      "type": "technology",
+      "related_module": "cinema.py",
+      "implementation": "partial_reference_only",
+      "blocker": "full mathematical code, licensed real video evaluation, matched baseline and independent replication",
+      "verified": false
+    },
+    {
+      "id": "P033",
+      "type": "technology",
+      "related_module": "generative_research/vision_evidence.py",
+      "implementation": "partial_reference_only",
+      "blocker": "full mathematical code, licensed real video evaluation, matched baseline and independent replication",
+      "verified": false
+    },
+    {
+      "id": "P041",
+      "type": "technology",
+      "related_module": "render/blender_adapter.py",
+      "implementation": "partial_reference_only",
+      "blocker": "full mathematical code, licensed real video evaluation, matched baseline and independent replication",
+      "verified": false
+    },
+    {
+      "id": "P042",
+      "type": "technology",
+      "related_module": null,
+      "implementation": "partial_reference_only",
+      "blocker": "trainable neural background fields",
+      "verified": false
+    },
+    {
+      "id": "P043",
+      "type": "technology",
+      "related_module": "render/blender_scene.py",
+      "implementation": "partial_reference_only",
+      "blocker": "full mathematical code, licensed real video evaluation, matched baseline and independent replication",
+      "verified": false
+    },
+    {
+      "id": "P051",
+      "type": "technology",
+      "related_module": "generative_research/hybrid_vfx.py",
+      "implementation": "partial_reference_only",
+      "blocker": "full mathematical code, licensed real video evaluation, matched baseline and independent replication",
+      "verified": false
+    },
+    {
+      "id": "P052",
+      "type": "technology",
+      "related_module": "generative_research/hybrid_vfx.py",
+      "implementation": "partial_reference_only",
+      "blocker": "full mathematical code, licensed real video evaluation, matched baseline and independent replication",
+      "verified": false
+    },
+    {
+      "id": "P053",
+      "type": "technology",
+      "related_module": "generative_research/hybrid_vfx.py",
+      "implementation": "partial_reference_only",
+      "blocker": "full mathematical code, licensed real video evaluation, matched baseline and independent replication",
+      "verified": false
+    },
+    {
+      "id": "P061",
+      "type": "technology",
+      "related_module": "generative_research/hybrid_motion.py",
+      "implementation": "partial_reference_only",
+      "blocker": "neural masks and physical depth",
+      "verified": false
+    },
+    {
+      "id": "P062",
+      "type": "technology",
+      "related_module": "generative_research/hybrid_motion.py",
+      "implementation": "partial_reference_only",
+      "blocker": "full mathematical code, licensed real video evaluation, matched baseline and independent replication",
+      "verified": false
+    },
+    {
+      "id": "P063",
+      "type": "technology",
+      "related_module": "generative_research/hybrid_motion.py",
+      "implementation": "partial_reference_only",
+      "blocker": "full mathematical code, licensed real video evaluation, matched baseline and independent replication",
+      "verified": false
+    },
+    {
+      "id": "P071",
+      "type": "technology",
+      "related_module": "generative_research/hybrid_vfx.py",
+      "implementation": "partial_reference_only",
+      "blocker": "material-aware real scene relighting",
+      "verified": false
+    },
+    {
+      "id": "P072",
+      "type": "technology",
+      "related_module": "render/pathtrace.py",
+      "implementation": "partial_reference_only",
+      "blocker": "full mathematical code, licensed real video evaluation, matched baseline and independent replication",
+      "verified": false
+    },
+    {
+      "id": "P073",
+      "type": "technology",
+      "related_module": "color.py",
+      "implementation": "partial_reference_only",
+      "blocker": "full mathematical code, licensed real video evaluation, matched baseline and independent replication",
+      "verified": false
+    },
+    {
+      "id": "P081",
+      "type": "technology",
+      "related_module": "phone.py",
+      "implementation": "partial_reference_only",
+      "blocker": "full mathematical code, licensed real video evaluation, matched baseline and independent replication",
+      "verified": false
+    },
+    {
+      "id": "P082",
+      "type": "technology",
+      "related_module": "generative_research/vision_evidence.py",
+      "implementation": "partial_reference_only",
+      "blocker": "dynamic finger occlusion on tracked phone",
+      "verified": false
+    },
+    {
+      "id": "P083",
+      "type": "technology",
+      "related_module": "phone.py",
+      "implementation": "partial_reference_only",
+      "blocker": "real coach interaction evidence",
+      "verified": false
+    },
+    {
+      "id": "P091",
+      "type": "technology",
+      "related_module": "planning.py",
+      "implementation": "partial_reference_only",
+      "blocker": "full mathematical code, licensed real video evaluation, matched baseline and independent replication",
+      "verified": false
+    },
+    {
+      "id": "P092",
+      "type": "technology",
+      "related_module": "render/compositor.py",
+      "implementation": "partial_reference_only",
+      "blocker": "full mathematical code, licensed real video evaluation, matched baseline and independent replication",
+      "verified": false
+    },
+    {
+      "id": "P093",
+      "type": "technology",
+      "related_module": "audio_scene.py",
+      "implementation": "partial_reference_only",
+      "blocker": "full mathematical code, licensed real video evaluation, matched baseline and independent replication",
+      "verified": false
+    },
+    {
+      "id": "P101",
+      "type": "technology",
+      "related_module": "core.py",
+      "implementation": "partial_reference_only",
+      "blocker": "scientific data provenance to typed graphics",
+      "verified": false
+    },
+    {
+      "id": "P102",
+      "type": "technology",
+      "related_module": "generative_research/m03_scene_graph.py",
+      "implementation": "partial_reference_only",
+      "blocker": "full mathematical code, licensed real video evaluation, matched baseline and independent replication",
+      "verified": false
+    },
+    {
+      "id": "P103",
+      "type": "technology",
+      "related_module": "captions.py",
+      "implementation": "partial_reference_only",
+      "blocker": "full mathematical code, licensed real video evaluation, matched baseline and independent replication",
+      "verified": false
+    },
+    {
+      "id": "P111",
+      "type": "technology",
+      "related_module": "music_production.py",
+      "implementation": "partial_reference_only",
+      "blocker": "full mathematical code, licensed real video evaluation, matched baseline and independent replication",
+      "verified": false
+    },
+    {
+      "id": "P112",
+      "type": "technology",
+      "related_module": "audio_scene.py",
+      "implementation": "partial_reference_only",
+      "blocker": "full mathematical code, licensed real video evaluation, matched baseline and independent replication",
+      "verified": false
+    },
+    {
+      "id": "P113",
+      "type": "technology",
+      "related_module": "audio.py",
+      "implementation": "partial_reference_only",
+      "blocker": "full mathematical code, licensed real video evaluation, matched baseline and independent replication",
+      "verified": false
+    },
+    {
+      "id": "P121",
+      "type": "technology",
+      "related_module": "quality.py",
+      "implementation": "partial_reference_only",
+      "blocker": "full mathematical code, licensed real video evaluation, matched baseline and independent replication",
+      "verified": false
+    },
+    {
+      "id": "P122",
+      "type": "technology",
+      "related_module": "generative_research/production_bridge.py",
+      "implementation": "partial_reference_only",
+      "blocker": "selective neural video inpainting",
+      "verified": false
+    },
+    {
+      "id": "P123",
+      "type": "technology",
+      "related_module": "release.py",
+      "implementation": "partial_reference_only",
+      "blocker": "full mathematical code, licensed real video evaluation, matched baseline and independent replication",
+      "verified": false
+    },
+    {
+      "id": "A01",
+      "type": "synthesis",
+      "related_module": "generative_research/vision_evidence.py",
+      "implementation": "partial_reference_only",
+      "blocker": "full mathematical code, licensed real video evaluation, matched baseline and independent replication",
+      "verified": false
+    },
+    {
+      "id": "A02",
+      "type": "synthesis",
+      "related_module": "generative_research/hybrid_vfx.py",
+      "implementation": "partial_reference_only",
+      "blocker": "full mathematical code, licensed real video evaluation, matched baseline and independent replication",
+      "verified": false
+    },
+    {
+      "id": "A03",
+      "type": "synthesis",
+      "related_module": "generative_research/hybrid_motion.py",
+      "implementation": "partial_reference_only",
+      "blocker": "full mathematical code, licensed real video evaluation, matched baseline and independent replication",
+      "verified": false
+    },
+    {
+      "id": "A04",
+      "type": "synthesis",
+      "related_module": "phone.py",
+      "implementation": "partial_reference_only",
+      "blocker": "full mathematical code, licensed real video evaluation, matched baseline and independent replication",
+      "verified": false
+    },
+    {
+      "id": "A05",
+      "type": "synthesis",
+      "related_module": "audio_scene.py",
+      "implementation": "partial_reference_only",
+      "blocker": "full mathematical code, licensed real video evaluation, matched baseline and independent replication",
+      "verified": false
+    },
+    {
+      "id": "A06",
+      "type": "synthesis",
+      "related_module": "generative_research/program_audit.py",
+      "implementation": "partial_reference_only",
+      "blocker": "full mathematical code, licensed real video evaluation, matched baseline and independent replication",
+      "verified": false
+    }
+  ],
+  "note": "Code references document partial dependencies, not proof that a paper was implemented"
+}
