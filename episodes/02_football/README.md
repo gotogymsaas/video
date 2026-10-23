@@ -26,3 +26,6 @@ Herramienta integrada de generación de imágenes, tres llamadas independientes 
 Los prompts completos de la conversación se ejecutaron con la herramienta integrada, no con una API alternativa. JPEG de producción conserva el resultado para el montaje. Logo y pantalla originales se componen por código; no se regeneran. Licencias tipográficas en `assets/fonts/`.
 
 Música elegida como dirección creativa: Coastal pulse, 112 BPM, bajo sincopado, cuatro capas editables y control de energía por secciones. No implica tendencia validada por audiencia ni entrenamiento neuronal propio.
+
+## Verificación de entrega
+`delivery-audit.json` registra cuatro MP4, medidas del audio codificado, hashes, subtítulos y fuentes. Se inspeccionaron 30 cuadros exportados en los dos formatos. La suite base pasa 111 casos y omite tres opcionales sin PyTorch; esos tres se ejecutaron y aprobaron por separado en el runtime de voz. La aprobación auditiva y editorial del productor/usuario permanece pendiente; ASR y métricas no certifican naturalidad regional ni preferencia musical.

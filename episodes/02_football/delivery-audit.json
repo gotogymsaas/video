@@ -1,0 +1,157 @@
+{
+  "schema": "qaf_football_music_release_v05",
+  "date_bogota": "2026-10-22",
+  "code_commit": "38a62afbc1732f5084472716cbe84dda4c81df1d",
+  "product_commit": "6d2e95d031c2e3c2b83c8c1e442fd6315ef95d62",
+  "suite": {
+    "base_discovered": 114,
+    "base_passed": 111,
+    "base_skipped_optional_torch": 3,
+    "optional_torch_tests_executed_separately": 3,
+    "optional_torch_tests_passed": 3,
+    "combined_cases_verified": 114
+  },
+  "music": {
+    "preset": "coastal_pulse",
+    "bpm": 112,
+    "composition": "original DSP, four stems; no trained neural music model",
+    "cues": {
+      "bpm": 112.0,
+      "phase_seconds": 0.0,
+      "duration": 60,
+      "input_cues": [
+        13,
+        29,
+        46
+      ],
+      "aligned_cues": [
+        12.857142857142858,
+        28.928571428571427,
+        46.07142857142857
+      ],
+      "loss_seconds_squared": 0.030612244897958968,
+      "max_error_seconds": 0.14285714285714235,
+      "solver": "exact chain dynamic programming; classical baseline identical",
+      "scope": "music cues only; does not move picture edits or voice"
+    },
+    "voice_aware_sidechain": true
+  },
+  "voice": {
+    "seconds": 43.137395833333336,
+    "script_words": 117,
+    "reference": "previously authorized female reference; raw reference not published",
+    "precision_requested": "bfloat16",
+    "pause_insertions": 0,
+    "max_internal_low_energy_gap_seconds": 0.40000000000000213,
+    "asr_word_error_proxy": 0.06837606837606838,
+    "regional_identity_human_approved": false,
+    "scope": "reference-conditioned TTS with pretrained third-party model, not own training"
+  },
+  "captions": {
+    "count": 14,
+    "max_cps": 23.08,
+    "anchor_review_flags": 3,
+    "basis": "measured ASR anchors, script-corrected; no phonetic certification"
+  },
+  "picture_review": {
+    "storyboard_shots": 11,
+    "exported_frames_inspected": 30,
+    "formats": 2,
+    "layout_midpoint_checks_passed": true,
+    "screen": "complete original screenshot in geometric phone",
+    "treatment": "photographic cinematic animatic; no generated human motion"
+  },
+  "files": [
+    {
+      "file": "GoToGym_Futbol_02_Horizontal.mp4",
+      "bytes": 13922918,
+      "sha256": "30c9ef382898fec6088b6691ded15400f416ab2df2634fcf4bf18b5e46580980",
+      "technical": {
+        "technical_passed": true,
+        "checks": {
+          "frames": true,
+          "duration": true,
+          "size": true,
+          "fps": true,
+          "codec": true,
+          "decode": true,
+          "audio": true
+        },
+        "audio_present": true,
+        "editorial_quality": "requires human playback review"
+      },
+      "audio_lufs": -14.04,
+      "audio_dbtp": -1.45,
+      "picture_encodes": 1
+    },
+    {
+      "file": "GoToGym_Futbol_02_Horizontal_Sin_Subtitulos.mp4",
+      "bytes": 13914668,
+      "sha256": "566daa959c0374831fd9c7229868010a0c50c2ad7973c8f9e59fc181653cd66b",
+      "technical": {
+        "technical_passed": true,
+        "checks": {
+          "frames": true,
+          "duration": true,
+          "size": true,
+          "fps": true,
+          "codec": true,
+          "decode": true,
+          "audio": true
+        },
+        "audio_present": true,
+        "editorial_quality": "requires human playback review"
+      },
+      "audio_lufs": -14.04,
+      "audio_dbtp": -1.45,
+      "picture_encodes": 1
+    },
+    {
+      "file": "GoToGym_Futbol_02_Vertical.mp4",
+      "bytes": 13150200,
+      "sha256": "04e62db5588000007e299b94fd3c471ad877baf4c3cd819cdedd3eb9e2d729d9",
+      "technical": {
+        "technical_passed": true,
+        "checks": {
+          "frames": true,
+          "duration": true,
+          "size": true,
+          "fps": true,
+          "codec": true,
+          "decode": true,
+          "audio": true
+        },
+        "audio_present": true,
+        "editorial_quality": "requires human playback review"
+      },
+      "audio_lufs": -14.04,
+      "audio_dbtp": -1.45,
+      "picture_encodes": 1
+    },
+    {
+      "file": "GoToGym_Futbol_02_Vertical_Sin_Subtitulos.mp4",
+      "bytes": 12919769,
+      "sha256": "aeee9b53a44def0dd40c696a499a4724ac2d6e0b47085604a00212118fad324f",
+      "technical": {
+        "technical_passed": true,
+        "checks": {
+          "frames": true,
+          "duration": true,
+          "size": true,
+          "fps": true,
+          "codec": true,
+          "decode": true,
+          "audio": true
+        },
+        "audio_present": true,
+        "editorial_quality": "requires human playback review"
+      },
+      "audio_lufs": -14.04,
+      "audio_dbtp": -1.45,
+      "picture_encodes": 1
+    }
+  ],
+  "human_playback_and_editorial_approval": "pending user/producer; no automatic approval",
+  "production_availability": "not tested; source and local fixture only",
+  "ci_url": "https://github.com/gotogymsaas/video/actions/runs/39876821256"
+}
