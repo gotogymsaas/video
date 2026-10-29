@@ -69,11 +69,14 @@ class Movie:
         self.close_decoder();self.current=None
         if p not in self.sources:
             with Image.open(p) as im:self.sources[p]=ImageOps.exif_transpose(im).convert('RGB')
-        z0,z1=shot.get('zoom',[1.0,1.06]);z=z0+(z1-z0)*ease(t)
-        if not 1<=z<=1.3:raise ValueError('Zoom outside 1–1.3')
-        iw,ih=round(self.w*z),round(self.h*z)
-        im=ImageOps.fit(self.sources[p],(iw,ih),centering=tuple(focus))
-        x=int((iw-self.w)*focus[0]);y=int((ih-self.h)*focus[1]);return im.crop((x,y,x+self.w,y+self.h))
+        from ..animation import camera_sample, crop_box
+        sample=dict(shot)
+        sample['focus']=focus
+        point,zoom=camera_sample(sample,t)
+        im=self.sources[p]
+        return im.resize((self.w,self.h),Image.Resampling.BICUBIC,
+                         box=crop_box(im.size,(self.w,self.h),point,zoom))
+
     def text(self,im,text,x,y,size,width,color,bold=False,max_lines=4):
         f=self.font(round(size*self.s),bold);lines=wrap(text,f,width);step=round(size*self.s*1.25)
         if len(lines)>max_lines or y+len(lines)*step>self.h*.82:raise ValueError('Text overflow: shorten copy')
@@ -96,13 +99,16 @@ class Movie:
         self.text(layer,shot.get('body',''),x,y,29,width,self.colors['silver'],max_lines=4)
         # Abstract relationships: labels show inputs, never fabricated biometrics.
         if shot.get('nodes'):
+            from ..animation import reveal_times, reveal_progress
+            starts=reveal_times(shot,self.m.get('subtitles',[]))
             labels=shot['nodes'];cy=self.h*.64
             centers=[(self.w*(.16+.68*i/max(1,len(labels)-1)),cy+math.sin(i*1.5)*self.h*.02) for i in range(len(labels))]
             for i in range(len(centers)-1):
-                a,b=centers[i],centers[i+1];progress=ease((local-i*.2)/1.5)
+                a,b=centers[i],centers[i+1];progress=reveal_progress(local,starts[i+1],.7)
                 d.line((a[0],a[1],a[0]+(b[0]-a[0])*progress,a[1]+(b[1]-a[1])*progress),fill=(15,191,176,160),width=max(1,round(2*self.s)))
             for i,((cx,cy),label) in enumerate(zip(centers,labels)):
-                r=(17+2*math.sin(local*1.4+i))*self.s;d.ellipse((cx-r,cy-r,cx+r,cy+r),fill=self.colors['turquoise'])
+                if local < starts[i]:continue
+                r=(17+2*reveal_progress(local,starts[i]))*self.s;d.ellipse((cx-r,cy-r,cx+r,cy+r),fill=self.colors['turquoise'])
                 f=self.font(round(20*self.s));tw=d.textlength(label,font=f);d.text((cx-tw/2,cy+35*self.s),label,font=f,fill=self.colors['white'])
         # Short, visually calm card for output/limits.
         if shot.get('card'):

@@ -87,6 +87,10 @@ def validate(m,base,final=False,verify_assets=True):
             if final or m['mode']=='demonstration':require(c['status']=='verified',f'Unverified claim: {cid}')
             if c['status']=='verified':
                 require(c.get('scope') and c.get('verified_at') and c.get('reviewer'),f'Incomplete claim record: {cid}')
+    from .animation import validate_motion, reveal_times
+    for shot in shots:
+        if 'motion' in shot:validate_motion(shot['motion'])
+        if 'node_cues' in shot:reveal_times(shot,m.get('subtitles',[]))
     require(abs(end-seconds)<1e-6,'Timeline does not end at duration')
     for key in ['voice','music','ambience','effects','logo']:
         if m.get(key):
