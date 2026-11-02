@@ -1,0 +1,1 @@
+Carpeta para entrenamiento de videos.
