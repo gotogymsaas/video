@@ -33,6 +33,10 @@ def validate_cinema(m,base,final=False):
             bindings+=1
         if s['layout'] in ['inputs','choice','diary']:require(s.get('claim_ids'),'Product mechanism needs evidence binding')
         end=b
+    from .animation import validate_motion, reveal_times
+    for shot in shots:
+        if 'motion' in shot:validate_motion(shot['motion'])
+        if 'node_cues' in shot:reveal_times(shot,m.get('subtitles',[]))
     require(abs(end-duration)<1e-6,'Timeline must cover the entire film')
     for key in ['voice','mix','music','logo','phone_screen']:
         if m.get(key):asset(m[key])

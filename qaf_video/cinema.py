@@ -54,11 +54,12 @@ class Film:
     def small(self,d,text,x,y,color=GOLD):self.text(d,text,(x,y),36 if self.vertical else 34,color,True)
     def photo(self,shot,u):
         if not shot.get('asset'):return Image.new('RGB',(self.w,self.h),'black')
-        im=self.images[shot['asset']];z=shot.get('zoom',[1,1])[0]+np.diff(shot.get('zoom',[1,1]))[0]*ease(u)
-        focus=shot.get('focus',[.5,.5]);iw,ih=im.size
-        cover=max(self.w/iw,self.h/ih)*z;cw,ch=self.w/cover,self.h/cover
-        cx=np.clip(focus[0]*iw,cw/2,iw-cw/2);cy=np.clip(focus[1]*ih,ch/2,ih-ch/2)
-        return im.resize((self.w,self.h),Image.Resampling.BICUBIC,box=(cx-cw/2,cy-ch/2,cx+cw/2,cy+ch/2))
+        from .animation import camera_sample, crop_box
+        im=self.images[shot['asset']]
+        focus,z=camera_sample(shot,u)
+        return im.resize((self.w,self.h),Image.Resampling.BICUBIC,
+                         box=crop_box(im.size,(self.w,self.h),focus,z))
+
     def headline(self,d,eyebrow,title,detail='',right=False):
         if self.vertical:x,y,width=self.w*.08,self.h*.65,self.w*.84
         else:x,y,width=(self.w*.61,self.h*.34,self.w*.32) if right else (self.w*.075,self.h*.37,self.w*.47)
