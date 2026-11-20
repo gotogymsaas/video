@@ -40,8 +40,33 @@ def gpu_quotas(rows):
             name = get(name, "localizedValue", "localized_value", "value", default="")
         if not re.search(r"\b(?:standard[ _-]*)?(?:nc|nd|nv)[a-z0-9_ -]*", str(name), re.I):
             continue
-        used, limit = get(row, "currentValue", "current_value"), get(row, "limit")
-        free = limit-used if isinstance(limit, (float, int)) and isinstance(used, (float, int)) else None
+        used_raw = get(row, "currentValue", "current_value", "currentUsage", "current_usage",
+                       "used", "usage", default=None)
+        limit_raw = get(row, "limit", "limitValue", "limit_value", default=None)
+
+        def numeric(value):
+            if isinstance(value, bool) or value is None:
+                return None
+            if isinstance(value, (int, float)):
+                return float(value) if isinstance(value, float) else value
+            try:
+                return int(str(value).strip())
+            except (TypeError, ValueError):
+                return None
+
+        used, limit = numeric(used_raw), numeric(limit_raw)
+        if limit is not None and limit >= 0:
+            if used is not None:
+                free = max(limit-used, 0)
+            elif limit == 0:
+                free = 0
+            else:
+                free = None
+        else:
+            free = None
+        if limit == -1:
+            limit = None
+            free = None
         result.append({"family": name, "used_cores": used, "limit_cores": limit, "free_cores": free})
     return result
 
@@ -124,9 +149,11 @@ def collect(subscription, rg="rg-qaf-cinema-training",
     aml = report["checks"].get("aml_gpu_quotas")
     report["decision"] = (
         "INCOMPLETE_AML_GPU_QUOTA_NOT_VERIFIED" if aml is None else
-        "BLOCKED_NO_FREE_AML_GPU_CORES_REPORTED" if not any(
+        "POSSIBLE_GPU_QUOTA_NEEDS_SKU_AND_BILLING_VALIDATION" if any(
             isinstance(q["free_cores"], (int, float)) and q["free_cores"] > 0 for q in aml)
-        else "POSSIBLE_GPU_QUOTA_NEEDS_SKU_AND_BILLING_VALIDATION")
+        else "BLOCKED_NO_FREE_AML_GPU_CORES_REPORTED" if aml and all(
+            q["limit_cores"] is not None and q["limit_cores"] <= 0 for q in aml)
+        else "INCOMPLETE_AML_GPU_USAGE_NOT_VERIFIED")
     report["limitations"] = [
         "No Mac-to-private-endpoint DNS or VPN connectivity test",
         "Azure VM quota differs from Azure ML managed-compute quota",

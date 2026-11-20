@@ -84,5 +84,22 @@ class Tests(unittest.TestCase):
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0]["free_cores"], 1)
 
+    def test_null_usage_marks_quota_usage_unknown(self):
+        rows = [{"name": {"value": "Standard NC Family vCPUs"},
+                 "currentValue": None, "limit": 6},
+                {"name": {"value": "Standard NDASv4_A100 Family vCPUs"},
+                 "currentValue": None, "limit": 0}]
+        result = module.gpu_quotas(rows)
+        self.assertIsNone(result[0]["free_cores"])
+        self.assertEqual(result[1]["free_cores"], 0)
+
+    def test_numeric_strings_calculate_free_cores(self):
+        rows = [{"name": {"value": "Standard NC Family vCPUs"},
+                 "currentValue": "2", "limit": "6"}]
+        result = module.gpu_quotas(rows)
+        self.assertEqual(result[0]["used_cores"], 2)
+        self.assertEqual(result[0]["limit_cores"], 6)
+        self.assertEqual(result[0]["free_cores"], 4)
+
 if __name__ == "__main__":
     unittest.main()
