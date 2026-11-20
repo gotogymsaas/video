@@ -1,0 +1,26 @@
+name: QAF Cinema Azure preflight (offline)
+on:
+  pull_request:
+    paths:
+      - scripts/qaf_cinema_azure_preflight.py
+      - tests/test_qaf_cinema_azure_preflight.py
+      - .github/workflows/qaf-cinema-azure-preflight.yml
+  push:
+    paths:
+      - scripts/qaf_cinema_azure_preflight.py
+      - tests/test_qaf_cinema_azure_preflight.py
+      - .github/workflows/qaf-cinema-azure-preflight.yml
+  workflow_dispatch:
+jobs:
+  preflight_unit_tests:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate read-only Azure audit (mocked; no Azure credentials)
+        run: python -m unittest discover -s tests -p 'test_qaf_cinema_azure_preflight.py' -v
