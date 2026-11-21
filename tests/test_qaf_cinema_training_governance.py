@@ -65,6 +65,22 @@ class TestCinemaGovernance(unittest.TestCase):
             self.assertTrue(all(x["review_status"] == "PENDING" for x in result["entries"]))
             self.assertTrue(all(not x["training_rights_documented"] for x in result["entries"]))
 
+    def test_draft_can_checksum_real_bytes_without_approving_rights(self):
+        with tempfile.TemporaryDirectory() as d:
+            inv, _, media = self.fixture(d)
+            rows = draft_review(inv, media)["entries"]
+            self.assertEqual(len(rows), 12)
+            self.assertTrue(all(len(row["source_sha256"]) == 64 for row in rows))
+            self.assertTrue(all(row["review_status"] == "PENDING" for row in rows))
+            self.assertTrue(all(not row["training_rights_documented"] for row in rows))
+
+    def test_draft_rejects_mismatched_local_files(self):
+        with tempfile.TemporaryDirectory() as d:
+            inv, _, media = self.fixture(d)
+            (media / "Videos_test_gimnasio/FAKE_CLIP_00.mp4").write_bytes(b"wrong size")
+            with self.assertRaisesRegex(ValueError, "PRIVATE_MEDIA_SIZE_MISMATCH"):
+                draft_review(inv, media)
+
     def test_clean_groups_produce_three_splits_deterministically(self):
         with tempfile.TemporaryDirectory() as d:
             inv, review, media = self.fixture(d)
