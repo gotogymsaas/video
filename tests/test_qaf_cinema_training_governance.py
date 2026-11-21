@@ -111,6 +111,27 @@ class TestCinemaGovernance(unittest.TestCase):
                 self.assertEqual(by_path[rows[a]["source_path"]],
                                  by_path[rows[b]["source_path"]])
 
+    def test_motion_only_bridge_keeps_indirect_related_visual_clips_together(self):
+        with tempfile.TemporaryDirectory() as d:
+            inv, review, media = self.fixture(d)
+            def edit(rows):
+                # Clip 1 carries the same actor as visual clip 0 and the
+                # same garment as visual clip 2, but is not a training target.
+                rows[1]["visual_review"] = "MOTION_ONLY"
+                rows[1]["actor_group"] = rows[0]["actor_group"]
+                rows[1]["garment_group"] = rows[2]["garment_group"]
+            self.mutate(review, edit)
+            result = plan(inv, review, media)
+            rows = json.loads(review.read_text())["entries"]
+            assignments = {row["source_path"]: row["split"] for row in result["samples"]}
+            visual0 = rows[0]["source_path"]
+            visual2 = rows[2]["source_path"]
+            motion1 = rows[1]["source_path"]
+            self.assertEqual(assignments[visual0], assignments[visual2])
+            self.assertEqual(result["motion_only_provisional_group_splits"][motion1],
+                             assignments[visual0])
+            self.assertTrue(result["motion_only_use_as_control_requires_separate_review"])
+
     def test_one_actor_cannot_be_artificially_split(self):
         with tempfile.TemporaryDirectory() as d:
             inv, review, media = self.fixture(d, 7)
