@@ -142,10 +142,40 @@ def encode_window(source, destination, start_frame, frame_count, fps):
         raise ValueError("FFMPEG_WINDOW_FAILED")
 
 
-def render_pairs(plan, private_root, out_root, *, encoder=encode_window, probe=ffprobe):
+def guide_activity(path, frames):
+    """Fraction of raster pose-guide frames with measurable non-black skeleton marks.
+
+    This is a coverage proxy only; it does NOT validate joint accuracy or motion.
+    """
+    width, height = 128, 224
+    args = ["ffmpeg", "-nostdin", "-v", "error", "-i", str(path),
+            "-vf", f"scale={width}:{height}:flags=area,format=gray",
+            "-frames:v", str(frames), "-f", "rawvideo", "pipe:1"]
+    try:
+        result = subprocess.run(args, capture_output=True, timeout=120, check=False)
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        raise ValueError("GUIDE_DECODER_UNAVAILABLE") from exc
+    size = width * height
+    if result.returncode or len(result.stdout) != frames * size:
+        raise ValueError("GUIDE_DECODE_INCOMPLETE")
+    active = 0
+    for frame in range(frames):
+        image = result.stdout[frame * size:(frame + 1) * size]
+        if sum(value > 16 for value in image) >= 4:
+            active += 1
+    return active / frames
+
+
+def render_pairs(plan, private_root, out_root, *, encoder=encode_window,
+                 probe=ffprobe, guide_checker=guide_activity,
+                 min_guide_coverage=0.60):
     """Create exactly one private bucket per pair; delete partial outputs on failure."""
     if plan.get("schema") != SCHEMA or not plan.get("rows"):
         raise ValueError("INVALID_PLAN")
+    if (type(min_guide_coverage) not in (float, int) or
+            not math.isfinite(min_guide_coverage) or
+            not 0 <= min_guide_coverage <= 1):
+        raise ValueError("INVALID_MIN_GUIDE_COVERAGE")
     destination = Path(out_root).resolve()
     repository = Path(__file__).resolve().parents[1]
     if destination.is_relative_to(repository):
@@ -157,6 +187,7 @@ def render_pairs(plan, private_root, out_root, *, encoder=encode_window, probe=f
         (destination / "targets").mkdir()
         (destination / "guides").mkdir()
         paired = []
+        measured_coverage = {}
         for row in plan["rows"]:
             if row.get("training_approved") is not False:
                 raise ValueError("PLAN_MUST_NOT_AUTOAPPROVE_TRAINING")
@@ -178,6 +209,12 @@ def render_pairs(plan, private_root, out_root, *, encoder=encode_window, probe=f
                         or observed["width"] != row["width"]
                         or observed["height"] != row["height"]):
                     raise ValueError("BUCKET_OUTPUT_VERIFICATION_FAILED")
+            coverage = guide_checker(dest_reference, row["frames"])
+            if type(coverage) not in (float, int) or not math.isfinite(coverage):
+                raise ValueError("INVALID_GUIDE_ACTIVITY_REPORT")
+            if coverage < min_guide_coverage:
+                raise ValueError("GUIDE_TOO_SPARSE_FOR_PILOT")
+            measured_coverage[row["id"]] = round(coverage, 4)
             entry = {
                 "target": "targets/" + row["id"] + ".mp4",
                 "reference": "guides/" + row["id"] + ".mp4",
@@ -193,6 +230,9 @@ def render_pairs(plan, private_root, out_root, *, encoder=encode_window, probe=f
         (destination / "pilot-pairs.json").write_text(
             json.dumps(spec, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         summary = dict(plan)
+        summary["pose_guide_activity_coverage"] = measured_coverage
+        summary["min_pose_guide_activity_coverage"] = min_guide_coverage
+        summary["guide_activity_is_not_joint_accuracy"] = True
         summary["source_content_hashes_in_private_manifest"] = True
         summary["rendered_and_verified"] = True
         summary["gpu_training_executed"] = False
@@ -213,11 +253,14 @@ def main():
     parser.add_argument("--out-root", required=True, help="New private directory outside Git")
     parser.add_argument("--bucket", type=int, default=121)
     parser.add_argument("--start-frame", type=int, default=0)
+    parser.add_argument("--min-guide-coverage", type=float, default=0.60,
+                        help="Measured fraction of rendered guide frames containing pose marks")
     parser.add_argument("--execute", action="store_true", help="Explicitly write CPU clips")
     args = parser.parse_args()
     plan = plan_pairs(args.spec, args.private_root, args.bucket, args.start_frame)
     if args.execute:
-        result = render_pairs(plan, args.private_root, args.out_root)
+        result = render_pairs(plan, args.private_root, args.out_root,
+                              min_guide_coverage=args.min_guide_coverage)
     else:
         result = {"validated_sources": plan["clip_count"], "bucket": plan["bucket"],
                   "would_write_to": str(Path(args.out_root).resolve()),
