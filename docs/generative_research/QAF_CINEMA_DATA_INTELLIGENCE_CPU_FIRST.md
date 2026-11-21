@@ -16,7 +16,7 @@ Inside the video repository with FFmpeg installed and the actual authorized sour
       --observations-root /private/qaf-observations \
       --out /private/qaf-reports/cinema-audit-001.json
 
-Optional observations 001.json through 106.json correspond to inventory order, produced with the current joint-id-preserving vision_extract.py. Verify each observation's source MP4 hash matches the exact audited MP4 independently; the current tool publishes both hashes but does not automatically enforce their association. Do not use mismatched observations for training.
+Optional observations 001.json through 106.json correspond to inventory order, produced with the current joint-id-preserving vision_extract.py. The auditor requires the observation source_mp4_sha256 to match the exact original MP4 SHA-256; missing or mismatched hashes fail closed. Keep observational annotations private and independently inspect pose validity.
 
 For a first sample use --limit 10 and a distinct output path. Output must stay PRIVATE and outside Git. The tool refuses output overwrite, but it is the operator's duty not to commit the report.
 
