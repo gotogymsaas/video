@@ -122,7 +122,7 @@ class TestTemporalBuckets(unittest.TestCase):
                 return {"frames": 121, "width": 544, "height": 960, "fps": "24"}
             dest = Path(directory) / "output"
             result = render_pairs(plan, private, dest, encoder=mock_encoder,
-                                  probe=mock_probe)
+                                  probe=mock_probe, guide_checker=lambda path, n: 1.0)
             self.assertEqual(result["windows_verified"], 1)
             self.assertFalse(result["training_approved"])
             generated = json.loads((dest / "pilot-pairs.json").read_text())
@@ -141,8 +141,44 @@ class TestTemporalBuckets(unittest.TestCase):
             def mock_encoder(source, dst, start, frames, fps):
                 dst.write_bytes(b"partial-output")
             with self.assertRaisesRegex(ValueError, "BUCKET_OUTPUT_VERIFICATION_FAILED"):
-                render_pairs(plan, private, dest, encoder=mock_encoder, probe=self.probe)
+                render_pairs(plan, private, dest, encoder=mock_encoder,
+                             probe=self.probe, guide_checker=lambda path, n: 1.0)
             self.assertFalse(dest.exists())
+
+
+    def test_sparse_guide_fails_closed_even_if_frame_count_is_valid(self):
+        with tempfile.TemporaryDirectory() as directory:
+            private = Path(directory) / "private"
+            private.mkdir()
+            spec = self.fixture(private)
+            plan = plan_pairs(spec, private, probe=self.probe)
+            dest = Path(directory) / "output"
+            def mock_encoder(source, dst, start, frames, fps):
+                dst.write_bytes(b"fake-encoded-video")
+            def valid_probe(path):
+                return {"frames": 121, "width": 544, "height": 960, "fps": "24"}
+            with self.assertRaisesRegex(ValueError, "GUIDE_TOO_SPARSE"):
+                render_pairs(plan, private, dest, encoder=mock_encoder,
+                             probe=valid_probe, guide_checker=lambda path, n: 0.02)
+            self.assertFalse(dest.exists())
+
+    def test_blank_guide_activity_is_not_a_quality_approval(self):
+        with tempfile.TemporaryDirectory() as directory:
+            private = Path(directory) / "private"
+            private.mkdir()
+            spec = self.fixture(private)
+            plan = plan_pairs(spec, private, probe=self.probe)
+            dest = Path(directory) / "output"
+            def mock_encoder(source, dst, start, frames, fps):
+                dst.write_bytes(b"fake-encoded-video")
+            def valid_probe(path):
+                return {"frames": 121, "width": 544, "height": 960, "fps": "24"}
+            result = render_pairs(plan, private, dest, encoder=mock_encoder,
+                                  probe=valid_probe, guide_checker=lambda path, n: 0.80)
+            report = json.loads((dest / "technical-bucket-report.json").read_text())
+            self.assertEqual(report["pose_guide_activity_coverage"], {"001": 0.8})
+            self.assertTrue(report["guide_activity_is_not_joint_accuracy"])
+            self.assertFalse(result["training_approved"])
 
     def test_render_fails_if_original_was_modified(self):
         with tempfile.TemporaryDirectory() as directory:
