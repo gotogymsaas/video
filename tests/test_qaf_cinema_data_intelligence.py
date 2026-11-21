@@ -85,7 +85,9 @@ class TestDataIntelligence(unittest.TestCase):
             file = root / "clip.mp4"
             file.write_bytes(b"synthetic test fixture - no real video")
             observations = root / "pose.json"
-            observations.write_text(json.dumps(named_pose()), encoding="utf-8")
+            evidence = named_pose()
+            evidence["source_mp4_sha256"] = module.digest(file)
+            observations.write_text(json.dumps(evidence), encoding="utf-8")
             result = module.inspect_clip(
                 file, observations,
                 probe_fn=lambda path: {"width": 1920, "height": 1080,
@@ -96,6 +98,22 @@ class TestDataIntelligence(unittest.TestCase):
             self.assertTrue(result["visual_review_candidate"])
             self.assertFalse(result["training_approved"])
             self.assertEqual(result["qaf_pose"]["schema"], "qaf_pose_evidence_8d_v1")
+
+    def test_bad_observation_source_hash_is_rejected(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            clip = root / "clip.mp4"
+            clip.write_bytes(b"source-A")
+            obs = root / "001.json"
+            evidence = named_pose()
+            evidence["source_mp4_sha256"] = "0" * 64
+            obs.write_text(json.dumps(evidence), encoding="utf8")
+            result = module.inspect_clip(
+                clip, obs,
+                probe_fn=lambda p: {"width": 1920, "height": 1080, "duration_seconds": 5},
+                frames_fn=lambda p: [textured_frame()] * 5)
+            self.assertEqual(result["state"], "TECHNICAL_FAILURE")
+            self.assertFalse(result["training_approved"])
 
     def test_low_light_is_flagged_even_with_high_resolution(self):
         with tempfile.TemporaryDirectory() as directory:
