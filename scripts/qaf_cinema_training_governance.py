@@ -257,8 +257,23 @@ def plan(inventory, review, media_root, seed=42):
     # controls, subject to a separate legal/evaluation protocol.
     rejected_visual = [row["source_path"] for row in approved
                        if row["visual_review"] != "APPROVED"]
-    groups = components(visually_approved)
-    assignment, totals = grouped_split(groups, seed)
+    # Build leakage components across ALL approved rows, including MOTION_ONLY.
+    # Motion-only sources can bridge a visual actor to another visual garment.
+    # If excluded from this graph, an indirect cross-split relation is missed.
+    all_groups = components(approved)
+    training_groups = [
+        [row for row in group if row["visual_review"] == "APPROVED"]
+        for group in all_groups
+    ]
+    training_groups = [group for group in training_groups if group]
+    assignment, totals = grouped_split(training_groups, seed)
+    motion_control_assignments = {}
+    for group in all_groups:
+        visual = [row for row in group if row["visual_review"] == "APPROVED"]
+        split = assignment[visual[0]["source_path"]] if visual else None
+        for row in group:
+            if row["visual_review"] == "MOTION_ONLY":
+                motion_control_assignments[row["source_path"]] = split
     samples = [
         {"sample_id": hashlib.sha256(row["source_path"].encode()).hexdigest()[:16],
          "source_path": row["source_path"], "source_sha256": row["source_sha256"],
@@ -278,7 +293,11 @@ def plan(inventory, review, media_root, seed=42):
         "private_review_sha256": sha256(review), "seed": seed,
         "approved_cinematic_count": len(samples), "excluded_count": len(excluded),
         "motion_only_excluded_from_gradient_training": rejected_visual,
-        "independent_components": len(groups), "requested_split_fraction": [0.8, 0.1, 0.1],
+        "independent_components": len(training_groups),
+        "all_approved_components": len(all_groups),
+        "motion_only_provisional_group_splits": motion_control_assignments,
+        "motion_only_use_as_control_requires_separate_review": True,
+        "requested_split_fraction": [0.8, 0.1, 0.1],
         "actual_counts": totals,
         "ratio_warning": "Group sizes can prevent exact 80/10/10; verify component balance.",
         "samples": samples, "gpu_training_executed": False, "model_weights_loaded": False,
