@@ -13,6 +13,7 @@ dependencies = ["numpy>=2.0,<3", "Pillow>=11,<13"]
 
 [project.optional-dependencies]
 voice = ["edge-tts>=7,<8"]
+vision = ["mediapipe>=0.10.14,<2"]
 
 [project.scripts]
 qaf-video = "qaf_video.cli:main"
