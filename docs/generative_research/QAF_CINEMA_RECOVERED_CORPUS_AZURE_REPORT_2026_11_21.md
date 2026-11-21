@@ -136,6 +136,28 @@ guide rendering and paired-manifest validation; do not start a paid Azure CPU
 compute resource unless CPU processing is measurably slower than local
 processing.
 
+## 5B. Mac suitability
+
+The supplied Mac is a 16-inch 2021 MacBook Pro with Apple M1 Pro and 16 GB of
+unified memory. It is suitable for:
+
+- FFprobe and FFmpeg preparation.
+- MediaPipe Pose CPU extraction.
+- Pose-guide rendering.
+- Pair manifest and integrity validation.
+- Human visual review and matched-benchmark annotation.
+
+It is not a recommended host for official LTX training:
+
+- The official LTX trainer requires Linux with CUDA.
+- macOS does not expose the supported CUDA/Triton environment.
+- The low-VRAM official path is oriented toward 32 GB GPUs.
+- 16 GB unified memory is below the documented low-VRAM target.
+
+Apple Silicon should be used for CPU preparation and inference experiments
+only when a separately tested, compatible implementation exists. It should not
+be used to claim a successful official LTX-LoRA training run.
+
 Official East US 2 retail pricing reports `Standard_D4s_v5` at:
 
 - $0.376/hour consumption.
