@@ -61,12 +61,18 @@ def read_inventory(path):
     return by_path
 
 
-def draft_review(inventory):
+def draft_review(inventory, media_root=None):
     entries = []
     for rel, row in sorted(read_inventory(inventory).items()):
+        checksum = None
+        if media_root is not None:
+            source = private_source(media_root, rel)
+            if source.stat().st_size != row["size_bytes"]:
+                raise ValueError("PRIVATE_MEDIA_SIZE_MISMATCH")
+            checksum = sha256(source)
         entries.append({
             "source_path": rel, "git_blob_sha": row["git_blob_sha"],
-            "source_sha256": None, "review_status": "PENDING",
+            "source_sha256": checksum, "review_status": "PENDING",
             "visual_review": "PENDING", "motion_review": "PENDING",
             "reviewer": None, "review_record": None,
             "training_rights_documented": False,
@@ -331,6 +337,8 @@ def main():
     sub = arg.add_subparsers(dest="action", required=True)
     draft = sub.add_parser("draft")
     draft.add_argument("--inventory", required=True)
+    draft.add_argument("--media-root",
+                       help="Optional private original media root; only fills source hashes")
     draft.add_argument("--out", required=True)
     verify = sub.add_parser("plan")
     verify.add_argument("--inventory", required=True)
@@ -341,7 +349,7 @@ def main():
     verify.add_argument("--seed", type=int, default=42)
     args = arg.parse_args()
     if args.action == "draft":
-        template = draft_review(args.inventory)
+        template = draft_review(args.inventory, args.media_root)
         out = write_json_private(args.out, template)
         result = {"review_slots": len(template["entries"]), "reviewed": 0,
                   "rights_approved": 0, "output": out, "training_approved": False}
