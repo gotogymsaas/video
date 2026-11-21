@@ -11,6 +11,7 @@ import hashlib
 import json
 import math
 import subprocess
+from fractions import Fraction
 from pathlib import Path
 
 
@@ -51,9 +52,13 @@ def video_info(path):
     frames = int(stream.get("nb_read_frames") or 0)
     width = int(stream["width"])
     height = int(stream["height"])
-    if frames <= 0 or width <= 0 or height <= 0:
+    try:
+        fps = Fraction(stream["avg_frame_rate"])
+    except (KeyError, ValueError, ZeroDivisionError):
+        raise ValueError("INVALID_CONTROL_VIDEO_FPS") from None
+    if frames <= 0 or width <= 0 or height <= 0 or fps <= 0:
         raise ValueError("INVALID_CONTROL_VIDEO_METADATA")
-    return {"frames": frames, "width": width, "height": height}
+    return {"frames": frames, "width": width, "height": height, "fps": str(fps)}
 
 
 def qaf_vector(row):
@@ -82,16 +87,22 @@ def build_manifest(spec, private_root):
         raise ValueError("EMPTY_CONTROL_PAIR_LIST")
     root = Path(private_root).resolve()
     manifest = []
+    official_dataset = []
     for row in rows:
         target = inside(root, row.get("target"))
         reference = inside(root, row.get("reference"))
         target_hash = sha256(target)
         if row.get("target_sha256") != target_hash:
             raise ValueError("TARGET_SHA256_MISMATCH")
+        reference_hash = sha256(reference)
+        if row.get("reference_sha256") != reference_hash:
+            raise ValueError("REFERENCE_SHA256_MISMATCH")
         target_info = video_info(target)
         reference_info = video_info(reference)
         if target_info["frames"] != reference_info["frames"]:
             raise ValueError("TARGET_REFERENCE_FRAME_COUNT_MISMATCH")
+        if target_info["fps"] != reference_info["fps"]:
+            raise ValueError("TARGET_REFERENCE_FPS_MISMATCH")
         if target_info["width"] % 32 or target_info["height"] % 32:
             raise ValueError("TARGET_DIMENSION_NOT_DIVISIBLE_BY_32")
         if reference_info["width"] % 32 or reference_info["height"] % 32:
@@ -99,13 +110,16 @@ def build_manifest(spec, private_root):
         prompt = row.get("prompt")
         if not isinstance(prompt, str) or not prompt.strip():
             raise ValueError("CONTROL_PAIR_PROMPT_REQUIRED")
+        official_dataset.append({
+            "video": str(target), "reference_video": str(reference), "caption": prompt,
+        })
         manifest.append({
             "target": str(target),
             "reference_video": str(reference),
             "prompt": prompt,
             "control_type": data["control_type"],
             "target_sha256": target_hash,
-            "reference_sha256": sha256(reference),
+            "reference_sha256": reference_hash,
             "frame_count": target_info["frames"],
             "qaf_pose_8d": qaf_vector(row),
             "qaf_8d_not_direct_ltx_condition": True,
@@ -116,6 +130,7 @@ def build_manifest(spec, private_root):
         "control_type": data["control_type"],
         "paired_samples": len(manifest),
         "samples": manifest,
+        "ltx_dataset": official_dataset,
         "ltx_strategy": {
             "name": "flexible",
             "video": {
@@ -139,17 +154,21 @@ def main():
     parser.add_argument("--out", required=True)
     args = parser.parse_args()
     out = Path(args.out).resolve()
-    if out.exists():
-        parser.error("Output already exists")
+    dataset_out = out.with_name(out.stem + ".ltx.json")
+    if out.exists() or dataset_out.exists():
+        parser.error("Output or official dataset already exists")
     report = build_manifest(args.spec, args.private_root)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n",
                     encoding="utf-8")
+    dataset_out.write_text(json.dumps(report["ltx_dataset"], ensure_ascii=False, indent=2) + "\n",
+                           encoding="utf-8")
     print(json.dumps({
         "schema": SCHEMA,
         "paired_samples": report["paired_samples"],
         "training_run_executed": False,
         "out": str(out),
+        "official_dataset_file": str(dataset_out),
     }, indent=2))
 
 
