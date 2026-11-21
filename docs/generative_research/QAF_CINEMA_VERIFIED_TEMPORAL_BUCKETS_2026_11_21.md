@@ -25,7 +25,7 @@ CPU render only after dry-run succeeds; destination must not exist:
       --spec /private/qaf-pairs/pilot-pairs.json \
       --private-root /private/qaf-pairs \
       --out-root /private/qaf-pairs-121 \
-      --bucket 121 --start-frame 0 --execute
+      --bucket 121 --start-frame 0 --min-guide-coverage 0.60 --execute
 
 Verify using the pre-existing LTX control adapter:
 
@@ -43,9 +43,12 @@ The adapter writes a private official dataset sidecar. Keep personal observation
 - A real 121-frame contiguous temporal window with identical start frame in both videos.
 - Width and height divisible by 32.
 - Outputs are decoded again and verified for exact 121 frames, 24 fps and geometry.
+- Decodes the rasterized pose guide after cropping and checks that at least 60% of the selected frames show measurable skeleton marks. A sparse/blank guide fails closed. This proxy measures guide activity, not anatomical correctness or motion quality.
 - New hashes of generated videos feed the existing IC-LoRA adapter.
 - No overwrite of existing output. Partial new output is deleted on failure.
 - If source bytes change between plan and render, the run fails.
+
+If the entire batch fails because a guide is blank or sparse, review the source observations and create a new private spec excluding the failing pair(s). Do not lower the activity threshold merely to pass the gate. Be aware that multiple videos can have false-positive raster activity while still showing wrong joints.
 
 Not verified: subjective visual quality, full selected-window pose confidence, biomechanics, cloth physics, model/actor/garment rights, leakage-free train-val-test splits, sponsorship coverage, or readiness to train GPU. Training remains explicitly unapproved.
 
