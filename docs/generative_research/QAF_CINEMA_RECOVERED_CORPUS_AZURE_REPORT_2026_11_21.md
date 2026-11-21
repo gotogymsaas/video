@@ -119,6 +119,34 @@ and Sponsorship credit coverage remain unverified.
 
 No GPU, VM, cluster, endpoint or storage resource was created.
 
+## 5A. CPU capacity and low-cost preparation
+
+The live quota queries distinguish CPU from GPU capacity:
+
+- Azure VM regional vCPU limit: 65.
+- Current regional VM usage: 0.
+- Azure ML dedicated cores: 350.
+- Azure ML cluster limit: 200.
+- Azure ML low-priority cores: 100.
+- Local Codespace: 2 vCPU visible, AMD EPYC host, Linux/CUDA unavailable.
+
+CPU is therefore sufficient for continuing data preparation. It is not evidence
+of GPU availability. Use the Mac or the Codespace for FFprobe, pose extraction,
+guide rendering and paired-manifest validation; do not start a paid Azure CPU
+compute resource unless CPU processing is measurably slower than local
+processing.
+
+Official East US 2 retail pricing reports `Standard_D4s_v5` at:
+
+- $0.376/hour consumption.
+- $0.192/hour for a separate displayed meter.
+- $0.107837/hour spot.
+- $0.0384/hour or $0.15/hour low-priority meter variants.
+
+These are not a price commitment and the Mac or Codespace has no Azure charge
+for this work. Any CPU VM should use scale-to-zero or an explicit deletion
+rule, but it should not be created solely by having Azure credits.
+
 ## 6. Test evidence
 
 The following local suites passed:
