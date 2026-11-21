@@ -126,7 +126,7 @@ def validate_review(row, expected, media_root):
     if row.get("minor_status") != "NO_MINORS":
         raise ValueError("MINORS_REQUIRE_SEPARATE_LEGAL_REVIEW")
     for field in ("music_clearance", "logo_clearance"):
-        if row.get(field) not in ("CLEARED", "NOT_PRESENT", "EXCLUDED_FROM_MODEL"):
+        if row.get(field) not in ("CLEARED", "NOT_PRESENT"):
             raise ValueError("UNCLEARED_MUSIC_OR_BRAND_ELEMENTS")
     if row.get("visual_review") not in ("APPROVED", "MOTION_ONLY"):
         raise ValueError("VISUAL_REVIEW_NOT_COMPLETE")
