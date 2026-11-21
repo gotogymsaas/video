@@ -1,8 +1,9 @@
-import json,subprocess,tempfile,unittest
+import json,shutil,subprocess,tempfile,unittest
 from pathlib import Path
 from PIL import Image
 from qaf_video.generative_research.ltx_dataset_export import (export_ltx25,prepare_ltx25_commands)
 
+@unittest.skipUnless(shutil.which("ffmpeg"), "ffmpeg is required for media-fixture tests")
 class TestLtxDatasetExport(unittest.TestCase):
  def make(self,p):
   samples=[]
