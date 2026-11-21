@@ -23,7 +23,7 @@ A human film/rights reviewer must fill each row: APPROVED or EXCLUDED with revie
 
 EXCLUDED media need a reviewer and evidence reference for the exclusion. APPROVED media require NO_MINORS, all clearances, and references; footage with minors must go through a separate specialist clearance process before being eligible. Special rights edge cases require legal review; do not bypass the gate by using fake record IDs.
 
-Only human visually approved cinematic targets may enter model-gradient data. Motion-only clips are held out of the visual training target pool, and may contribute pose controls later under their own permission protocol. Do not use these recordings to infer faces, voices or brand logos for new ads without appropriate separate permissions.
+Only human visually approved cinematic targets may enter model-gradient data. Motion-only clips are held out of visual training targets. However, they are INCLUDED in graph connectivity when assigning actor/session/garment groups; a motion-only intermediary must not accidentally link train actors to held-out garments. Their provisional group split is reported for auditing, but control use requires its own separate review and verified paired reference. Do not use these recordings to infer faces, voices or brand logos for new ads without appropriate separate permissions.
 
 ## Phase 2: grouped leakage-safe split (only when the register is complete)
 
