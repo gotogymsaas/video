@@ -1,0 +1,28 @@
+name: QAF Cinema data intelligence (CPU, offline)
+on:
+  pull_request:
+    paths:
+      - 'scripts/qaf_cinema_data_intelligence.py'
+      - 'qaf_video/generative_research/vision_evidence.py'
+      - 'tests/test_qaf_cinema_data_intelligence.py'
+      - '.github/workflows/qaf-cinema-data-intelligence.yml'
+  push:
+    paths:
+      - 'scripts/qaf_cinema_data_intelligence.py'
+      - 'qaf_video/generative_research/vision_evidence.py'
+      - 'tests/test_qaf_cinema_data_intelligence.py'
+      - '.github/workflows/qaf-cinema-data-intelligence.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  offline_unit_tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run offline tests without GPU or Azure credentials
+        run: python -m unittest discover -s tests -p 'test_qaf_cinema_data_intelligence.py' -v
