@@ -53,7 +53,7 @@ No clip is currently promoted. The 96 clips are eligible for offline pose extrac
 
 ### B. Cinematography
 
-No clip is promoted as a cinematic source. The source set is mostly vertical and below 720p height, and luminance/gradient proxies are not human visual-quality evidence.
+No clip is promoted as a cinematic source. All 96 assessed sources are vertical, with short edges of 464–576 pixels; their frame heights are 832–1024 pixels. The current proxy applies a landscape-oriented threshold to these clips, which is not a valid stand-alone assessment of suitability for 9:16 social content. Luminance and gradient proxies also do not establish human-perceived or professional cinema quality.
 
 Commercially cleared, higher-resolution, professionally lit, actor-consented and garment-consented footage is still required.
 
@@ -78,12 +78,13 @@ Official LTX documentation confirms:
 
 The new CPU-only adapter:
 
-- validates target/reference SHA-256 values;
+- validates both target and reference SHA-256 values against their declared hashes;
 - verifies frame-count equality;
-- verifies dimensions are divisible by 32;
+- verifies dimensions are divisible by 32, and checks equal FPS and decoded frame counts;
 - validates the control type;
 - records the 8D QAF vector only as manifest metadata;
 - rejects direct use of QAF values as an LTX condition;
+- emits a separate `*.ltx.json` array containing official `video`, `reference_video` and `caption` fields for the pinned trainer, alongside its internal evidence report;
 - never starts training or downloads weights.
 
 Official references:
