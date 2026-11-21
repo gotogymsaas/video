@@ -14,9 +14,10 @@ Run this from the video repository root:
 
     python scripts/qaf_cinema_training_governance.py draft \
       --inventory docs/generative_research/gym_corpus/candidate_inventory.json \
+      --media-root /private/appdesplegada-source \
       --out /private/qaf-governance/review-106.json
 
-The output path MUST exist outside this public Git repository; the command will refuse overwrite. This creates 106 PENDING rows and **zero** actual approvals. Keep the entire register in a private workspace with access controls, backups, and audit logging. Do not upload consent documents, identifiable actor information, hashes of private footage or final splits to a public PR.
+The output path MUST exist outside this public Git repository; the command will refuse overwrite. This creates 106 PENDING rows and **zero** actual approvals. With --media-root it computes SHA-256 checksums for the 106 real original files and rejects mismatched inventory byte sizes. It never fills rights, consent, reviewer, actor, session or garment fields. Omit --media-root to draft a metadata-only template without source hashes. Keep the entire register in a private workspace with access controls, backups, and audit logging. Do not upload consent documents, identifiable actor information, hashes of private footage or final splits to a public PR.
 
 A human film/rights reviewer must fill each row: APPROVED or EXCLUDED with reviewer and evidence reference; source SHA-256; actual actor/session/garment group IDs; near-duplicate review; human captions; visual classification APPROVED vs MOTION_ONLY; motion review; training copyright rights; participant consent; permission for synthetic use of likeness; minor status; clearances for audio and logos. The prototype does not open/validate legal documents and **does not certify** a consent as legally sufficient merely because a field is checked.
 
