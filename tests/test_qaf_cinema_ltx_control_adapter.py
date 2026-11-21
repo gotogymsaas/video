@@ -29,6 +29,7 @@ class TestLtxControlAdapter(unittest.TestCase):
                 "target": "target.mp4",
                 "reference": "reference.mp4",
                 "target_sha256": sha256(target),
+                "reference_sha256": sha256(reference),
                 "prompt": "A verified pose-guided scene",
                 "qaf_pose": evidence(),
             }],
@@ -39,13 +40,16 @@ class TestLtxControlAdapter(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             spec = self.make_pair(root)
-            info = {"frames": 49, "width": 768, "height": 448}
+            info = {"frames": 49, "width": 768, "height": 448, "fps": "24"}
             with patch("scripts.qaf_cinema_ltx_control_adapter.video_info",
                        return_value=info):
                 report = build_manifest(spec, root)
         self.assertFalse(report["training_run_executed"])
         self.assertTrue(report["samples"][0]["qaf_8d_not_direct_ltx_condition"])
         self.assertEqual(len(report["samples"][0]["qaf_pose_8d"]), 8)
+        self.assertEqual(report["ltx_dataset"][0]["video"], str(root / "target.mp4"))
+        self.assertEqual(report["ltx_dataset"][0]["reference_video"], str(root / "reference.mp4"))
+        self.assertEqual(report["ltx_dataset"][0]["caption"], "A verified pose-guided scene")
 
     def test_wrong_target_hash_is_rejected(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -62,9 +66,30 @@ class TestLtxControlAdapter(unittest.TestCase):
             root = Path(directory)
             spec = self.make_pair(root)
             with patch("scripts.qaf_cinema_ltx_control_adapter.video_info",
-                       side_effect=[{"frames": 49, "width": 768, "height": 448},
-                                    {"frames": 25, "width": 768, "height": 448}]):
+                       side_effect=[{"frames": 49, "width": 768, "height": 448, "fps": "24"},
+                                    {"frames": 25, "width": 768, "height": 448, "fps": "24"}]):
                 with self.assertRaisesRegex(ValueError, "FRAME_COUNT_MISMATCH"):
+                    build_manifest(spec, root)
+
+
+    def test_wrong_reference_hash_is_rejected(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            spec = self.make_pair(root)
+            data = json.loads(spec.read_text())
+            data["pairs"][0]["reference_sha256"] = "0" * 64
+            spec.write_text(json.dumps(data))
+            with self.assertRaisesRegex(ValueError, "REFERENCE_SHA256_MISMATCH"):
+                build_manifest(spec, root)
+
+    def test_target_reference_fps_mismatch_is_rejected(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            spec = self.make_pair(root)
+            with patch("scripts.qaf_cinema_ltx_control_adapter.video_info",
+                       side_effect=[{"frames": 49, "width": 768, "height": 448, "fps": "24"},
+                                    {"frames": 49, "width": 768, "height": 448, "fps": "30"}]):
+                with self.assertRaisesRegex(ValueError, "FPS_MISMATCH"):
                     build_manifest(spec, root)
 
     def test_8d_vector_must_not_be_directly_marked_for_ltx(self):
@@ -77,6 +102,6 @@ class TestLtxControlAdapter(unittest.TestCase):
             data["pairs"][0]["qaf_pose"] = bad
             spec.write_text(json.dumps(data))
             with patch("scripts.qaf_cinema_ltx_control_adapter.video_info",
-                       return_value={"frames": 49, "width": 768, "height": 448}):
+                       return_value={"frames": 49, "width": 768, "height": 448, "fps": "24"}):
                 with self.assertRaisesRegex(ValueError, "NOT_MARKED_NON_LTX"):
                     build_manifest(spec, root)
