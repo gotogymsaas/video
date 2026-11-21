@@ -214,6 +214,8 @@ def inspect_clip(path, observations=None, *, probe_fn=probe_video, frames_fn=gra
                   "visual_review_candidate": not flags, "training_approved": False}
         if observations is not None and observations.is_file():
             evidence = json.loads(observations.read_text(encoding="utf-8"))
+            if evidence.get("source_mp4_sha256") != result["sha256"]:
+                raise ValueError("OBSERVATION_SOURCE_HASH_MISMATCH_OR_MISSING")
             result["qaf_pose"] = qaf_structural_features(evidence)
             result["observations_sha256"] = digest(observations)
         else:
