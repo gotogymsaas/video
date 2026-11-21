@@ -92,6 +92,21 @@ class TestLtxControlAdapter(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, "FPS_MISMATCH"):
                     build_manifest(spec, root)
 
+    def test_classical_baseline_without_qaf_evidence_is_allowed(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            spec = self.make_pair(root)
+            data = json.loads(spec.read_text())
+            del data["pairs"][0]["qaf_pose"]
+            spec.write_text(json.dumps(data))
+            with patch("scripts.qaf_cinema_ltx_control_adapter.video_info",
+                       return_value={"frames": 49, "width": 768,
+                                     "height": 448, "fps": "24"}):
+                report = build_manifest(spec, root)
+            self.assertIsNone(report["samples"][0]["qaf_pose_8d"])
+            self.assertEqual(report["ltx_dataset"][0]["caption"],
+                             "A verified pose-guided scene")
+
     def test_8d_vector_must_not_be_directly_marked_for_ltx(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
