@@ -199,7 +199,7 @@ def inspect_clip(path, observations=None, *, probe_fn=probe_video, frames_fn=gra
         info = probe_fn(path)
         metric = sample_metrics(frames_fn(path))
         flags = []
-        if info["width"] < 1280 or info["height"] < 720:
+        if min(info["width"], info["height"]) < 720:
             flags.append("LOW_RESOLUTION_FOR_CINEMA_REFERENCE")
         if metric["mean_luma"] < 40 or metric["mean_black_fraction"] > .40:
             flags.append("DARK_OR_CRUSHED_SHADOWS_PROXY")
