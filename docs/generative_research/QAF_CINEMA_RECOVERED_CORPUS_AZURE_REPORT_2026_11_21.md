@@ -119,6 +119,49 @@ and Sponsorship credit coverage remain unverified.
 
 No GPU, VM, cluster, endpoint or storage resource was created.
 
+## 5A. CPU capacity and low-cost preparation
+
+The live quota queries distinguish CPU from GPU capacity:
+
+- Azure VM regional general-vCPU limit: 65; reported regional usage: 0, thus a 65-vCPU general regional quota headroom at the time of the query.
+- Azure ML reported CPU quota categories include 350 dedicated cores, 200 cluster limit and 100 low-priority cores. These are quota figures, not a guarantee of per-family SKU capacity or a single interchangeable pool.
+- Separate GPU family quotas for A100/H100 remain at zero.
+- Local Codespace: 2 vCPU visible, AMD EPYC host, Linux/CUDA unavailable.
+
+CPU is therefore sufficient for continuing data preparation. It is not evidence
+of GPU availability. Use the Mac or the Codespace for FFprobe, pose extraction,
+guide rendering and paired-manifest validation; do not start a paid Azure CPU
+compute resource unless CPU processing is measurably slower than local
+processing.
+
+## 5B. Mac suitability
+
+The supplied Mac is a 16-inch 2021 MacBook Pro with Apple M1 Pro and 16 GB of
+unified memory. It is suitable for:
+
+- FFprobe and FFmpeg preparation.
+- MediaPipe Pose CPU extraction.
+- Pose-guide rendering.
+- Pair manifest and integrity validation.
+- Human visual review and matched-benchmark annotation.
+
+It is not a recommended host for official LTX training:
+
+- The official LTX trainer requires Linux with CUDA.
+- macOS does not expose the supported CUDA/Triton environment.
+- The low-VRAM official path is oriented toward 32 GB GPUs.
+- 16 GB unified memory is below the documented low-VRAM target.
+
+Apple Silicon should be used for CPU preparation and inference experiments
+only when a separately tested, compatible implementation exists. It should not
+be used to claim a successful official LTX-LoRA training run.
+
+The retail pricing lookup for East US 2 returned multiple meter values for the `Standard_D4s_v5` SKU, including USD 0.376/hour and USD 0.192/hour for separately labeled consumption meters, plus Spot and low-priority variants. The correct actual payable rate **cannot be determined from the SKU name alone**; query the exact operating system, offer, meter and billing model in Azure before estimating costs. This is not a quotation or sponsorship eligibility check.
+
+Processing on the Mac does not create an Azure VM charge. GitHub Codespaces can have separate compute and storage charges under GitHub billing. Do not start an Azure CPU VM solely because Azure credits exist. If CPU cloud compute becomes necessary, require a measured local bottleneck, verified SKU compatibility, explicit run-hour ceiling and actual stop/deallocation, since budget alerts alone do not suspend spending.
+
+**Data provenance:** These CPU/Mac observations were reported by Copilot from authenticated Azure CLI and hardware details; this document update does not re-query Azure and does not establish current free quota or sponsorship credit coverage.
+
 ## 6. Test evidence
 
 The following local suites passed:
