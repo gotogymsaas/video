@@ -165,6 +165,11 @@ class TestCinemaGovernance(unittest.TestCase):
                 plan(inv, review, media)
             self.mutate(review, lambda rows:
                         rows[0].update(music_clearance="NOT_PRESENT",
+                                       logo_clearance="EXCLUDED_FROM_MODEL"))
+            with self.assertRaisesRegex(ValueError, "UNCLEARED_MUSIC"):
+                plan(inv, review, media)
+            self.mutate(review, lambda rows:
+                        rows[0].update(logo_clearance="NOT_PRESENT",
                                        near_duplicate_status="UNREVIEWED"))
             with self.assertRaisesRegex(ValueError, "VISUAL_DUPLICATE_REVIEW"):
                 plan(inv, review, media)
