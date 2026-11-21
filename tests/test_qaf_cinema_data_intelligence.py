@@ -115,6 +115,18 @@ class TestDataIntelligence(unittest.TestCase):
             self.assertEqual(result["state"], "TECHNICAL_FAILURE")
             self.assertFalse(result["training_approved"])
 
+    def test_vertical_hd_is_not_rejected_by_landscape_threshold(self):
+        with tempfile.TemporaryDirectory() as directory:
+            file = Path(directory) / "portrait.mp4"
+            file.write_bytes(b"mocked-fixture")
+            result = module.inspect_clip(
+                file,
+                probe_fn=lambda path: {"width": 720, "height": 1280,
+                                       "duration_seconds": 5, "codec": "h264"},
+                frames_fn=lambda path: [textured_frame()] * 5)
+            self.assertNotIn("LOW_RESOLUTION_FOR_CINEMA_REFERENCE", result["flags"])
+            self.assertFalse(result["training_approved"])
+
     def test_low_light_is_flagged_even_with_high_resolution(self):
         with tempfile.TemporaryDirectory() as directory:
             file = Path(directory) / "dark.mp4"
