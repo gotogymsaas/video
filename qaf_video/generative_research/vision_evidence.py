@@ -87,9 +87,9 @@ def mediapipe_extract(frames,pose_model,hand_model=None,confidence_floor=.45):
             found=poses.detect(image)
             pose=[]
             if found.pose_landmarks:
-                pose=[{"x":float(np.clip(p.x,0,1)),"y":float(np.clip(p.y,0,1)),
+                pose=[{"joint_id":i,"x":float(np.clip(p.x,0,1)),"y":float(np.clip(p.y,0,1)),
                        "confidence":float(np.clip(p.visibility if p.visibility is not None else 0,0,1))}
-                       for p in found.pose_landmarks[0] if (p.visibility or 0)>=confidence_floor]
+                       for i,p in enumerate(found.pose_landmarks[0]) if (p.visibility or 0)>=confidence_floor]
             detected_hands=[]
             if hands:
                 h=hands.detect(image)
