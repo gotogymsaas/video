@@ -121,7 +121,7 @@ def build_manifest(spec, private_root):
             "target_sha256": target_hash,
             "reference_sha256": reference_hash,
             "frame_count": target_info["frames"],
-            "qaf_pose_8d": qaf_vector(row),
+            "qaf_pose_8d": qaf_vector(row) if row.get("qaf_pose") is not None else None,
             "qaf_8d_not_direct_ltx_condition": True,
         })
     result = {
